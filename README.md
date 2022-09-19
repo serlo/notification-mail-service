@@ -9,4 +9,4 @@ When you are done, `docker-compose down` or `yarn stop`.
 For running scripts you need Node, Yarn and Typescript installed.  
 Use `yarn mysql` to prompt to the cli of your local databse.  
 Use `smtps://test:test@localhost:2500/?skip_ssl_verify=true` to set you stmp.  
-Navigate to the `http://localhost:8080/` to see you local mail client.
+Navigate to the `http://localhost:8080/` to see your local mail client.
