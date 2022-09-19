@@ -1,0 +1,16 @@
+{
+  "name": "@serlo/notification-mail-service",
+  "version": "0.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:serlo/notification-mail-service.git",
+  "author": "Serlo Education e.V.",
+  "license": "Apache-2.0",
+  "private": true,
+  "scripts": {
+    "mysql": "docker-compose exec mysql mysql --user=root --password=secret serlo",
+    "mysql:dump": "ts-node scripts/mysql-dump",
+    "mysql:rollback": "ts-node scripts/mysql-rollback",
+    "start": "docker-compose up --detach",
+    "stop": "docker-compose down"
+  }
+}
