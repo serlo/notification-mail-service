@@ -1,9 +1,8 @@
 {
   "name": "@serlo/notification-mail-service",
   "version": "0.0.0",
-  "main": "index.js",
-  "repository": "git@github.com:serlo/notification-mail-service.git",
   "author": "Serlo Education e.V.",
+  "repository": "git@github.com:serlo/notification-mail-service.git",
   "license": "Apache-2.0",
   "private": true,
   "scripts": {
