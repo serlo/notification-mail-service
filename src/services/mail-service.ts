@@ -1,22 +1,17 @@
-import nodemailer from "nodemailer";
-import config from "../config/config"
+import { getAllUnsentEmailData,updateNotificationSendStatus } from "../db/dbQuery"
+import { sendMail } from "../library/mail"
 
-
-export const getEmailService = async () => {
+export const sendEmailToUser = async () => {
     try {
-        const transporter = nodemailer.createTransport(config.smtp);
 
-
-          const info = await transporter.sendMail({
-            from: config.from_email,
-            to: "syed.yarooq@gmail.com",
-            subject: "Hello from Yarooq",
-            text: "Hello Yarooq?",
-            html: "<strong>Hello Yarooq?</strong>",
-            headers: { 'x-myheader': 'test header' }
-          });
+      const emailData: any= await getAllUnsentEmailData();
+      
+      for(let data of emailData) {
+        let mailStatus: any = await sendMail(data.username, data.email, data.event_id);
         
-          console.log("Message sent: %s", info);
+        if(mailStatus?.response == '250 Ok')
+          await updateNotificationSendStatus(data.id)
+      }
 
         return [true, null];
     } catch (ex) {
@@ -26,7 +21,5 @@ export const getEmailService = async () => {
 }
 
 export default {
-   // getFrontendSrcFolderStructure,
-    getEmailService
+  sendEmailToUser,
 };
-

@@ -4,8 +4,8 @@ import { Exception } from "../helpers/exception";
 import mailService from "../services/mail-service";
 import { Request, Response, NextFunction } from 'express';
 
-const getToBeSentEmail = async (req: Request, res: any, next: NextFunction) => {
-    let [data, error] = await mailService.getEmailService();
+const SendNotificationEmail = async (req: Request, res: any, next: NextFunction) => {
+    let [data, error] = await mailService.sendEmailToUser();
 
     if (data) {
         return res.success(
@@ -25,5 +25,5 @@ const getToBeSentEmail = async (req: Request, res: any, next: NextFunction) => {
 }
 
 export default {
-    getToBeSentEmail
+    SendNotificationEmail
 };
