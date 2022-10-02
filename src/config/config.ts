@@ -11,12 +11,12 @@ export default {
         database: process.env.DB_NAME
     },
     smtp: {
-        host: process.env.SMTP_HOST,
-        port: parseInt(process.env.SMTP_PORT as string),
+        host: process.env.MAIL_HOST,
+        port: parseInt(process.env.MAIL_PORT as string),
         secure: false, 
         auth: {
-            user: process.env.SMTP_USER, 
-            pass: process.env.SMTP_PASSWORD 
+            user: process.env.MAIL_USER, 
+            pass: process.env.MAIL_PASSWORD 
         }
     },
     from_email: 'syed.yarooq@serlo.com'
