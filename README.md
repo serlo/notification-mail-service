@@ -13,6 +13,10 @@ Use `yarn mysql` to prompt to the cli of your local databse.
 Use `smtps://test:test@localhost:2500/?skip_ssl_verify=true` to set you stmp.  
 Navigate to the `http://localhost:8080/` to see your local mail client.
 
+## Purpose of this Service 
+Handle the email sending process through cron as well by API `notification/mail` for sending Urgent mail
+
+
 ## File Structure
 ## src
 Contain folders which create service 
