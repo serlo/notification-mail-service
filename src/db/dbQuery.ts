@@ -1,7 +1,7 @@
 import { database } from "./dbConfig";
 
 
-export const getAllUnsentEmailData =(email:boolean = true, email_sent:boolean = false, seen:boolean = false) => {
+export const getAllUnsentEmailData =() => {
     try {
         return new Promise((resolve, reject) => {
             database.query(`SELECT n.id, n.user_id, u.username, u.email, el.event_id
@@ -9,7 +9,7 @@ export const getAllUnsentEmailData =(email:boolean = true, email_sent:boolean = 
             INNER JOIN user u ON u.id = n.user_id 
             INNER JOIN notification_event ne ON n.id = ne.notification_id
             INNER JOIN event_log el ON el.id = ne.event_log_id
-            WHERE n.email=${email} and n.email_sent =${email_sent} and n.seen = ${seen};`
+            WHERE n.email=1 and n.email_sent = 0 and n.seen = 0;`
             , function (err, result){
                 (err) ? reject(err) : resolve(result)
             })

@@ -10,7 +10,7 @@ export default {
         password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME
     },
-    smtp: {
+    mail: {
         host: process.env.MAIL_HOST,
         port: parseInt(process.env.MAIL_PORT as string),
         secure: false, 

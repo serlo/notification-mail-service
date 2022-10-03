@@ -1,9 +1,9 @@
 import { Router as eRouter  } from "express";
 import response from "../middlewares/response";
-import notificationRoutes from "./notifications/routes";
+import emailRoutes from "./email/routes";
 export const Router = (eRouter as any) as () => eRouter;
 const router = Router();
 
-router.use('/notification', response, notificationRoutes);
+router.use('/email', response, emailRoutes);
 
 export default router;

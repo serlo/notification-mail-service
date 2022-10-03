@@ -1,5 +1,7 @@
+import { Request, Response } from 'express';
 
-export default (req: any, res: any, next: () => void) => {
+
+export default (req: Request, res: any, next: () => void ) => {
     res.success = (status_code: number, msg: string, data: any = null) => {
         res.status(status_code).json({
             status: true, 
