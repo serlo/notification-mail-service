@@ -18,7 +18,6 @@ const SendNotificationEmail = async (req: Request, res: any, next: NextFunction)
             new Exception(
                 statusCodes.SERVER_ERROR, 
                 messages.FAILURE, 
-                //error            
             )
         );
     }
