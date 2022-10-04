@@ -18,3 +18,10 @@ export const EVENT_TYPE = {
     TAXONOMY_TERM_DISSOCIATE: 17,
     ENTITY_LINK_REMOVE: 18,
 };
+
+export const RADIX_TYPE = {
+    BINARY: 2,
+    OCTAL: 8,
+    DECIMAL : 10,
+    HEXADECIMAL: 16,
+}
