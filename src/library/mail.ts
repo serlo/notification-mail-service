@@ -1,6 +1,5 @@
 import nodemailer from "nodemailer";
 import config from "../config/config"
-import {mailText} from "../constants/email-message"
 
 const transporter = nodemailer.createTransport(config.mail);
 
@@ -8,18 +7,18 @@ interface mailResponse {
     response: string;
 }
 
-export const sendMail = async (username: string, userEmail: string, event_id: number) => {
+export const sendMail = async (username: string, userEmail: string, body: string) => {
     try {
         const info: mailResponse = await transporter.sendMail({
           from: config.from_email,
           to: userEmail,
-          subject: mailText[event_id-1].subject,
+          subject: 'notification Email From Serlo',
           html: `<p>Hello ${username}</p>
           <br
-          ${mailText[event_id-1].body}
+          ${body}
           <br>
-          <span>Regards</span><br>
-          <span>Serlo Team</span>`,
+          Regards<br>
+          <span>Team</span>`,
         });
     
         return info.response;

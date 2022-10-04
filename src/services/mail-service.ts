@@ -1,23 +1,58 @@
 import { getAllUnsentEmailData,updateNotificationSendStatus } from "../db/dbQuery"
 import { sendMail } from "../library/mail"
-
+import { formatedDate } from "../library/date"
+import {mailText} from "../constants/email-message"
 
 export const sendEmailToUser = async () => {
     try {
 
       const emailData: any= await getAllUnsentEmailData();
-      for(let data of emailData) {
-        let mailStatus: string = await sendMail(data.username, data.email, data.event_id) as string;
+      let emailPayload =await filterDataForEmail(emailData);
+      for(let payload of emailPayload) {
+        let mailStatus: string = await sendMail(payload.username, payload.email, payload.body) as string;
         
-        if(mailStatus == '250 Ok')
-          await updateNotificationSendStatus(data.id)
-      }
+        if(mailStatus == '250 Ok'){
+          let notification_ids = payload.ids.join();
+          notification_ids = notification_ids.replace("'", " ");
+          await updateNotificationSendStatus(notification_ids)
 
-        return [emailData, null];
+        }
+      }
+        
+        return [emailPayload, null];
     } catch (ex) {
         console.log(ex)
         return [null, ex];
     }
+}
+
+// Todo create interface  
+export const filterDataForEmail = async (emailData: any) => {
+  try {
+    let emailPayload : any = [];
+
+    for(let data of emailData) {
+      let isExist = emailPayload.find((x: { user_id: number; })=> x.user_id == data.user_id);
+      if(!isExist) {
+        emailPayload.push({
+          user_id: data.user_id,
+          username : data.username, 
+          email: data.email, 
+          ids : [data.id],
+          body: `<p>${data.actor_name} ${mailText[data.event_id-1]} ${formatedDate(data.date)}<p><br>` 
+        })
+      }else{
+          isExist.body = isExist.body + `<p>${data.actor_name} ${mailText[data.event_id-1]} ${formatedDate(data.date)}<p><br>`;
+          isExist.ids.push(data.id);
+      }
+    }
+    return emailPayload;
+
+      
+  } catch (ex) {
+      console.log(ex)
+      return ex;
+  }
 }
 
 export default {
