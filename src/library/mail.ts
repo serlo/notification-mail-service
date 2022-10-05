@@ -3,20 +3,20 @@ import config from "../config/config"
 
 const transporter = nodemailer.createTransport(config.mail);
 
-interface mailResponse {
+interface MailResponse {
     response: string;
 }
 
 export const sendMail = async (username: string, userEmail: string, body: string) => {
     try {
-        const info: mailResponse = await transporter.sendMail({
+        const info: MailResponse = await transporter.sendMail({
           from: config.from_email,
           to: userEmail,
           subject: 'notification Email From Serlo',
           html: `<p>Hello ${username}</p>
-          <br
+          <br/>
           ${body}
-          <br>
+          <br/>
           Regards<br>
           <span>Team</span>`,
         });
@@ -24,6 +24,6 @@ export const sendMail = async (username: string, userEmail: string, body: string
         return info.response;
     } catch (ex) {
         console.log(ex)
-        return [null, ex];
+        return 'something went wrong';
     }
 }

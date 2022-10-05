@@ -1,6 +1,5 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import { RADIX_TYPE } from '../constants/enums'
 
 export default {
     api: {
@@ -13,7 +12,7 @@ export default {
     },
     mail: {
         host: process.env.MAIL_HOST,
-        port: parseInt(process.env.MAIL_PORT as string, RADIX_TYPE.DECIMAL),
+        port: parseInt(process.env.MAIL_PORT as string, 10),
         secure: false, 
         auth: {
             user: process.env.MAIL_USER, 

@@ -1,7 +1,7 @@
 export class Exception extends Error {
-    innerError?: any;
+    innerError?: Error;
     code: number;
-    constructor(code: number, message: string | undefined, innerError = null) {
+    constructor(code: number, message: string | undefined, innerError?: Error) {
         super(message);
         this.code = code;
         this.innerError = innerError;

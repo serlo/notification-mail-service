@@ -2,14 +2,19 @@ import { getAllUnsentEmailData,updateNotificationSendStatus } from "../db/dbQuer
 import { sendMail } from "../library/mail"
 import { formatedDate } from "../library/date"
 import {mailText} from "../constants/email-message"
+import { EmailData, EmailPayload } from "../types"
+
+
 
 export const sendEmailToUser = async () => {
     try {
 
-      const emailData: any= await getAllUnsentEmailData();
+      const emailData = await getAllUnsentEmailData();
+      if (!emailData) return [null, null];
       let emailPayload =await filterDataForEmail(emailData);
+      if (!emailPayload) return [null, null];
       for(let payload of emailPayload) {
-        let mailStatus: string = await sendMail(payload.username, payload.email, payload.body) as string;
+        let mailStatus: string = await sendMail(payload.username, payload.email, payload.body);
         
         if(mailStatus == '250 Ok'){
           let notification_ids = payload.ids.join();
@@ -19,17 +24,16 @@ export const sendEmailToUser = async () => {
         }
       }
         
-        return [emailPayload, null];
+      return [emailPayload, null];
     } catch (ex) {
         console.log(ex)
         return [null, ex];
     }
 }
 
-// Todo create interface  
-export const filterDataForEmail = async (emailData: any) => {
+export const filterDataForEmail = async (emailData: EmailData[]) => {
   try {
-    let emailPayload : any = [];
+    let emailPayload :EmailPayload[] = [];
 
     for(let data of emailData) {
       let isExist = emailPayload.find((x: { user_id: number; })=> x.user_id == data.user_id);
@@ -39,10 +43,10 @@ export const filterDataForEmail = async (emailData: any) => {
           username : data.username, 
           email: data.email, 
           ids : [data.id],
-          body: `<p>${data.actor_name} ${mailText[data.event_id-1]} ${formatedDate(data.date)}<p><br>` 
+          body: `<p>${data.actor_name} ${mailText[data.event_id-1]} ${formatedDate(data.date)}</p><br/>` 
         })
       }else{
-          isExist.body = isExist.body + `<p>${data.actor_name} ${mailText[data.event_id-1]} ${formatedDate(data.date)}<p><br>`;
+          isExist.body = isExist.body + `<p>${data.actor_name} ${mailText[data.event_id-1]} ${formatedDate(data.date)}</p><br/>`;
           isExist.ids.push(data.id);
       }
     }
@@ -51,7 +55,6 @@ export const filterDataForEmail = async (emailData: any) => {
       
   } catch (ex) {
       console.log(ex)
-      return ex;
   }
 }
 

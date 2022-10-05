@@ -1,9 +1,10 @@
+import { EmailData } from "../types";
 import { database } from "./dbConfig";
 
 
-export const getAllUnsentEmailData =() => {
+export const getAllUnsentEmailData =(): Promise<EmailData[]> |undefined => {
     try {
-        return new Promise((resolve, reject) => {
+        return new Promise<EmailData[]>((resolve, reject) => {
             database.query(`SELECT n.id, n.user_id, u.username, u.email, el.event_id, el.date, i.name as domain, u2.username as actor_name,
             epn.name as epn_name, eps.value            
             FROM notification n
@@ -24,9 +25,8 @@ export const getAllUnsentEmailData =() => {
             })
         })
 
-    }catch (e) {
+    } catch (e) {
         console.log("get query error",e);
-        return e;
     }
 }
 
