@@ -16,9 +16,9 @@ export const sendEmailToUser = async () => {
         const mailStatus: string = await sendMail(payload.username, payload.email, payload.body);
         
         if (mailStatus == '250 Ok') {
-          let notificationIds = payload.ids.join();
-          notificationIds = notificationIds.replace("'", " ");
-          await updateNotificationSendStatus(notificationIds)
+          await updateNotificationSendStatus(payload.ids)
+        } else {
+          throw new Error(`Email receiver responded with status ${mailStatus}`)
         }
       }
 

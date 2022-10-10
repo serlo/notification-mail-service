@@ -30,18 +30,20 @@ export const getAllUnsentEmailData =(): Promise<EmailData[]> |undefined => {
     }
 }
 
-export const updateNotificationSendStatus = (notification_ids: string) => {
+export const updateNotificationSendStatus = (notificationsIds: string[]) => {
+    let notificationIds = notificationsIds.join();
+    notificationIds = notificationIds.replace("'", " ");
+
     try {
         return new Promise((resolve, reject) => {
             database.query(`UPDATE notification 
             SET email_sent = true
-            WHERE id in (${notification_ids});`
+            WHERE id in (${notificationsIds});`
             , function (err, result){
                 (err) ? reject(err) : resolve(result)
             })
         })
-
-    }catch (e) {
+    } catch (e) {
         console.log("update query error",e);
         return e;
     }
