@@ -10,10 +10,14 @@ import { EmailData, EmailPayload } from '../types'
 export const sendEmailToUser = async () => {
   try {
     const emailData = await getAllUnsentEmailData()
-    if (!emailData) return [null, null]
+    if (!emailData) {
+      return [null, null]
+    }
 
     const emailPayload = await filterDataForEmail(emailData)
-    if (!emailPayload) return [null, null]
+    if (!emailPayload) {
+      return [null, null]
+    }
 
     for (const payload of emailPayload) {
       const mailStatus: string = await sendMail(
@@ -50,7 +54,12 @@ export const filterDataForEmail = async (emailData: EmailData[]) => {
       const isExist = emailPayload.find(
         (x: { user_id: number }) => x.user_id == data.user_id
       )
-      if (!isExist) {
+      if (isExist) {
+        isExist.body = `${isExist.body}<p>${data.actor_name} ${
+          eventMessages[data.event_id as EVENT_TYPE]
+        } ${formattedDate(data.date)}</p><br/>`
+        isExist.ids.push(data.id)
+      } else {
         emailPayload.push({
           user_id: data.user_id,
           username: data.username,
@@ -60,13 +69,6 @@ export const filterDataForEmail = async (emailData: EmailData[]) => {
             eventMessages[data.event_id as EVENT_TYPE]
           } ${formattedDate(data.date)}</p><br/>`,
         })
-      } else {
-        isExist.body =
-          isExist.body +
-          `<p>${data.actor_name} ${
-            eventMessages[data.event_id as EVENT_TYPE]
-          } ${formattedDate(data.date)}</p><br/>`
-        isExist.ids.push(data.id)
       }
     }
     return emailPayload

@@ -13,6 +13,7 @@ export interface EmailPayload {
   ids: string[]
   body: string
 }
+
 export interface EmailData {
   user_id: number
   username: string
