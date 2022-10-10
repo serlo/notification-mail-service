@@ -47,8 +47,6 @@ export const filterDataForEmail = async (emailData: EmailData[]) => {
       }
     }
     return emailPayload;
-
-      
   } catch (ex) {
       console.log(ex)
   }
