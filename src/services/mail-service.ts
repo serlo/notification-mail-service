@@ -1,14 +1,11 @@
 import { getAllUnsentEmailData,updateNotificationSendStatus } from "../db/dbQuery"
 import { sendMail } from "../library/mail"
 import { formatedDate } from "../library/date"
-import {mailText} from "../constants/email-message"
+import { EVENT_TYPE, eventMessages } from "../constants/email-message"
 import { EmailData, EmailPayload } from "../types"
-
-
 
 export const sendEmailToUser = async () => {
     try {
-
       const emailData = await getAllUnsentEmailData();
       if (!emailData) return [null, null];
       let emailPayload =await filterDataForEmail(emailData);
@@ -23,7 +20,6 @@ export const sendEmailToUser = async () => {
 
         }
       }
-        
       return [emailPayload, null];
     } catch (ex) {
         console.log(ex)
@@ -43,10 +39,10 @@ export const filterDataForEmail = async (emailData: EmailData[]) => {
           username : data.username, 
           email: data.email, 
           ids : [data.id],
-          body: `<p>${data.actor_name} ${mailText[data.event_id-1]} ${formatedDate(data.date)}</p><br/>` 
+          body: `<p>${data.actor_name} ${eventMessages[data.event_id as EVENT_TYPE]} ${formatedDate(data.date)}</p><br/>` 
         })
       }else{
-          isExist.body = isExist.body + `<p>${data.actor_name} ${mailText[data.event_id-1]} ${formatedDate(data.date)}</p><br/>`;
+          isExist.body = isExist.body + `<p>${data.actor_name} ${eventMessages[data.event_id as EVENT_TYPE]} ${formatedDate(data.date)}</p><br/>`;
           isExist.ids.push(data.id);
       }
     }
