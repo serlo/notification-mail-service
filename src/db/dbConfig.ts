@@ -1,4 +1,4 @@
-import mysql from 'mysql';
-import config from '../config/config';
+import mysql from 'mysql'
+import config from '../config/config'
 
-export const database = mysql.createConnection(config.db);
+export const database = mysql.createConnection(config.db)

@@ -1,9 +1,11 @@
-import { Router } from "express";
-import response from "../middlewares/response";
-import controller from "../controllers/mail-controller";
+import { Router } from 'express'
+import response from '../middlewares/response'
+import controller from '../controllers/mail-controller'
 
-const router = Router();
+const router = Router()
 
-router.get('/', response, (...args) => controller.sendNotificationEmail(...args));
+router.get('/', response, (...args) =>
+  controller.sendNotificationEmail(...args)
+)
 
-export default router;
+export default router
