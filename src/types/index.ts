@@ -1,7 +1,7 @@
 import * as express from "express";
 import { Exception } from "../helpers/exception";
 
-export interface ExpressResponse extends express.Response {
+export interface AppResponse extends express.Response {
   success?: <T>(status: number, message: string, data: T) => void;
   error?: (exception: Exception) => void;
 }

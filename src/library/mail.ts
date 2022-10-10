@@ -17,7 +17,7 @@ export const sendMail = async (username: string, userEmail: string, body: string
           <br/>
           ${body}
           <br/>
-          Regards<br>
+          Regards<br/>
           <span>Team</span>`,
         });
     

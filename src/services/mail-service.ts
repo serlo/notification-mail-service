@@ -1,6 +1,6 @@
 import { getAllUnsentEmailData,updateNotificationSendStatus } from "../db/dbQuery"
 import { sendMail } from "../library/mail"
-import { formatedDate } from "../library/date"
+import { formattedDate } from "../library/date"
 import { EVENT_TYPE, eventMessages } from "../constants/email-message"
 import { EmailData, EmailPayload } from "../types"
 
@@ -8,18 +8,20 @@ export const sendEmailToUser = async () => {
     try {
       const emailData = await getAllUnsentEmailData();
       if (!emailData) return [null, null];
-      let emailPayload =await filterDataForEmail(emailData);
-      if (!emailPayload) return [null, null];
-      for(let payload of emailPayload) {
-        let mailStatus: string = await sendMail(payload.username, payload.email, payload.body);
-        
-        if(mailStatus == '250 Ok'){
-          let notification_ids = payload.ids.join();
-          notification_ids = notification_ids.replace("'", " ");
-          await updateNotificationSendStatus(notification_ids)
 
+      const emailPayload = await filterDataForEmail(emailData);
+      if (!emailPayload) return [null, null];
+
+      for(const payload of emailPayload) {
+        const mailStatus: string = await sendMail(payload.username, payload.email, payload.body);
+        
+        if (mailStatus == '250 Ok') {
+          let notificationIds = payload.ids.join();
+          notificationIds = notificationIds.replace("'", " ");
+          await updateNotificationSendStatus(notificationIds)
         }
       }
+
       return [emailPayload, null];
     } catch (ex) {
         console.log(ex)
@@ -29,20 +31,26 @@ export const sendEmailToUser = async () => {
 
 export const filterDataForEmail = async (emailData: EmailData[]) => {
   try {
-    let emailPayload :EmailPayload[] = [];
+    const emailPayload: EmailPayload[] = [];
 
-    for(let data of emailData) {
-      let isExist = emailPayload.find((x: { user_id: number; })=> x.user_id == data.user_id);
+    // TODO: Refactor, Kulla's suggestion:
+    // You have a duplication of this line in your code in both the if and the else part -> I would do the following: 
+    // 1) Create the body for each data, 
+    // 2) group by user_id and 
+    // 3) aggregate the bodies by concatenating the strings -> 
+    // You can archive this already in the SQL so you get an array of events per user...
+    for(const data of emailData) {
+      const isExist = emailPayload.find((x: { user_id: number; })=> x.user_id == data.user_id);
       if(!isExist) {
         emailPayload.push({
           user_id: data.user_id,
           username : data.username, 
           email: data.email, 
           ids : [data.id],
-          body: `<p>${data.actor_name} ${eventMessages[data.event_id as EVENT_TYPE]} ${formatedDate(data.date)}</p><br/>` 
+          body: `<p>${data.actor_name} ${eventMessages[data.event_id as EVENT_TYPE]} ${formattedDate(data.date)}</p><br/>` 
         })
-      }else{
-          isExist.body = isExist.body + `<p>${data.actor_name} ${eventMessages[data.event_id as EVENT_TYPE]} ${formatedDate(data.date)}</p><br/>`;
+      } else {
+          isExist.body = isExist.body + `<p>${data.actor_name} ${eventMessages[data.event_id as EVENT_TYPE]} ${formattedDate(data.date)}</p><br/>`;
           isExist.ids.push(data.id);
       }
     }

@@ -1,9 +1,9 @@
-import { Request, Response } from 'express';
+import { Request } from 'express';
 import { Exception } from '../helpers/exception';
-import { ExpressResponse } from '../types';
+import { AppResponse } from '../types';
 
 
-export default (req: Request, res: ExpressResponse, next: () => void ) => {
+export default (_: Request, res: AppResponse, next: () => void ) => {
     res.success = <T>(status_code: number, msg: string, data?: T | null) => {
         res.status(status_code).json({
             status: true, 

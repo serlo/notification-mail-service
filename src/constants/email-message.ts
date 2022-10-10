@@ -21,6 +21,7 @@ export enum EVENT_TYPE {
 };
 
 export const eventMessages: Record<EVENT_TYPE, string> = {
+       // TODO: which taxonomy term, entity etc.
        [EVENT_TYPE.TAXONOMY_TERM_ASSOCIATE]: `associated the taxonomy term on`,
        [EVENT_TYPE.TAXONOMY_TERM_CREATE]: `created taxonomy term on  created`,
        [EVENT_TYPE.LICENSE_OBJECT_SET]: `set the license object on`,
