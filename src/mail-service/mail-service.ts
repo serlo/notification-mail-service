@@ -37,7 +37,7 @@ export const sendEmailToUser = async () => {
   }
 }
 
-export const filterDataForEmail = async (emailData: EmailData[]) => {
+export const filterDataForEmail = (emailData: EmailData[]) => {
   try {
     const emailPayload: EmailPayload[] = []
 
@@ -48,14 +48,14 @@ export const filterDataForEmail = async (emailData: EmailData[]) => {
     // 3) aggregate the bodies by concatenating the strings ->
     // You can archive this already in the SQL so you get an array of events per user...
     for (const data of emailData) {
-      const isExist = emailPayload.find(
+      const email = emailPayload.find(
         (x: { user_id: number }) => x.user_id == data.user_id
       )
-      if (isExist) {
-        isExist.body = `${isExist.body}<p>${data.actor_name} ${
+      if (email) {
+        email.body = `${email.body}<p>${data.actor_name} ${
           eventMessages[data.event_id as EventType]
         } ${formattedDate(data.date)}</p><br/>`
-        isExist.ids.push(data.id)
+        email.ids.push(data.id)
       } else {
         emailPayload.push({
           user_id: data.user_id,
