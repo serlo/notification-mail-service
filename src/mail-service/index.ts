@@ -4,39 +4,6 @@ import { EventType, eventMessages } from './email-message'
 import { sendMail } from './mail'
 import { EmailData, EmailPayload } from './types'
 
-export const sendEmailToUser = async () => {
-  try {
-    const emailData = await getAllUnsentEmailData()
-    if (!emailData) {
-      return [null, null]
-    }
-
-    const emailPayload = await filterDataForEmail(emailData)
-    if (!emailPayload) {
-      return [null, null]
-    }
-
-    for (const payload of emailPayload) {
-      const mailStatus: string = await sendMail(
-        payload.username,
-        payload.email,
-        payload.body
-      )
-
-      if (mailStatus == '250 Ok') {
-        await updateNotificationSendStatus(payload.ids)
-      } else {
-        throw new Error(`Email receiver responded with status ${mailStatus}`)
-      }
-    }
-
-    return [emailPayload, null]
-  } catch (ex) {
-    console.log(ex)
-    return [null, ex]
-  }
-}
-
 export const filterDataForEmail = (emailData: EmailData[]) => {
   try {
     const emailPayload: EmailPayload[] = []
@@ -70,10 +37,43 @@ export const filterDataForEmail = (emailData: EmailData[]) => {
     }
     return emailPayload
   } catch (ex) {
+    /* eslint-disable-next-line no-console */
     console.log(ex)
   }
 }
 
-export default {
-  sendEmailToUser,
+export async function sendEmailToUser(): Promise<
+  [EmailPayload[] | null, unknown]
+> {
+  try {
+    const emailData = await getAllUnsentEmailData()
+    if (!emailData) {
+      return [null, null]
+    }
+
+    const emailPayloads = filterDataForEmail(emailData)
+    if (!emailPayloads) {
+      return [null, null]
+    }
+
+    for (const payload of emailPayloads) {
+      const mailStatus: string = await sendMail(
+        payload.username,
+        payload.email,
+        payload.body
+      )
+
+      if (mailStatus == '250 Ok') {
+        await updateNotificationSendStatus(payload.ids)
+      } else {
+        throw new Error(`Email receiver responded with status ${mailStatus}`)
+      }
+    }
+
+    return [emailPayloads, null]
+  } catch (ex) {
+    /* eslint-disable-next-line no-console */
+    console.log(ex)
+    return [null, ex]
+  }
 }

@@ -10,6 +10,7 @@ export abstract class LineTransform extends StringTransform {
     let start = 0
     let end = 0
 
+    /* eslint-disable-next-line no-constant-condition */
     while (true) {
       start = end
       end = text.indexOf('\n', start) + 1
@@ -23,7 +24,7 @@ export abstract class LineTransform extends StringTransform {
     }
   }
 
-  _flush(callback: Function) {
+  _flush(callback: () => void) {
     if (this.unfinishedLine) {
       this.transformLine(this.unfinishedLine)
     }

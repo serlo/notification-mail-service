@@ -1,11 +1,11 @@
-import * as express from 'express'
+import { Response } from 'express'
 import moment from 'moment'
 
 export const formattedDate = (date: Date) => {
   return moment(date).format('YYYY-MM-DD HH:mm')
 }
 
-export interface AppResponse extends express.Response {
+export interface AppResponse extends Response {
   success?: <T>(status: number, message: string, data: T) => void
   error?: (exception: Exception) => void
 }

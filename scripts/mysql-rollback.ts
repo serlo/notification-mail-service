@@ -18,9 +18,10 @@ sqlRollback.stderr
   .pipe(process.stderr)
 
 sqlRollback.on('error', (error) => {
-  console.error('ERROR: ' + error)
+  /* eslint-disable-next-line no-console */
+  console.error(`ERROR: ${String(error)}`)
 })
 
-sqlRollback.on('exit', (code, signal) => {
+sqlRollback.on('exit', (code) => {
   process.exit(code !== null ? code : 1)
 })

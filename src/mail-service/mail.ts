@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer'
 
-import config from '../config'
+import { config } from '../config'
 
 const transporter = nodemailer.createTransport(config.mail)
 
@@ -28,6 +28,7 @@ export const sendMail = async (
 
     return info.response
   } catch (ex) {
+    /* eslint-disable-next-line no-console */
     console.log(ex)
     return 'something went wrong'
   }

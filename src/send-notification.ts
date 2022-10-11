@@ -1,24 +1,7 @@
-import { Request, NextFunction } from 'express'
+import type { Request } from 'express'
 
-import mailService from './mail-service'
-import { Exception } from './utils'
-import { AppResponse } from './utils'
-
-export const sendNotificationEmail = async (
-  _req: Request,
-  res: AppResponse,
-  _next: NextFunction
-) => {
-  const [data] = await mailService.sendEmailToUser()
-
-  if (data) {
-    return res.success?.(statusCode.success, responseMessage.success, data)
-  } else {
-    return res.error?.(
-      new Exception(statusCode.serverError, responseMessage.serverError)
-    )
-  }
-}
+import { sendEmailToUser } from './mail-service'
+import { Exception, AppResponse } from './utils'
 
 enum statusCode {
   success = 200,
@@ -28,4 +11,16 @@ enum statusCode {
 enum responseMessage {
   success = 'Success',
   serverError = 'Something went wrong. Please try again later.',
+}
+
+export async function sendNotificationEmail(_: Request, res: AppResponse) {
+  const [data] = await sendEmailToUser()
+
+  if (data) {
+    res.success?.(statusCode.success, responseMessage.success, data)
+  } else {
+    res.error?.(
+      new Exception(statusCode.serverError, responseMessage.serverError)
+    )
+  }
 }

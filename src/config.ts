@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-const config = {
+export const config = {
   api: {
     port: process.env.PORT,
   },
@@ -22,5 +22,3 @@ const config = {
   },
   from_email: process.env.FROM_EMAIL,
 }
-
-export default config
