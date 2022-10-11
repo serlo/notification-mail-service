@@ -1,7 +1,8 @@
 import dotenv from 'dotenv'
+
 dotenv.config()
 
-export default {
+const config = {
   api: {
     port: process.env.PORT,
   },
@@ -21,3 +22,5 @@ export default {
   },
   from_email: process.env.FROM_EMAIL,
 }
+
+export default config

@@ -1,7 +1,7 @@
-import { getAllUnsentEmailData, updateNotificationSendStatus } from './db-query'
-import { sendMail } from './mail'
 import { formattedDate } from '../utils'
+import { getAllUnsentEmailData, updateNotificationSendStatus } from './db-query'
 import { EventType, eventMessages } from './email-message'
+import { sendMail } from './mail'
 import { EmailData, EmailPayload } from './types'
 
 export const sendEmailToUser = async () => {

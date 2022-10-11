@@ -1,4 +1,5 @@
 import { Request } from 'express'
+
 import { AppResponse, Exception } from './utils'
 
 export default (_: Request, res: AppResponse, next: () => void) => {

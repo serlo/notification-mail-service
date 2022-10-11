@@ -1,6 +1,7 @@
-import { Exception } from './utils'
-import mailService from './mail-service/mail-service'
 import { Request, NextFunction } from 'express'
+
+import mailService from './mail-service/mail-service'
+import { Exception } from './utils'
 import { AppResponse } from './utils'
 
 export const sendNotificationEmail = async (
@@ -8,7 +9,7 @@ export const sendNotificationEmail = async (
   res: AppResponse,
   _next: NextFunction
 ) => {
-  let [data] = await mailService.sendEmailToUser()
+  const [data] = await mailService.sendEmailToUser()
 
   if (data) {
     return res.success?.(statusCode.success, responseMessage.success, data)

@@ -1,6 +1,7 @@
-import { EmailData } from './types'
 import mysql from 'mysql'
+
 import config from '../config'
+import { EmailData } from './types'
 
 const database = mysql.createConnection(config.db)
 

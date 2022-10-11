@@ -1,4 +1,5 @@
 import express from 'express'
+
 import config from './config'
 import response from './response-middleware'
 import { sendNotificationEmail } from './send-notification'

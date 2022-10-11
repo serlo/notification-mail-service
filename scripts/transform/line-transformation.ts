@@ -1,14 +1,14 @@
 import { StringTransform } from './string-transformation'
 
 export abstract class LineTransform extends StringTransform {
-  private unfinishedLine: string = ''
+  private unfinishedLine = ''
 
   abstract transformLine(line: string): void
 
   transformString(newText: string): void {
     const text = this.unfinishedLine + newText
-    let start: number = 0
-    let end: number = 0
+    let start = 0
+    let end = 0
 
     while (true) {
       start = end
