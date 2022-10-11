@@ -1,10 +1,15 @@
 import express from 'express'
-import config from './config/config'
-import indexRouter from './routes'
+import config from './config'
+import response from './response-middleware'
+import { sendNotificationEmail } from './send-notification'
+
+const router = express.Router()
+
+router.get('/', response, (...args) => sendNotificationEmail(...args))
 
 const app = express()
 app.use(express.json())
-app.use('/', indexRouter)
+app.use('/', router)
 
 const port = config.api.port || 4000
 

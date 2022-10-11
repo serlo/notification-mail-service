@@ -1,5 +1,8 @@
-import { EmailData } from '../types'
-import { database } from './dbConfig'
+import { EmailData } from './types'
+import mysql from 'mysql'
+import config from '../config'
+
+const database = mysql.createConnection(config.db)
 
 export const getAllUnsentEmailData = (): Promise<EmailData[]> | undefined => {
   try {

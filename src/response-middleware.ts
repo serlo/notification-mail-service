@@ -1,6 +1,5 @@
 import { Request } from 'express'
-import { Exception } from '../helpers/exception'
-import { AppResponse } from '../types'
+import { AppResponse, Exception } from './utils'
 
 export default (_: Request, res: AppResponse, next: () => void) => {
   res.success = <T>(status_code: number, msg: string, data?: T | null) => {
