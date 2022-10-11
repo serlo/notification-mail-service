@@ -1,6 +1,6 @@
 import { Request, NextFunction } from 'express'
 
-import mailService from './mail-service/mail-service'
+import mailService from './mail-service'
 import { Exception } from './utils'
 import { AppResponse } from './utils'
 

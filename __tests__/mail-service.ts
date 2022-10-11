@@ -1,6 +1,6 @@
 import assert from 'assert'
 
-import { filterDataForEmail } from '../src/mail-service/mail-service'
+import { filterDataForEmail } from '../src/mail-service'
 
 const actualResponse = filterDataForEmail([
   {
