@@ -16,7 +16,7 @@ export const filterDataForEmail = (emailData: EmailData[]) => {
     // You can archive this already in the SQL so you get an array of events per user...
     for (const data of emailData) {
       const email = emailPayload.find(
-        (x: { user_id: number }) => x.user_id == data.user_id
+        (x: { user_id: number }) => x.user_id === data.user_id
       )
       if (email) {
         email.body = `${email.body}<p>${data.actor_name} ${

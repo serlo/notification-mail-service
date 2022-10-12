@@ -8,22 +8,24 @@ const database = mysql.createConnection(config.db)
 export const getAllUnsentEmailData = (): Promise<EmailData[]> | undefined => {
   try {
     return new Promise<EmailData[]>((resolve, reject) => {
+      // TODO: simplify query, maybe using API. Add in api query that gets all unread notifications grouped by user_id
       database.query(
-        `SELECT n.id, n.user_id, u.username, u.email, el.event_id, el.date, i.name as domain, u2.username as actor_name,
-            epn.name as epn_name, eps.value            
-            FROM notification n
-            INNER JOIN user u ON u.id = n.user_id 
-            INNER JOIN notification_event ne ON n.id = ne.notification_id
-            INNER JOIN event_log el ON el.id = ne.event_log_id
-            JOIN event e ON e.id = el.event_id
-            JOIN instance i on i.id = el.instance_id
-            LEFT JOIN event_parameter ep ON ep.log_id = el.id
-            LEFT JOIN event_parameter_name epn ON epn.id = ep.name_id
-            LEFT JOIN event_parameter_string eps ON eps.event_parameter_id = ep.id
-            LEFT JOIN event_parameter_uuid epu ON epu.event_parameter_id = ep.id
-            INNER JOIN user u2 ON el.actor_id = u2.id
-            INNER JOIN subscription s ON s.user_id = u.id AND epu.uuid_id = s.uuid_id
-            WHERE n.email=1 and n.email_sent = 0 and n.seen = 0;`,
+        `SELECT notification.id, notification.user_id, user.username, user.email, 
+            event_log.event_id, event_log.date, instance.name as domain, actor.username as actor_name,
+            event_parameter_name.name as epn_name, event_parameter_string.value            
+          FROM notification
+          INNER JOIN user ON user.id = notification.user_id 
+          INNER JOIN notification_event ON notification.id = notification_event.notification_id
+          INNER JOIN event_log ON event_log.id = notification_event.event_log_id
+          JOIN event ON event.id = event_log.event_id
+          JOIN instance on instance.id = event_log.instance_id
+          LEFT JOIN event_parameter ON event_parameter.log_id =  event_log.id
+          LEFT JOIN event_parameter_name ON event_parameter_name.id = event_parameter.name_id
+          LEFT JOIN event_parameter_string ON event_parameter_string.event_parameter_id = event_parameter.id
+          LEFT JOIN event_parameter_uuid ON event_parameter_uuid.event_parameter_id = event_parameter.id
+          INNER JOIN user actor ON event_log.actor_id = actor.id
+          INNER JOIN subscription ON subscription.user_id = user.id AND event_parameter_uuid.uuid_id = subscription.uuid_id
+          WHERE notification.email=1 and notification.email_sent = 0 and notification.seen = 0;`,
         function (
           err: mysql.MysqlError | null,
           result: EmailData[] | PromiseLike<EmailData[]>
