@@ -4,21 +4,25 @@ import { EventType, eventMessages } from './email-message'
 import { sendMail } from './mail'
 import { EmailData, EmailPayload } from './types'
 
-export const filterDataForEmail = (emailData: EmailData[]) => {
+export const filterDataForEmail = (data: EmailData[]) => {
   const emailPayload: EmailPayload[] = []
 
-  emailData.forEach((data) => {
+  data.forEach((data) => {
+    const dates = data.dates.split(",")
+    const event_ids = data.event_ids.split(",")
+    const notification_ids = data.notification_ids.split(",")
+    const actor_names = data.actor_names.split(",")
     let body = ''
-    data.actor_names.forEach((actor, i) => {
+    actor_names.forEach((actor: string, i: number) => {
       body = `${body}<p>${actor} ${
-        eventMessages[data.event_ids[i] as EventType]
-      } ${formattedDate(data.dates[i])}</p><br/>`
+        eventMessages[parseInt(event_ids[i]) as EventType]
+      } ${formattedDate(new Date(dates[i]))}</p><br/>`
     })
     emailPayload.push({
       user_id: data.user_id,
       username: data.username,
       email: data.email,
-      ids: data.notification_ids,
+      ids: notification_ids,
       body,
     })
   })
