@@ -2,8 +2,6 @@ import nodemailer from 'nodemailer'
 
 import { config } from '../config'
 
-const transporter = nodemailer.createTransport(config.mail)
-
 interface MailResponse {
   response: string
 }
@@ -13,6 +11,7 @@ export const sendMail = async (
   userEmail: string,
   body: string
 ) => {
+  const transporter = nodemailer.createTransport(config.mail)
   try {
     const info: MailResponse = await transporter.sendMail({
       from: config.from_email,

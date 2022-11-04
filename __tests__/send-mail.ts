@@ -1,10 +1,8 @@
 import { expect } from '@jest/globals'
 
-module.exports = require('../__mocks__/nodemailer')
-const sendMail = require('../src/mail-service/mail')
-//jest.mock('nodemailer')
+import { sendMail } from '../src/mail-service/mail'
 
-it('should send mail', () => {
-  const response = sendMail('testUser', 'testuser@test.com', 'text')
-  expect(response).toBe('sent')
+it('should send mail', async () => {
+  const response = await sendMail('testUser', 'testuser@test.com', 'text')
+  expect(response).toBe('250 Ok')
 })

@@ -23,6 +23,22 @@
  */
 import { setupServer } from 'msw/node'
 
+jest.mock('nodemailer', () => {
+  const transporter = {
+    sendMail: () => {
+      return {
+        response: '250 Ok',
+      }
+    },
+  }
+
+  return {
+    createTransport: () => {
+      return transporter
+    },
+  }
+})
+
 declare global {
   /* eslint-disable no-var */
   var server: ReturnType<typeof import('msw/node').setupServer>
