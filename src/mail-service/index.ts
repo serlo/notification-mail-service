@@ -35,7 +35,7 @@ export async function sendEmailToUser(): Promise<
 > {
   try {
     const emailData = await getAllUnsentEmailData()
-    console.log(emailData)
+
     if (!emailData) {
       return [null, null]
     }
