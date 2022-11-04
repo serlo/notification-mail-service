@@ -3,13 +3,12 @@ import mysql from 'mysql2'
 import { config } from '../config'
 import { EmailData } from './types'
 
-const connection = mysql.createConnection(config.db);
+const connection = mysql.createConnection(config.db)
 
-export const getAllUnsentEmailData = async () => {
-
+export const getAllUnsentEmailData = () => {
   // TODO: simplify query, maybe using API. Add in api query that gets all unread notifications grouped by user_id
-  return await connection.execute(
-      `SELECT GROUP_CONCAT(notification.id) as notification_ids, notification.user_id, user.username, user.email, 
+  return connection.execute(
+    `SELECT GROUP_CONCAT(notification.id) as notification_ids, notification.user_id, user.username, user.email, 
         GROUP_CONCAT(event_log.event_id) as event_ids, GROUP_CONCAT(event_log.date) as dates, GROUP_CONCAT(actor.username) as actor_names          
       FROM notification
       INNER JOIN user ON user.id = notification.user_id 

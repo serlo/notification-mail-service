@@ -17,7 +17,6 @@ beforeEach(async () => {
 
 test('should not send any e-mails', async () => {
   const response = await sendEmailToUser()
-  console.log({response})
   expect(response[0]).toHaveLength(0)
 })
 

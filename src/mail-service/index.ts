@@ -7,11 +7,11 @@ import { EmailData, EmailPayload } from './types'
 export const filterDataForEmail = (emailData: EmailData[]) => {
   const emailPayload: EmailPayload[] = []
 
-  emailData.forEach(data => {
+  emailData.forEach((data) => {
     let body = ''
     data.actor_names.forEach((actor, i) => {
       body = `${body}<p>${actor} ${
-          eventMessages[data.event_ids[i] as EventType]
+        eventMessages[data.event_ids[i] as EventType]
       } ${formattedDate(data.dates[i])}</p><br/>`
     })
     emailPayload.push({
@@ -19,7 +19,7 @@ export const filterDataForEmail = (emailData: EmailData[]) => {
       username: data.username,
       email: data.email,
       ids: data.notification_ids,
-      body
+      body,
     })
   })
 
@@ -30,7 +30,7 @@ export async function sendEmailToUser(): Promise<
   [EmailPayload[] | null, unknown]
 > {
   try {
-    const emailData = await getAllUnsentEmailData()
+    const emailData = getAllUnsentEmailData()
     if (!emailData) {
       return [null, null]
     }

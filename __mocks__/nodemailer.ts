@@ -1,7 +1,9 @@
-
-
 const transporter = {
-    sendMail: () => 'sent'
+  sendMail: () => 'sent',
 }
 
-function nodemailer() { async function createTransport(mail: any) { return transporter }}
+function nodemailer() {
+  async function createTransport(mail: any) {
+    return transporter
+  }
+}
