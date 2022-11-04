@@ -1,13 +1,14 @@
-import mysql from 'mysql2'
+// eslint-disable-next-line import/no-internal-modules
+import mysql from 'mysql2/promise'
 
 import { config } from '../config'
 import { EmailData } from './types'
 
-const connection = mysql.createConnection(config.db)
+export const getAllUnsentEmailData = async () => {
+  const connection = await mysql.createConnection(config.db)
 
-export const getAllUnsentEmailData = () => {
   // TODO: simplify query, maybe using API. Add in api query that gets all unread notifications grouped by user_id
-  return connection.execute(
+  const [rows] = await connection.execute(
     `SELECT GROUP_CONCAT(notification.id) as notification_ids, notification.user_id, user.username, user.email, 
         GROUP_CONCAT(event_log.event_id) as event_ids, GROUP_CONCAT(event_log.date) as dates, GROUP_CONCAT(actor.username) as actor_names          
       FROM notification
@@ -21,23 +22,23 @@ export const getAllUnsentEmailData = () => {
       INNER JOIN subscription ON subscription.user_id = user.id AND event_parameter_uuid.uuid_id = subscription.uuid_id
       WHERE notification.email = 1 AND notification.email_sent = 0 AND notification.seen = 0
       GROUP BY notification.user_id;`
-  ) as unknown as EmailData[]
+  )
+  return rows as EmailData[]
 }
 
-export const updateNotificationSendStatus = (notificationsIds: string[]) => {
+export const updateNotificationSendStatus = async (
+  notificationsIds: string[]
+) => {
+  const connection = await mysql.createConnection(config.db)
+
   const ids = notificationsIds.join().replace("'", ' ')
 
   try {
-    return new Promise((resolve, reject) => {
-      connection.query(
-        `UPDATE notification 
-            SET email_sent = true
-            WHERE id in (${String(ids)});`,
-        function (err, result) {
-          err ? reject(err) : resolve(result)
-        }
-      )
-    })
+    return await connection.query(
+      `UPDATE notification
+          SET email_sent = true
+          WHERE id in (${String(ids)});`
+    )
   } catch (e) {
     /* eslint-disable-next-line no-console */
     console.log('update query error', e)

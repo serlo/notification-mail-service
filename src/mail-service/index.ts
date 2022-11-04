@@ -4,10 +4,10 @@ import { EventType, eventMessages } from './email-message'
 import { sendMail } from './mail'
 import { EmailData, EmailPayload } from './types'
 
-export const filterDataForEmail = (data: EmailData[]) => {
+export const filterDataForEmail = (emailData: EmailData[]) => {
   const emailPayload: EmailPayload[] = []
 
-  data.forEach((data) => {
+  emailData.forEach((data) => {
     const dates = data.dates.split(",")
     const event_ids = data.event_ids.split(",")
     const notification_ids = data.notification_ids.split(",")
@@ -34,7 +34,8 @@ export async function sendEmailToUser(): Promise<
   [EmailPayload[] | null, unknown]
 > {
   try {
-    const emailData = getAllUnsentEmailData()
+    const emailData = await getAllUnsentEmailData()
+    console.log(emailData)
     if (!emailData) {
       return [null, null]
     }
