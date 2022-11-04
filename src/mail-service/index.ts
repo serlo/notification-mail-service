@@ -5,41 +5,25 @@ import { sendMail } from './mail'
 import { EmailData, EmailPayload } from './types'
 
 export const filterDataForEmail = (emailData: EmailData[]) => {
-  try {
-    const emailPayload: EmailPayload[] = []
+  const emailPayload: EmailPayload[] = []
 
-    // TODO: Refactor, Kulla's suggestion:
-    // You have a duplication of this line in your code in both the if and the else part -> I would do the following:
-    // 1) Create the body for each data,
-    // 2) group by user_id and
-    // 3) aggregate the bodies by concatenating the strings ->
-    // You can archive this already in the SQL so you get an array of events per user...
-    for (const data of emailData) {
-      const email = emailPayload.find(
-        (x: { user_id: number }) => x.user_id === data.user_id
-      )
-      if (email) {
-        email.body = `${email.body}<p>${data.actor_name} ${
-          eventMessages[data.event_id as EventType]
-        } ${formattedDate(data.date)}</p><br/>`
-        email.ids.push(data.id)
-      } else {
-        emailPayload.push({
-          user_id: data.user_id,
-          username: data.username,
-          email: data.email,
-          ids: [data.id],
-          body: `<p>${data.actor_name} ${
-            eventMessages[data.event_id as EventType]
-          } ${formattedDate(data.date)}</p><br/>`,
-        })
-      }
-    }
-    return emailPayload
-  } catch (ex) {
-    /* eslint-disable-next-line no-console */
-    console.log(ex)
-  }
+  emailData.forEach(data => {
+    let body = ''
+    data.actor_names.forEach((actor, i) => {
+      body = `${body}<p>${actor} ${
+          eventMessages[data.event_ids[i] as EventType]
+      } ${formattedDate(data.dates[i])}</p><br/>`
+    })
+    emailPayload.push({
+      user_id: data.user_id,
+      username: data.username,
+      email: data.email,
+      ids: data.notification_ids,
+      body
+    })
+  })
+
+  return emailPayload
 }
 
 export async function sendEmailToUser(): Promise<
@@ -52,9 +36,6 @@ export async function sendEmailToUser(): Promise<
     }
 
     const emailPayloads = filterDataForEmail(emailData)
-    if (!emailPayloads) {
-      return [null, null]
-    }
 
     for (const payload of emailPayloads) {
       const mailStatus: string = await sendMail(

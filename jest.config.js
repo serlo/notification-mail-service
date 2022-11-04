@@ -25,7 +25,4 @@ module.exports = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   testEnvironment: 'node',
   testPathIgnorePatterns: ['/node_modules/'],
-  transform: {
-    '^.+\\.graphql$': 'jest-transform-graphql',
-  },
 }

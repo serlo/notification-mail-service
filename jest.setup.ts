@@ -33,7 +33,9 @@ global.server = setupServer()
 
 beforeAll(() => global.server.listen({ onUnhandledRequest: 'error' }))
 
-afterEach(() => global.server.resetHandlers())
+afterEach(() => {
+  global.server.resetHandlers()
+})
 
 afterAll(() => global.server.close())
 

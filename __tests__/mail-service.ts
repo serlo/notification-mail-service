@@ -25,5 +25,6 @@ const expectedResponse = [
     body: '<p>actor created taxonomy term on  created 2022-10-11 11:30</p><br/>',
   },
 ]
-
-assert.deepEqual(actualResponse, expectedResponse)
+test('filterDataForEmail gives expected response', () => {
+  assert.deepEqual(actualResponse, expectedResponse)
+})
