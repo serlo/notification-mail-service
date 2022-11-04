@@ -21,7 +21,8 @@
     "start": "docker-compose up --detach",
     "stop": "docker-compose down",
     "serve": "nodemon --exec ts-node src/index.ts",
-    "scheduler": "ts-node src/cron/hourly-mail.ts"
+    "scheduler": "ts-node src/cron/hourly-mail.ts",
+    "test": "jest --config jest.config.js --runInBand --forceExit"
   },
   "main": "index.js",
   "dependencies": {
