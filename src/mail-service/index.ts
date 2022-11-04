@@ -6,7 +6,6 @@ import { EmailData, EmailPayload } from './types'
 
 export const filterDataForEmail = (emailData: EmailData[]) => {
   const emailPayload: EmailPayload[] = []
-
   emailData.forEach((data) => {
     let body = ''
     data.actor_names.forEach((actor, i) => {
@@ -30,7 +29,8 @@ export async function sendEmailToUser(): Promise<
   [EmailPayload[] | null, unknown]
 > {
   try {
-    const emailData = getAllUnsentEmailData()
+    const emailData = await getAllUnsentEmailData()
+    console.log(emailData)
     if (!emailData) {
       return [null, null]
     }
