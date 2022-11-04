@@ -10,7 +10,7 @@ const actualResponse = filterDataForEmail([
     event_ids: [2],
     dates: [new Date('2022-10-11 11:30')],
     actor_names: ['actor'],
-    notification_ids: ['123']
+    notification_ids: ['123'],
   },
 ])
 
