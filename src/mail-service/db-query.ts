@@ -1,12 +1,9 @@
 // eslint-disable-next-line import/no-internal-modules
-import mysql from 'mysql2/promise'
+import type { Connection } from 'mysql2/promise'
 
-import { config } from '../config'
 import { EmailData } from './types'
 
-export const getAllUnsentEmailData = async () => {
-  const connection = await mysql.createConnection(config.db)
-
+export const getAllUnsentEmailData = async (connection: Connection) => {
   // TODO: simplify query, maybe using API. Add in api query that gets all unread notifications grouped by user_id
   const [rows] = await connection.execute(
     `SELECT GROUP_CONCAT(notification.id) as notification_ids, notification.user_id, user.username, user.email, 
@@ -27,10 +24,9 @@ export const getAllUnsentEmailData = async () => {
 }
 
 export const updateNotificationSendStatus = async (
-  notificationsIds: string[]
+  notificationsIds: string[],
+  connection: Connection
 ) => {
-  const connection = await mysql.createConnection(config.db)
-
   const ids = notificationsIds.join().replace("'", ' ')
 
   try {

@@ -1,3 +1,7 @@
+// eslint-disable-next-line import/no-internal-modules
+import mysql from 'mysql2/promise'
+
+import { config } from '../config'
 import { formattedDate } from '../utils'
 import { getAllUnsentEmailData, updateNotificationSendStatus } from './db-query'
 import { EventType, eventMessages } from './email-message'
@@ -33,8 +37,9 @@ export const filterDataForEmail = (emailData: EmailData[]) => {
 export async function sendEmailToUser(): Promise<
   [EmailPayload[] | null, unknown]
 > {
+  const connection = await mysql.createConnection(config.db)
   try {
-    const emailData = await getAllUnsentEmailData()
+    const emailData = await getAllUnsentEmailData(connection)
 
     if (!emailData) {
       return [null, null]
@@ -50,7 +55,7 @@ export async function sendEmailToUser(): Promise<
       )
 
       if (mailStatus == '250 Ok') {
-        await updateNotificationSendStatus(payload.ids)
+        await updateNotificationSendStatus(payload.ids, connection)
       } else {
         throw new Error(`Email receiver responded with status ${mailStatus}`)
       }
@@ -61,5 +66,7 @@ export async function sendEmailToUser(): Promise<
     /* eslint-disable-next-line no-console */
     console.log(ex)
     return [null, ex]
+  } finally {
+    await connection.end()
   }
 }
