@@ -8,10 +8,10 @@ export const filterDataForEmail = (emailData: EmailData[]) => {
   const emailPayload: EmailPayload[] = []
 
   emailData.forEach((data) => {
-    const dates = data.dates.split(",")
-    const event_ids = data.event_ids.split(",")
-    const notification_ids = data.notification_ids.split(",")
-    const actor_names = data.actor_names.split(",")
+    const dates = data.dates.split(',')
+    const event_ids = data.event_ids.split(',')
+    const notification_ids = data.notification_ids.split(',')
+    const actor_names = data.actor_names.split(',')
     let body = ''
     actor_names.forEach((actor: string, i: number) => {
       body = `${body}<p>${actor} ${
@@ -35,7 +35,7 @@ export async function sendEmailToUser(): Promise<
 > {
   try {
     const emailData = await getAllUnsentEmailData()
-    console.log(emailData)
+
     if (!emailData) {
       return [null, null]
     }
