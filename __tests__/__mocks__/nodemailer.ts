@@ -1,13 +1,11 @@
-import {createTransport} from "nodemailer";
+import { createTransport } from 'nodemailer'
 
-const transporter:  = {
+const transporter = {
   sendMail: () => 'sent',
 }
 
-const nodemailer
-{
+function nodemailer() {
   createTransport()
-  
+
   return transporter
-}
 }
