@@ -39,7 +39,7 @@ test('should send 2 e-mails for 3 notifications', async () => {
   const pool = await mysql.createPool(config.db)
 
   await pool.query(
-      `
+    `
     UPDATE notification
     SET seen = 0, email_sent = 0, email = 1
     WHERE id IN (9, 10, 12);

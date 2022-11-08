@@ -1,8 +1,13 @@
-import { formattedDate } from '../utils'
+import moment from 'moment'
+
 import { getAllUnsentEmailData, updateNotificationSendStatus } from './db-query'
 import { EventType, eventMessages } from './email-message'
 import { sendMail } from './mail'
 import { EmailData, EmailPayload } from './types'
+
+export const formattedDate = (date: Date) => {
+  return moment(date).format('YYYY-MM-DD HH:mm')
+}
 
 export const filterDataForEmail = (emailData: EmailData[]) => {
   const emailPayload: EmailPayload[] = []
