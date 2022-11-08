@@ -1,13 +1,9 @@
 // eslint-disable-next-line import/no-internal-modules
-import mysql from 'mysql2/promise'
+import { Connection } from 'mysql2/promise'
 
-import { config } from '../config'
-import { EmailData } from './types'
+import { EmailData } from './utils'
 
-export const getAllUnsentEmailData = async () => {
-  const connection = await mysql.createConnection(config.db)
-
-  // TODO: simplify query, maybe using API. Add in api query that gets all unread notifications grouped by user_id
+export const getAllUnsentEmailData = async (connection: Connection) => {
   const [rows] = await connection.execute(
     `SELECT GROUP_CONCAT(notification.id) as notification_ids, notification.user_id, user.username, user.email, 
         GROUP_CONCAT(event_log.event_id) as event_ids, GROUP_CONCAT(event_log.date) as dates, GROUP_CONCAT(actor.username) as actor_names          
@@ -27,21 +23,12 @@ export const getAllUnsentEmailData = async () => {
 }
 
 export const updateNotificationSendStatus = async (
-  notificationsIds: string[]
+  notificationsIds: string[],
+  connection: Connection
 ) => {
-  const connection = await mysql.createConnection(config.db)
-
-  const ids = notificationsIds.join().replace("'", ' ')
-
-  try {
-    return await connection.query(
-      `UPDATE notification
-          SET email_sent = true
-          WHERE id in (${String(ids)});`
-    )
-  } catch (e) {
-    /* eslint-disable-next-line no-console */
-    console.log('update query error', e)
-    return e
-  }
+  return await connection.query(
+    `UPDATE notification
+        SET email_sent = true
+        WHERE id in (${String(notificationsIds.join().replace("'", ' '))});`
+  )
 }
