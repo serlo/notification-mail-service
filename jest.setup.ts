@@ -23,6 +23,9 @@
  */
 import { setupServer } from 'msw/node'
 
+// TODO: just for demonstration purpose, remove
+jest.setTimeout(10_000)
+
 jest.mock('nodemailer', () => {
   const transporter = {
     sendMail: () => {

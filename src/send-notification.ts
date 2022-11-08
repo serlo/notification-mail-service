@@ -1,5 +1,8 @@
 import type { Request } from 'express'
+// eslint-disable-next-line import/no-internal-modules
+import mysql from 'mysql2/promise'
 
+import { config } from './config'
 import { sendEmailToUser } from './mail-service'
 import { Exception, AppResponse } from './utils'
 
@@ -14,7 +17,9 @@ enum responseMessage {
 }
 
 export async function sendNotificationEmail(_: Request, res: AppResponse) {
-  const [data] = await sendEmailToUser()
+  const connection = await mysql.createConnection(config.db)
+
+  const [data] = await sendEmailToUser(connection)
 
   if (data) {
     res.success?.(statusCode.success, responseMessage.success, data)

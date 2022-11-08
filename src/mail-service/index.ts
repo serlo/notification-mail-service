@@ -1,7 +1,6 @@
 // eslint-disable-next-line import/no-internal-modules
-import mysql from 'mysql2/promise'
+import type { Connection } from 'mysql2/promise'
 
-import { config } from '../config'
 import { formattedDate } from '../utils'
 import { getAllUnsentEmailData, updateNotificationSendStatus } from './db-query'
 import { EventType, eventMessages } from './email-message'
@@ -34,10 +33,9 @@ export const filterDataForEmail = (emailData: EmailData[]) => {
   return emailPayload
 }
 
-export async function sendEmailToUser(): Promise<
-  [EmailPayload[] | null, unknown]
-> {
-  const connection = await mysql.createConnection(config.db)
+export async function sendEmailToUser(
+  connection: Connection
+): Promise<[EmailPayload[] | null, unknown]> {
   try {
     const emailData = await getAllUnsentEmailData(connection)
 
