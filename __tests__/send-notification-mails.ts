@@ -37,7 +37,7 @@ test('should send 3 e-mails', async () => {
   await connection.execute(
     `
     UPDATE notification
-    SET seen = 0 AND email_sent = 0 AND email = 1
+    SET seen = 0, email_sent = 0, email = 1
     WHERE id IN (9, 11, 12);
     `
   )
