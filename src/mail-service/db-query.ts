@@ -23,6 +23,7 @@ export const getAllUnsentEmailData = async () => {
       WHERE notification.email = 1 AND notification.email_sent = 0 AND notification.seen = 0
       GROUP BY notification.user_id;`
   )
+  await connection.end()
   return rows as EmailData[]
 }
 

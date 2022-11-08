@@ -1,16 +1,18 @@
+// eslint-disable-next-line import/no-internal-modules
 import mysql from 'mysql2/promise'
 
 import { config } from '../src/config'
 import { sendEmailToUser } from '../src/mail-service'
 
 beforeEach(async () => {
-  const pool = await mysql.createPool(config.db)
-  await pool.query(
+  const connection = await mysql.createConnection(config.db)
+  await connection.query(
     `
     UPDATE notification
     SET seen = 1;
     `
   )
+  await connection.end()
 })
 
 // TODO: should we prefer fake database, that doesn't depend on db connection?
@@ -20,32 +22,32 @@ test('should not send any e-mails', async () => {
   expect(response[0]).toHaveLength(0)
 })
 
-test('should send 3 e-mails', async () => {
-  const pool = await mysql.createPool(config.db)
+test('should send 2 e-mails', async () => {
+  const connection = await mysql.createConnection(config.db)
 
-  await pool.query(
+  await connection.query(
     `
     UPDATE notification
     SET seen = 0, email_sent = 0, email = 1
-    WHERE id IN (9, 11, 12);
+    WHERE id IN (9, 12);
     `
   )
-  await pool.end()
+  await connection.end()
   const response = await sendEmailToUser()
-  expect(response[0]).toHaveLength(3)
+  expect(response[0]).toHaveLength(2)
 })
 
 test('should send 2 e-mails for 3 notifications', async () => {
-  const pool = await mysql.createPool(config.db)
+  const connection = await mysql.createConnection(config.db)
 
-  await pool.query(
-      `
+  await connection.query(
+    `
     UPDATE notification
     SET seen = 0, email_sent = 0, email = 1
     WHERE id IN (9, 10, 12);
     `
   )
-  await pool.end()
+  await connection.end()
   const response = await sendEmailToUser()
   expect(response[0]).toHaveLength(2)
 })
