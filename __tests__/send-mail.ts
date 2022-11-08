@@ -1,8 +1,18 @@
 import { expect } from '@jest/globals'
+import { createTransport } from 'nodemailer'
 
-import { sendMail } from '../src/mail-service/mail'
+import { sendMail } from '../src/mail-service'
 
 it('should send mail', async () => {
-  const response = await sendMail('testUser', 'testuser@test.com', 'text')
+  const mockedTransporter = createTransport()
+  const response = await sendMail({
+    payload: {
+      username: 'testUser',
+      email: 'testuser@test.com',
+      body: 'text',
+    },
+    senderEmailAddress: 'no-reply@serlo.org',
+    transporter: mockedTransporter,
+  })
   expect(response).toBe('250 Ok')
 })
