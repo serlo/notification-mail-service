@@ -17,6 +17,7 @@ enum responseMessage {
 }
 
 export async function sendNotificationEmail(_: Request, res: AppResponse) {
+  // TODO: handle connection error, retry
   const connection = await mysql.createConnection(config.db)
 
   const [data] = await sendEmailToUser(connection)

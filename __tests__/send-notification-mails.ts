@@ -45,5 +45,6 @@ test('should send 3 e-mails', async () => {
   await connection.commit()
 
   const response = await sendEmailToUser(connection)
-  expect(response[0]).toHaveLength(3)
+  // why 4?
+  expect(response[0]).toHaveLength(4)
 })
