@@ -16,4 +16,14 @@ async function runExperiment() {
   array.map(async (item) => {
     console.log(`${await promiseBasedFunction()} ${item} times`)
   })
+
+  // forEach doesn't work unless you use call a function inside of the callback
+  // array.forEach(async (item) => {
+  //   console.log(`${await promiseBasedFunction()} ${item} times`)
+  // })
+  array.forEach((item) => {
+    void (async () => {
+      console.log(`${await promiseBasedFunction()} ${item} times`)
+    })()
+  })
 }
