@@ -3,7 +3,7 @@ import { Connection } from 'mysql2/promise'
 
 import { EmailData } from './utils'
 
-export const getAllUnsentEmailData = async (connection: Connection) => {
+export async function getAllUnsentEmailData(connection: Connection) {
   const [rows] = await connection.execute(
     `SELECT GROUP_CONCAT(notification.id) as notification_ids, notification.user_id, user.username, user.email, 
         GROUP_CONCAT(event_log.event_id) as event_ids, GROUP_CONCAT(event_log.date) as dates, GROUP_CONCAT(actor.username) as actor_names          
@@ -22,10 +22,10 @@ export const getAllUnsentEmailData = async (connection: Connection) => {
   return rows as EmailData[]
 }
 
-export const updateNotificationSendStatus = async (
+export async function updateNotificationSendStatus(
   notificationsIds: string[],
   connection: Connection
-) => {
+) {
   return await connection.query(
     `UPDATE notification
         SET email_sent = true
