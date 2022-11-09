@@ -23,21 +23,7 @@
  */
 import { setupServer } from 'msw/node'
 
-jest.mock('nodemailer', () => {
-  const transporter = {
-    sendMail: () => {
-      return {
-        response: '250 Ok',
-      }
-    },
-  }
-
-  return {
-    createTransport: () => {
-      return transporter
-    },
-  }
-})
+jest.setTimeout(15_000)
 
 declare global {
   /* eslint-disable no-var */
