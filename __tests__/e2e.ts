@@ -19,8 +19,10 @@ test('should send all emails and set notifications as sent', async () => {
 
   expect(firstResponse).toHaveLength(3)
   // TODO: too much internal testing, abstract
-  expect(firstResponse[0]).toBe(
-    '{"body": "<p>admin checkout the entity revision on 2019-12-01 18:58</p><br/><p>admin added the entity revision on 2019-12-01 18:58</p><br/>", "email": "124902b1@localhost", "ids": ["11605", "11602"], "user_id": 677, "username": "124902c9"}'
+  expect(firstResponse[0]).toStrictEqual(
+    JSON.parse(
+      '{"body": "<p>admin checkout the entity revision on 2019-12-01 18:58</p><br/><p>admin added the entity revision on 2019-12-01 18:58</p><br/>", "email": "124902b1@localhost", "ids": ["11605", "11602"], "user_id": 677, "username": "124902c9"}'
+    )
   )
 
   const secondResponse = await notifyUsers(

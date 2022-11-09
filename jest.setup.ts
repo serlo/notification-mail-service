@@ -23,7 +23,7 @@
  */
 import { setupServer } from 'msw/node'
 
-jest.setTimeout(15_000)
+jest.setTimeout(60_000)
 
 declare global {
   /* eslint-disable no-var */
