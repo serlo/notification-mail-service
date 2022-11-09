@@ -12,7 +12,7 @@ export async function notifyUsers(
 ): Promise<EmailPayload[]> {
   const emailPayloads = await getAllUnsentEmailData(connection)
 
-  emailPayloads.map(async (payload) => {
+  for (const payload of emailPayloads) {
     const responseStatus = await sendMail({
       payload,
       transporter,
@@ -22,7 +22,7 @@ export async function notifyUsers(
     if (responseStatus == '250 Ok') {
       await updateNotificationSendStatus(payload.ids, connection)
     }
-  })
+  }
 
   return emailPayloads
 }
