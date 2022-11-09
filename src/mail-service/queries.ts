@@ -1,7 +1,13 @@
 // eslint-disable-next-line import/no-internal-modules
 import { Connection } from 'mysql2/promise'
 
-import { EmailData } from './utils'
+import {
+  EmailData,
+  EmailPayload,
+  eventMessages,
+  EventType,
+  formattedDate,
+} from './utils'
 
 export async function getAllUnsentEmailData(connection: Connection) {
   const [rows] = await connection.execute(
@@ -19,14 +25,40 @@ export async function getAllUnsentEmailData(connection: Connection) {
       WHERE notification.email = 1 AND notification.email_sent = 0 AND notification.seen = 0
       GROUP BY notification.user_id;`
   )
-  return rows as EmailData[]
+  return prepareEmailPayload(rows as EmailData[])
+}
+
+export function prepareEmailPayload(emailData: EmailData[]) {
+  if (!emailData.length) return []
+
+  const emailPayload: EmailPayload[] = emailData.map((data) => {
+    const dates = data.dates.split(',')
+    const event_ids = data.event_ids.split(',')
+    const notification_ids = data.notification_ids.split(',')
+    const actor_names = data.actor_names.split(',')
+    let body = ''
+    actor_names.forEach((actor: string, i: number) => {
+      body = `${body}<p>${actor} ${
+        eventMessages[parseInt(event_ids[i]) as EventType]
+      } ${formattedDate(new Date(dates[i]))}</p><br/>`
+    })
+    return {
+      user_id: data.user_id,
+      username: data.username,
+      email: data.email,
+      ids: notification_ids,
+      body,
+    }
+  })
+
+  return emailPayload
 }
 
 export async function updateNotificationSendStatus(
   notificationsIds: string[],
   connection: Connection
 ) {
-  return await connection.query(
+  await connection.query(
     `UPDATE notification
         SET email_sent = true
         WHERE id in (${String(notificationsIds.join().replace("'", ' '))});`

@@ -1,8 +1,8 @@
 import assert from 'assert'
 
-import { filterDataForEmail } from '../src/mail-service'
+import { prepareEmailPayload } from '../src/mail-service/queries'
 
-const actualResponse = filterDataForEmail([
+const actualResponse = prepareEmailPayload([
   {
     user_id: 1,
     username: 'user',

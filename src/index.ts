@@ -3,7 +3,7 @@ import mysql from 'mysql2/promise'
 import { createTransport } from 'nodemailer'
 
 import { config } from './config'
-import { sendEmailToUser } from './mail-service'
+import { notifyUsers } from './mail-service'
 
 void run()
 
@@ -22,11 +22,7 @@ async function run() {
 
     const transporter = createTransport(config.mail)
 
-    const data = await sendEmailToUser(
-      connection,
-      transporter,
-      config.from_email
-    )
+    const data = await notifyUsers(connection, transporter, config.from_email)
 
     // eslint-disable-next-line no-console
     console.log({

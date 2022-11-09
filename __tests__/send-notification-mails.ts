@@ -3,7 +3,7 @@ import mysql, { Connection } from 'mysql2/promise'
 import { Transporter } from 'nodemailer'
 
 import { config } from '../src/config'
-import { sendEmailToUser } from '../src/mail-service'
+import { notifyUsers } from '../src/mail-service'
 
 // FIXME: skipping all test until we refactor the file
 
@@ -22,7 +22,7 @@ import { sendEmailToUser } from '../src/mail-service'
 jest.mock('mysql2/promise')
 
 test.skip('should not send any e-mails', async () => {
-  const response = await sendEmailToUser(
+  const response = await notifyUsers(
     {} as Connection,
     {} as Transporter,
     'skipped'
@@ -41,7 +41,7 @@ test.skip('should send 3 e-mails', async () => {
     `
   )
   await pool.end()
-  const response = await sendEmailToUser(
+  const response = await notifyUsers(
     {} as Connection,
     {} as Transporter,
     'skipped'
@@ -61,7 +61,7 @@ test.skip('should send 2 e-mails for 3 notifications', async () => {
     `
   )
   await pool.end()
-  const response = await sendEmailToUser(
+  const response = await notifyUsers(
     {} as Connection,
     {} as Transporter,
     'skipped'

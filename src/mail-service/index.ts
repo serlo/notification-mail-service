@@ -2,39 +2,29 @@
 import { Connection } from 'mysql2/promise'
 import { Transporter } from 'nodemailer'
 
-import { getAllUnsentEmailData, updateNotificationSendStatus } from './db-query'
-import {
-  EmailData,
-  EmailPayload,
-  eventMessages,
-  EventType,
-  formattedDate,
-} from './utils'
+import { getAllUnsentEmailData, updateNotificationSendStatus } from './queries'
+import { EmailPayload } from './utils'
 
-export const filterDataForEmail = (emailData: EmailData[]) => {
-  const emailPayload: EmailPayload[] = []
+export async function notifyUsers(
+  connection: Connection,
+  transporter: Transporter,
+  senderEmailAddress: string
+): Promise<EmailPayload[]> {
+  const emailPayloads = await getAllUnsentEmailData(connection)
 
-  emailData.forEach((data) => {
-    const dates = data.dates.split(',')
-    const event_ids = data.event_ids.split(',')
-    const notification_ids = data.notification_ids.split(',')
-    const actor_names = data.actor_names.split(',')
-    let body = ''
-    actor_names.forEach((actor: string, i: number) => {
-      body = `${body}<p>${actor} ${
-        eventMessages[parseInt(event_ids[i]) as EventType]
-      } ${formattedDate(new Date(dates[i]))}</p><br/>`
+  emailPayloads.map(async (payload) => {
+    const responseStatus = await sendMail({
+      payload,
+      transporter,
+      senderEmailAddress,
     })
-    emailPayload.push({
-      user_id: data.user_id,
-      username: data.username,
-      email: data.email,
-      ids: notification_ids,
-      body,
-    })
+
+    if (responseStatus == '250 Ok') {
+      await updateNotificationSendStatus(payload.ids, connection)
+    }
   })
 
-  return emailPayload
+  return emailPayloads
 }
 
 export async function sendMail({
@@ -60,30 +50,4 @@ export async function sendMail({
   })) as { response: string }
 
   return response
-}
-
-export async function sendEmailToUser(
-  connection: Connection,
-  transporter: Transporter,
-  senderEmailAddress: string
-): Promise<EmailPayload[]> {
-  const emailData = await getAllUnsentEmailData(connection)
-
-  if (!emailData) return []
-
-  const emailPayloads = filterDataForEmail(emailData)
-
-  emailPayloads.map(async (payload) => {
-    const mailStatus = await sendMail({
-      payload,
-      transporter,
-      senderEmailAddress,
-    })
-
-    if (mailStatus == '250 Ok') {
-      await updateNotificationSendStatus(payload.ids, connection)
-    }
-  })
-
-  return emailPayloads
 }
