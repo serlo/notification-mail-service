@@ -19,7 +19,7 @@ After cloning this repo and cd to it:
 5. Use `yarn mysql:rollback` for rolling back the database changes.
 6. When you are done, `yarn stop`.
 
-- You don't need this step if you bring your own database, smtp server and/or email client. In that case adapt the the `.env`.
+\* You don't need this step if you bring your own database, smtp server and/or email client. In that case adapt the `.env` and maybe the `docker-compose.yaml`.
 
 ## Helpful Commands
 
