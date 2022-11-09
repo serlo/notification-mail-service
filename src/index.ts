@@ -1,16 +1,44 @@
-import express, { RequestHandler } from 'express'
+// eslint-disable-next-line import/no-internal-modules
+import mysql from 'mysql2/promise'
+import { createTransport } from 'nodemailer'
 
 import { config } from './config'
-import { response } from './response-middleware'
-import { sendNotificationEmail } from './send-notification'
+import { notifyUsers } from './mail-service'
 
-const app = express()
-app.use(express.json())
-app.use('/', response, sendNotificationEmail as RequestHandler)
+void run()
 
-const port = config.api.port || 4000
+let exitCode = 0
 
-app.listen(port, () => {
-  /* eslint-disable-next-line no-console */
-  console.log(`Server is running on port ${port}`)
-})
+async function run() {
+  if (!config.from_email) {
+    throw new Error('config.from_email is not set')
+  }
+
+  let connection: mysql.Connection | null = null
+
+  try {
+    // TODO: retry to connect
+    connection = await mysql.createConnection(config.db)
+
+    const transporter = createTransport(config.mail)
+
+    const data = await notifyUsers(connection, transporter, config.from_email)
+
+    // eslint-disable-next-line no-console
+    console.log({
+      success: true,
+      data,
+    })
+    exitCode = 0
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error({
+      success: false,
+      error,
+    })
+    exitCode = 1
+  } finally {
+    if (connection) await connection.end()
+    process.exit(exitCode)
+  }
+}

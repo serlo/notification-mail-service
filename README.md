@@ -1,18 +1,27 @@
 # serlo.org - Notification Mail Service
 
-Micro-service that notify user by emails
+Micro-service that notify users by email about last events
 
 ## Getting stated
 
-`docker-compose up -d` (or, if you have Yarn installed `yarn start`) for running local testing database and fake email client.
-When you are done, `docker-compose down` or `yarn stop`.
+Required:
 
-To run server use `yarn serve` and hit `http://localhost:4000` for sending all notifications emails.
+- Nodejs
+- Yarn
+- Docker docker-compose (Highly recommended)
 
-## Helpful Tips
+After cloning this repo and cd to it:
 
-For running scripts you need Node, Yarn and Typescript installed.  
+1. `yarn` for installing dependencies.
+2. `yarn start` for running local testing database and fake email client.\*
+3. `yarn notify`
+4. Navigate to the `http://localhost:8080/` to see your local mail client.\*
+5. Use `yarn mysql:rollback` for rolling back the database changes.
+6. When you are done, `yarn stop`.
+
+\* You don't need this step if you bring your own database, smtp server and/or email client. In that case adapt the `.env` and maybe the `docker-compose.yaml`.
+
+## Helpful Commands
+
 Use `yarn mysql` to prompt to the cli of your local database.  
-Use `smtps://test:test@localhost:2500/?skip_ssl_verify=true` to set you SMTP.  
-Navigate to the `http://localhost:8080/` to see your local mail client.  
 Use `yarn format` for linting and formatting.

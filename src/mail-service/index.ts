@@ -1,65 +1,53 @@
-import { formattedDate } from '../utils'
-import { getAllUnsentEmailData, updateNotificationSendStatus } from './db-query'
-import { EventType, eventMessages } from './email-message'
-import { sendMail } from './mail'
-import { EmailData, EmailPayload } from './types'
+// eslint-disable-next-line import/no-internal-modules
+import { Connection } from 'mysql2/promise'
+import { Transporter } from 'nodemailer'
 
-export const filterDataForEmail = (emailData: EmailData[]) => {
-  const emailPayload: EmailPayload[] = []
+import { getAllUnsentEmailData, updateNotificationSendStatus } from './queries'
+import { EmailPayload } from './utils'
 
-  emailData.forEach((data) => {
-    const dates = data.dates.split(',')
-    const event_ids = data.event_ids.split(',')
-    const notification_ids = data.notification_ids.split(',')
-    const actor_names = data.actor_names.split(',')
-    let body = ''
-    actor_names.forEach((actor: string, i: number) => {
-      body = `${body}<p>${actor} ${
-        eventMessages[parseInt(event_ids[i]) as EventType]
-      } ${formattedDate(new Date(dates[i]))}</p><br/>`
+export async function notifyUsers(
+  connection: Connection,
+  transporter: Transporter,
+  senderEmailAddress: string
+): Promise<EmailPayload[]> {
+  const emailPayloads = await getAllUnsentEmailData(connection)
+
+  for (const payload of emailPayloads) {
+    const responseStatus = await sendMail({
+      payload,
+      transporter,
+      senderEmailAddress,
     })
-    emailPayload.push({
-      user_id: data.user_id,
-      username: data.username,
-      email: data.email,
-      ids: notification_ids,
-      body,
-    })
-  })
 
-  return emailPayload
+    if (responseStatus == '250 Ok') {
+      await updateNotificationSendStatus(payload.ids, connection)
+    }
+  }
+
+  return emailPayloads
 }
 
-export async function sendEmailToUser(): Promise<
-  [EmailPayload[] | null, unknown]
-> {
-  try {
-    const emailData = await getAllUnsentEmailData()
+export async function sendMail({
+  payload,
+  transporter,
+  senderEmailAddress,
+}: {
+  payload: Omit<EmailPayload, 'ids' | 'user_id'>
+  transporter: Transporter
+  senderEmailAddress: string
+}) {
+  const { username, email: userEmailAddress, body } = payload
+  const { response } = (await transporter.sendMail({
+    from: senderEmailAddress,
+    to: userEmailAddress,
+    subject: 'notification Email From Serlo',
+    html: `<p>Hello ${username}</p>
+        <br/>
+        ${body}
+        <br/>
+        Regards<br/>
+        <span>Team</span>`,
+  })) as { response: string }
 
-    if (!emailData) {
-      return [null, null]
-    }
-
-    const emailPayloads = filterDataForEmail(emailData)
-
-    for (const payload of emailPayloads) {
-      const mailStatus: string = await sendMail(
-        payload.username,
-        payload.email,
-        payload.body
-      )
-
-      if (mailStatus == '250 Ok') {
-        await updateNotificationSendStatus(payload.ids)
-      } else {
-        throw new Error(`Email receiver responded with status ${mailStatus}`)
-      }
-    }
-
-    return [emailPayloads, null]
-  } catch (ex) {
-    /* eslint-disable-next-line no-console */
-    console.log(ex)
-    return [null, ex]
-  }
+  return response
 }

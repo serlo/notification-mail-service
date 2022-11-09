@@ -1,3 +1,23 @@
+import moment from 'moment'
+
+export interface EmailData {
+  user_id: number
+  username: string
+  email: string
+  event_ids: string
+  dates: string
+  actor_names: string
+  notification_ids: string
+}
+
+export interface EmailPayload {
+  user_id: number
+  username: string
+  email: string
+  ids: string[]
+  body: string
+}
+
 export enum EventType {
   // in order to match the event types ids in the actual db we have to start with 1. The order should not be changed!
   taxonomyTermAssociate = 1,
@@ -40,4 +60,8 @@ export const eventMessages: Record<EventType, string> = {
   [EventType.discussionRestore]: 'restored the discussion on',
   [EventType.taxonomyTermDissociate]: 'dissociated the taxonomy term on',
   [EventType.entityLinkRemove]: 'removed the entity link on',
+}
+
+export const formattedDate = (date: Date) => {
+  return moment(date).format('YYYY-MM-DD HH:mm')
 }
