@@ -27,14 +27,14 @@ export async function notifyUsers(
       senderEmailAddress,
     })
 
-    // actually there are other success codes see https://en.wikipedia.org/wiki/List_of_SMTP_server_return_codes
+    // actually there are other success codes, see https://en.wikipedia.org/wiki/List_of_SMTP_server_return_codes
     if (responseStatus == '250 Ok') {
       await dbConnection.updateNotificationSendStatus(payload.ids)
     }
   }
 
-  // TODO: better would be something like
-  // [{ success: true, userId: 1, username: 'user', notifications: [3,4] }, { success: false, userId: 2, username: 'user2', notifications: [5,6] }]
+  // TODO: get information of failed ones and return as list (currently, EmailPayload[] is too verbose)
+  // [{ success: true, userId: 1, username: 'user', notifications: [3,4] }, { success: false, reason: 'bad boy', userId: 2, username: 'user2', notifications: [5,6] }]
   return emailPayloads
 }
 
