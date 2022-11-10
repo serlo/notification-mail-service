@@ -22,7 +22,7 @@
     "stop": "docker-compose down",
     "notify": "ts-node src",
     "scheduler": "ts-node src/cron/hourly-mail.ts",
-    "test": "jest --config jest.config.js --runInBand --forceExit"
+    "test": "jest --config jest.config.js --runInBand"
   },
   "main": "index.js",
   "dependencies": {

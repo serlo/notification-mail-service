@@ -33,4 +33,5 @@ test('should send all emails and set notifications as sent', async () => {
   expect(secondResponse).toHaveLength(0)
 
   await connection.rollback()
+  await connection.end()
 })
