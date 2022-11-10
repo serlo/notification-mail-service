@@ -7,7 +7,11 @@ export * from './db-connection'
 
 type Transporter =
   | NodemailerTransporter
-  | { sendMail(x: unknown): Promise<{ response: string }> }
+  | { sendMail(x: unknown): Promise<TransporterResponse> }
+
+interface TransporterResponse {
+  response: string
+}
 
 export async function notifyUsers(
   dbConnection: DBConnection,
@@ -23,11 +27,14 @@ export async function notifyUsers(
       senderEmailAddress,
     })
 
+    // actually there are other success codes see https://en.wikipedia.org/wiki/List_of_SMTP_server_return_codes
     if (responseStatus == '250 Ok') {
       await dbConnection.updateNotificationSendStatus(payload.ids)
     }
   }
 
+  // TODO: better would be something like
+  // [{ success: true, userId: 1, username: 'user', notifications: [3,4] }, { success: false, userId: 2, username: 'user2', notifications: [5,6] }]
   return emailPayloads
 }
 
@@ -36,7 +43,7 @@ export async function sendMail({
   transporter,
   senderEmailAddress,
 }: {
-  payload: Omit<EmailPayload, 'ids' | 'user_id'>
+  payload: EmailPayload
   transporter: Transporter
   senderEmailAddress: string
 }) {
@@ -45,13 +52,14 @@ export async function sendMail({
     from: senderEmailAddress,
     to: userEmailAddress,
     subject: 'notification Email From Serlo',
+    // TODO: there should be also email as plain text
     html: `<p>Hello ${username}</p>
         <br/>
         ${body}
         <br/>
         Regards<br/>
         <span>Team</span>`,
-  })) as { response: string }
+  })) as TransporterResponse
 
   return response
 }

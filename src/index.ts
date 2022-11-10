@@ -3,8 +3,7 @@ import mysql from 'mysql2/promise'
 import { createTransport } from 'nodemailer'
 
 import { config } from './config'
-import { notifyUsers } from './mail-service'
-import { MysqlConnection } from './mail-service/db-connection'
+import { MysqlConnection, notifyUsers } from './mail-service'
 
 void run()
 

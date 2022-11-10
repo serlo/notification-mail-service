@@ -14,25 +14,25 @@ test.skip('should send all emails and set notifications as sent', async () => {
 
   const transporter = createTransport(config.mail)
 
-  const firstResponse = await notifyUsers(
+  const firstResult = await notifyUsers(
     mysqlConnection,
     transporter,
     'no-reply@serlo.test'
   )
 
-  expect(firstResponse).toHaveLength(3)
-  expect(firstResponse[0]).toStrictEqual(
+  expect(firstResult).toHaveLength(3)
+  expect(firstResult[0]).toStrictEqual(
     JSON.parse(
       '{"body": "<p>admin checkout the entity revision on 2019-12-01 18:58</p><br/><p>admin added the entity revision on 2019-12-01 18:58</p><br/>", "email": "124902b1@localhost", "ids": ["11605", "11602"], "user_id": 677, "username": "124902c9"}'
     )
   )
 
-  const secondResponse = await notifyUsers(
+  const secondResult = await notifyUsers(
     mysqlConnection,
     transporter,
     'no-reply@serlo.test'
   )
-  expect(secondResponse).toHaveLength(0)
+  expect(secondResult).toHaveLength(0)
 
   await connection.rollback()
   await connection.end()
