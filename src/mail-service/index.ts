@@ -1,16 +1,20 @@
-// eslint-disable-next-line import/no-internal-modules
-import { Connection } from 'mysql2/promise'
-import { Transporter } from 'nodemailer'
+import { Transporter as NodemailerTransporter } from 'nodemailer'
 
-import { getAllUnsentEmailData, updateNotificationSendStatus } from './queries'
+import { DBConnection } from './db-connection'
 import { EmailPayload } from './utils'
 
+export * from './db-connection'
+
+type Transporter =
+  | NodemailerTransporter
+  | { sendMail(x: unknown): Promise<{ response: string }> }
+
 export async function notifyUsers(
-  connection: Connection,
+  dbConnection: DBConnection,
   transporter: Transporter,
   senderEmailAddress: string
 ): Promise<EmailPayload[]> {
-  const emailPayloads = await getAllUnsentEmailData(connection)
+  const emailPayloads = await dbConnection.getAllUnsentEmailData()
 
   for (const payload of emailPayloads) {
     const responseStatus = await sendMail({
@@ -20,7 +24,7 @@ export async function notifyUsers(
     })
 
     if (responseStatus == '250 Ok') {
-      await updateNotificationSendStatus(payload.ids, connection)
+      await dbConnection.updateNotificationSendStatus(payload.ids)
     }
   }
 

@@ -4,6 +4,7 @@ import { createTransport } from 'nodemailer'
 
 import { config } from './config'
 import { notifyUsers } from './mail-service'
+import { MysqlConnection } from './mail-service/db-connection'
 
 void run()
 
@@ -22,7 +23,11 @@ async function run() {
 
     const transporter = createTransport(config.mail)
 
-    const data = await notifyUsers(connection, transporter, config.from_email)
+    const data = await notifyUsers(
+      new MysqlConnection(connection),
+      transporter,
+      config.from_email
+    )
 
     // eslint-disable-next-line no-console
     console.log({
