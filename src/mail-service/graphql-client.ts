@@ -1,6 +1,10 @@
 import { GraphQLClient, RequestDocument } from 'graphql-request'
 
-export class ApiGraphqlClient {
+export interface ApiClient {
+  fetch(x: unknown): Promise<unknown>
+}
+
+export class ApiGraphqlClient implements ApiClient {
   apiGraphqlUrl: string
 
   constructor(apiGraphqlUrl: string) {

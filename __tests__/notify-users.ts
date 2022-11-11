@@ -1,8 +1,4 @@
-import {
-  notifyUsers,
-  DBConnection,
-  ApiGraphqlClient,
-} from '../src/mail-service'
+import { notifyUsers, DBConnection } from '../src/mail-service'
 
 const fakeConnection: DBConnection & { emailsSent: boolean } = {
   emailsSent: false,
@@ -39,7 +35,11 @@ const fakeTransporter = {
   },
 }
 
-const fakeApiClient = new ApiGraphqlClient('fake://url.org')
+const fakeApiClient = {
+  async fetch() {
+    return Promise.resolve('implement me')
+  },
+}
 
 async function notify() {
   return notifyUsers(
