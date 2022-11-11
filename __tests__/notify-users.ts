@@ -1,4 +1,8 @@
-import { notifyUsers, DBConnection } from '../src/mail-service'
+import {
+  notifyUsers,
+  DBConnection,
+  ApiGraphqlClient,
+} from '../src/mail-service'
 
 const fakeConnection: DBConnection & { emailsSent: boolean } = {
   emailsSent: false,
@@ -35,17 +39,24 @@ const fakeTransporter = {
   },
 }
 
+const fakeApiClient = new ApiGraphqlClient('fake://url.org')
+
+async function notify() {
+  return notifyUsers(
+    fakeConnection,
+    fakeTransporter,
+    fakeApiClient,
+    'no-reply@serlo.test'
+  )
+}
+
 beforeEach(() => {
   fakeConnection.emailsSent = false
   fakeTransporter.shouldFail = false
 })
 
 test('should send all emails and do not send them again', async () => {
-  const result = await notifyUsers(
-    fakeConnection,
-    fakeTransporter,
-    'no-reply@serlo.test'
-  )
+  const result = await notify()
 
   expect(result).toHaveLength(1)
   expect(result[0]).toStrictEqual(
@@ -54,11 +65,7 @@ test('should send all emails and do not send them again', async () => {
     )
   )
 
-  const expectedEmptyResult = await notifyUsers(
-    fakeConnection,
-    fakeTransporter,
-    'no-reply@serlo.test'
-  )
+  const expectedEmptyResult = await notify()
 
   expect(expectedEmptyResult).toHaveLength(0)
 })
@@ -66,11 +73,7 @@ test('should send all emails and do not send them again', async () => {
 test('should send all emails and send them again if not delivered', async () => {
   fakeTransporter.shouldFail = true
 
-  const firstResult = await notifyUsers(
-    fakeConnection,
-    fakeTransporter,
-    'no-reply@serlo.test'
-  )
+  const firstResult = await notify()
 
   expect(firstResult).toHaveLength(1)
   expect(firstResult[0]).toStrictEqual(
@@ -79,11 +82,7 @@ test('should send all emails and send them again if not delivered', async () => 
     )
   )
 
-  const secondResult = await notifyUsers(
-    fakeConnection,
-    fakeTransporter,
-    'no-reply@serlo.test'
-  )
+  const secondResult = await notify()
 
   expect(secondResult).toHaveLength(1)
   expect(secondResult[0]).toStrictEqual(

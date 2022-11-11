@@ -3,9 +3,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 export const config = {
-  api: {
-    port: process.env.PORT,
-  },
+  serloApiGraphqlUrl: process.env.SERLO_API_GRAPHQL_URL,
   db: {
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
@@ -20,5 +18,5 @@ export const config = {
       pass: process.env.MAIL_PASSWORD,
     },
   },
-  from_email: process.env.FROM_EMAIL,
+  fromEmail: process.env.FROM_EMAIL || 'notifications@mail.serlo.org',
 }

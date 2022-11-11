@@ -1,9 +1,11 @@
 import { Transporter as NodemailerTransporter } from 'nodemailer'
 
 import { DBConnection } from './db-connection'
+import { ApiGraphqlClient } from './graphql-client'
 import { EmailPayload } from './utils'
 
 export * from './db-connection'
+export * from './graphql-client'
 
 type Transporter =
   | NodemailerTransporter
@@ -16,6 +18,7 @@ interface TransporterResponse {
 export async function notifyUsers(
   dbConnection: DBConnection,
   transporter: Transporter,
+  apiGraphqlClient: ApiGraphqlClient,
   senderEmailAddress: string
 ): Promise<EmailPayload[]> {
   const emailPayloads = await dbConnection.getAllUnsentEmailData()

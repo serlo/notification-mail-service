@@ -3,17 +3,13 @@ import mysql from 'mysql2/promise'
 import { createTransport } from 'nodemailer'
 
 import { config } from './config'
-import { MysqlConnection, notifyUsers } from './mail-service'
+import { ApiGraphqlClient, MysqlConnection, notifyUsers } from './mail-service'
 
 void run()
 
 let exitCode = 0
 
 async function run() {
-  if (!config.from_email) {
-    throw new Error('config.from_email is not set')
-  }
-
   let connection: mysql.Connection | null = null
 
   try {
@@ -22,10 +18,14 @@ async function run() {
 
     const transporter = createTransport(config.mail)
 
+    if (!config.serloApiGraphqlUrl) {
+      throw new Error('SERLO_API_GRAPHQL_URL has to be set')
+    }
     const data = await notifyUsers(
       new MysqlConnection(connection),
       transporter,
-      config.from_email
+      new ApiGraphqlClient(config.serloApiGraphqlUrl),
+      config.fromEmail
     )
 
     // eslint-disable-next-line no-console
