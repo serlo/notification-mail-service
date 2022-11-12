@@ -21,27 +21,27 @@ test.skip('should send all emails and set notifications as sent', async () => {
   const apiGraphqlClient = new ApiGraphqlClient(
     config.serloApiGraphqlUrl || 'https://api.serlo-staging.dev/graphql'
   )
-  const firstResult = await notifyUsers(
+  const firstOutput = await notifyUsers(
     mysqlConnection,
     transporter,
     apiGraphqlClient,
     'no-reply@serlo.test'
   )
 
-  expect(firstResult).toHaveLength(3)
-  expect(firstResult[0]).toStrictEqual(
-    JSON.parse(
-      '{"body": "<p>admin checkout the entity revision on 2019-12-01 18:58</p><br/><p>admin added the entity revision on 2019-12-01 18:58</p><br/>", "email": "124902b1@localhost", "ids": ["11605", "11602"], "user_id": 677, "username": "124902c9"}'
-    )
-  )
+  expect(firstOutput).toHaveLength(3)
+  expect(firstOutput[0]).toStrictEqual({
+    success: true,
+    notificationsIds: [11605, 11602],
+    userId: 677,
+  })
 
-  const secondResult = await notifyUsers(
+  const secondOutput = await notifyUsers(
     mysqlConnection,
     transporter,
     apiGraphqlClient,
     'no-reply@serlo.test'
   )
-  expect(secondResult).toHaveLength(0)
+  expect(secondOutput).toHaveLength(0)
 
   await connection.rollback()
   await connection.end()

@@ -15,30 +15,52 @@ interface TransporterResponse {
   response: string
 }
 
+interface Result {
+  success: boolean
+  reason?: unknown
+  userId: number
+  notificationsIds: number[]
+}
+
 export async function notifyUsers(
   dbConnection: DBConnection,
   transporter: Transporter,
   apiGraphqlClient: ApiClient,
   senderEmailAddress: string
-): Promise<EmailPayload[]> {
+): Promise<Result[]> {
   const emailPayloads = await dbConnection.getAllUnsentEmailData()
 
-  for (const payload of emailPayloads) {
-    const responseStatus = await sendMail({
-      payload,
-      transporter,
-      senderEmailAddress,
+  const results = await Promise.all(
+    emailPayloads.map(async (payload) => {
+      const responseStatus = await sendMail({
+        payload,
+        transporter,
+        senderEmailAddress,
+      })
+
+      const baseResult = {
+        userId: payload.user_id,
+        notificationsIds: payload.ids.map((x) => parseInt(x, 10)),
+      }
+
+      // actually there are other success codes, see https://en.wikipedia.org/wiki/List_of_SMTP_server_return_codes
+      if (responseStatus == '250 Ok') {
+        await dbConnection.updateNotificationSendStatus(payload.ids)
+        return {
+          success: true,
+          ...baseResult,
+        }
+      } else {
+        return {
+          success: false,
+          reason: responseStatus,
+          ...baseResult,
+        }
+      }
     })
+  )
 
-    // actually there are other success codes, see https://en.wikipedia.org/wiki/List_of_SMTP_server_return_codes
-    if (responseStatus == '250 Ok') {
-      await dbConnection.updateNotificationSendStatus(payload.ids)
-    }
-  }
-
-  // TODO: get information of failed ones and return as list (currently, EmailPayload[] is too verbose)
-  // [{ success: true, userId: 1, username: 'user', notifications: [3,4] }, { success: false, reason: 'bad boy', userId: 2, username: 'user2', notifications: [5,6] }]
-  return emailPayloads
+  return results
 }
 
 export async function sendMail({
