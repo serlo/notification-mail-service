@@ -4,11 +4,18 @@ export const formattedDate = (date: Date) => {
   return moment(date).format('YYYY-MM-DD HH:mm')
 }
 
-export interface EmailPayload {
+export interface EmailData {
   user_id: number
   username: string
   email: string
-  ids: string[]
+  event_ids: string
+  dates: string
+  actor_names: string
+  notification_ids: string
+}
+
+export interface EmailPayload {
+  userEmailAddress: string
   body: string
 }
 
