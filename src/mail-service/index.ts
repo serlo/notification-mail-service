@@ -1,11 +1,11 @@
 import { Transporter as NodemailerTransporter } from 'nodemailer'
 
+import { ApiClient } from './api-client'
 import { DBConnection } from './db-connection'
-import { ApiClient } from './graphql-client'
 import { EmailPayload } from './utils'
 
+export * from './api-client'
 export * from './db-connection'
-export * from './graphql-client'
 
 type Transporter =
   | NodemailerTransporter

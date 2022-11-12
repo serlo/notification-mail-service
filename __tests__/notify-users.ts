@@ -37,7 +37,7 @@ const fakeTransporter = {
 
 const fakeApiClient = {
   async fetch() {
-    return Promise.resolve('implement me')
+    return Promise.reject('implement me')
   },
 }
 

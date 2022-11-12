@@ -1,36 +1,35 @@
+import assert from 'assert'
 import { gql } from 'graphql-request'
 
-import { ApiGraphqlClient } from '../src/mail-service/graphql-client'
+import { ApiGraphqlClient } from '../src/mail-service/api-client'
 
 const client = new ApiGraphqlClient('https://api.serlo-staging.dev/graphql')
 
 void client
-  .fetch(
-    gql`
+  .fetch({
+    query: gql`
       {
         uuid(id: 1) {
           title
         }
       }
-    `
-  )
+    `,
+  })
   .then((data) => {
-    // eslint-disable-next-line no-console
-    console.log(data)
+    assert.deepEqual(data, { uuid: { title: 'arekkas' } })
   })
 
 void client
-  .fetch(
-    gql`
+  .fetch({
+    query: gql`
       query TestUuidQuery($id: Int) {
         uuid(id: $id) {
           title
         }
       }
     `,
-    JSON.stringify({ id: 2 })
-  )
+    variables: { id: 2 },
+  })
   .then((data) => {
-    // eslint-disable-next-line no-console
-    console.log(data)
+    assert.deepEqual(data, { uuid: { title: 'devuser' } })
   })

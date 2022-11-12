@@ -3,8 +3,11 @@ import { createConnection } from 'mysql2/promise'
 import { createTransport } from 'nodemailer'
 
 import { config } from '../src/config'
-import { notifyUsers, MysqlConnection } from '../src/mail-service'
-import { ApiGraphqlClient } from '../src/mail-service/graphql-client'
+import {
+  notifyUsers,
+  MysqlConnection,
+  ApiGraphqlClient,
+} from '../src/mail-service'
 
 test.skip('should send all emails and set notifications as sent', async () => {
   const connection = await createConnection(config.db)

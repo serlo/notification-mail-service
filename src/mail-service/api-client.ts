@@ -11,7 +11,13 @@ export class ApiGraphqlClient implements ApiClient {
     this.apiGraphqlUrl = apiGraphqlUrl
   }
 
-  async fetch(query: RequestDocument, variables?: string) {
+  async fetch({
+    query,
+    variables,
+  }: {
+    query: RequestDocument
+    variables?: unknown
+  }) {
     const client = new GraphQLClient(this.apiGraphqlUrl)
 
     return client.request(query, variables)
