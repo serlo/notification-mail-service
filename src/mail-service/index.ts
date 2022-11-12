@@ -1,4 +1,4 @@
-import { Transporter as NodemailerTransporter } from 'nodemailer'
+import type { Transporter } from 'nodemailer'
 
 import { ApiClient } from './api-client'
 import { DBConnection } from './db-connection'
@@ -12,14 +12,6 @@ import {
 
 export * from './api-client'
 export * from './db-connection'
-
-type Transporter =
-  | NodemailerTransporter
-  | { sendMail(x: unknown): Promise<TransporterResponse> }
-
-interface TransporterResponse {
-  response: string
-}
 
 interface Result {
   success: boolean
@@ -94,7 +86,7 @@ export async function sendMail({
     subject: 'Notification Email From Serlo',
     // TODO: there should be also email as plain text
     html: body,
-  })) as TransporterResponse
+  })) as { response: string }
 
   return response
 }

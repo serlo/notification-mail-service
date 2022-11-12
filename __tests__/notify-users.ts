@@ -1,3 +1,5 @@
+import type { Transporter } from 'nodemailer'
+
 import { notifyUsers, DBConnection } from '../src/mail-service'
 
 const fakeConnection: DBConnection & { emailsSent: boolean } = {
@@ -35,7 +37,7 @@ const fakeTransporter = {
     fakeConnection.emailsSent = true
     return Promise.resolve({ response: '250 Ok' })
   },
-}
+} as { shouldFail: boolean } as unknown as Transporter & { shouldFail: boolean }
 
 const fakeApiClient = {
   async fetch() {
