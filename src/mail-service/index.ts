@@ -43,16 +43,16 @@ export async function notifyUsers(
         senderEmailAddress,
       })
 
-      const notification_ids = data.notification_ids.split(',')
+      const notificationIds = data.notification_ids.split(',')
 
       const baseResult = {
         userId: data.user_id,
-        notificationsIds: notification_ids.map((x) => parseInt(x, 10)),
+        notificationsIds: notificationIds.map((x) => parseInt(x, 10)),
       }
 
       // actually there are other success codes, see https://en.wikipedia.org/wiki/List_of_SMTP_server_return_codes
       if (responseStatus == '250 Ok') {
-        await dbConnection.updateNotificationSendStatus(notification_ids)
+        await dbConnection.updateNotificationSendStatus(notificationIds)
         return {
           success: true,
           ...baseResult,
