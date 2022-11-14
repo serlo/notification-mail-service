@@ -2,12 +2,7 @@ import type { Transporter } from 'nodemailer'
 
 import { ApiClient } from './api-client'
 import { DBConnection } from './db-connection'
-import {
-  EmailData,
-  eventMessages,
-  EventType,
-  formattedDate,
-} from './utils'
+import { EmailData, eventMessages, EventType, formattedDate } from './utils'
 
 export * from './api-client'
 export * from './db-connection'
