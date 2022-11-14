@@ -14,11 +14,6 @@ export interface EmailData {
   notification_ids: string
 }
 
-export interface EmailPayload {
-  userEmailAddress: string
-  body: string
-}
-
 export enum EventType {
   // in order to match the event types ids in the actual db we have to start with 1. The order should not be changed!
   taxonomyTermAssociate = 1,

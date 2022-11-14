@@ -4,7 +4,6 @@ import { ApiClient } from './api-client'
 import { DBConnection } from './db-connection'
 import {
   EmailData,
-  EmailPayload,
   eventMessages,
   EventType,
   formattedDate,
@@ -32,15 +31,13 @@ export async function notifyUsers(
 
   const results = await Promise.all(
     notificationsRawData.map(async (data) => {
-      const payload = {
-        userEmailAddress: data.email,
-        body: createEmailBody(data),
-      }
-
-      const responseStatus = await sendMail({
-        payload,
+      const returnCode = await sendMail({
+        payload: {
+          userEmailAddress: data.email,
+          body: createEmailBody(data),
+          senderEmailAddress,
+        },
         transporter,
-        senderEmailAddress,
       })
 
       const notificationIds = data.notification_ids.split(',')
@@ -51,7 +48,7 @@ export async function notifyUsers(
       }
 
       // actually there are other success codes, see https://en.wikipedia.org/wiki/List_of_SMTP_server_return_codes
-      if (responseStatus == '250 Ok') {
+      if (returnCode === '250 Ok') {
         await dbConnection.updateNotificationSendStatus(notificationIds)
         return {
           success: true,
@@ -60,7 +57,7 @@ export async function notifyUsers(
       } else {
         return {
           success: false,
-          reason: responseStatus,
+          reason: returnCode,
           ...baseResult,
         }
       }
@@ -70,16 +67,20 @@ export async function notifyUsers(
   return results
 }
 
+interface EmailPayload {
+  senderEmailAddress: string
+  userEmailAddress: string
+  body: string
+}
+
 export async function sendMail({
   payload,
   transporter,
-  senderEmailAddress,
 }: {
   payload: EmailPayload
   transporter: Transporter
-  senderEmailAddress: string
 }) {
-  const { userEmailAddress, body } = payload
+  const { userEmailAddress, senderEmailAddress, body } = payload
   const { response } = (await transporter.sendMail({
     from: senderEmailAddress,
     to: userEmailAddress,
