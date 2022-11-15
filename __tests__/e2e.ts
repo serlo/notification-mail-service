@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-internal-modules
 import { createConnection } from 'mysql2/promise'
 import { createTransport } from 'nodemailer'
 

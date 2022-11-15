@@ -17,7 +17,7 @@ interface Result {
 export async function notifyUsers(
   dbConnection: DBConnection,
   transporter: Transporter,
-  apiGraphqlClient: ApiClient
+  _apiGraphqlClient: ApiClient
 ): Promise<Result[]> {
   const notificationsRawData = await dbConnection.getAllUnsentEmailData()
 

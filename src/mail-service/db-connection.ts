@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-internal-modules
 import type { Connection } from 'mysql2/promise'
 
 import type { EmailData } from './utils'
