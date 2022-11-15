@@ -1,6 +1,6 @@
 import type { Connection } from 'mysql2/promise'
 
-import type { EmailData } from './utils'
+import type { EmailData } from './email-data'
 
 export interface DBConnection {
   getAllUnsentEmailData(): Promise<EmailData[]>

@@ -3,11 +3,13 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "importHelpers": true,
+    "jsx": "react-jsx",
     "lib": ["esnext"],
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
     "target": "es2019"
-  }
+  },
+  "exclude": ["dev"]
 }
