@@ -1,8 +1,10 @@
 import type { Transporter } from 'nodemailer'
+import Mailer from 'nodemailer-react'
 
 import { ApiClient } from './api-client'
 import { DBConnection } from './db-connection'
-import { EmailData, eventMessages, EventType, formattedDate } from './utils'
+import { EmailData } from './email-data'
+import { NotificationEmail } from './templates'
 
 export * from './api-client'
 export * from './db-connection'
@@ -26,10 +28,7 @@ export async function notifyUsers(
   const results = await Promise.all(
     notificationsRawData.map(async (data) => {
       const returnCode = await sendMail({
-        payload: {
-          userEmailAddress: data.email,
-          body: createEmailBody(data),
-        },
+        data,
         transporter,
       })
 
@@ -60,44 +59,30 @@ export async function notifyUsers(
   return results
 }
 
-interface EmailPayload {
-  userEmailAddress: string
-  body: string
-}
-
 export async function sendMail({
-  payload,
+  data,
   transporter,
 }: {
-  payload: EmailPayload
+  data: EmailData
   transporter: Transporter
 }) {
-  const { userEmailAddress, body } = payload
-  const { response } = (await transporter.sendMail({
-    to: userEmailAddress,
-    subject: 'Notification Email From Serlo',
-    // TODO: there should be also email as plain text
-    html: body,
-  })) as { response: string }
+  // This is nice simple lib. We don't really need it, but if we are going
+  // to keep it, let's refactor to declare it at the src/index
+  const mailer = Mailer({ transport: transporter }, { NotificationEmail })
+
+  // TODO: there should be also email as plain text
+  const { response } = await mailer.send(
+    'NotificationEmail',
+    {
+      username: data.username,
+      actorNames: data.actor_names.split(','),
+      eventIds: data.event_ids.split(','),
+      dates: data.dates.split(','),
+    },
+    {
+      to: data.email,
+    }
+  )
 
   return response
-}
-
-function createEmailBody(data: EmailData) {
-  const dates = data.dates.split(',')
-  const event_ids = data.event_ids.split(',')
-  const actor_names = data.actor_names.split(',')
-  const notifications = actor_names
-    .map((actor, i) => {
-      return `<p>${actor} ${
-        eventMessages[parseInt(event_ids[i]) as EventType]
-      } ${formattedDate(new Date(dates[i]))}</p><br/>`
-    })
-    .toString()
-  return `<p>Hello ${data.username}</p>
-    <br/>
-    ${notifications}
-    <br/>
-    Regards<br/>
-    <span>Team</span>`
 }

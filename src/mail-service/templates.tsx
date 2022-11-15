@@ -1,20 +1,7 @@
 import moment from 'moment'
+import React from 'react'
 
-export const formattedDate = (date: Date) => {
-  return moment(date).format('YYYY-MM-DD HH:mm')
-}
-
-export interface EmailData {
-  user_id: number
-  username: string
-  email: string
-  event_ids: string
-  dates: string
-  actor_names: string
-  notification_ids: string
-}
-
-export enum EventType {
+enum EventType {
   // in order to match the event types ids in the actual db we have to start with 1. The order should not be changed!
   taxonomyTermAssociate = 1,
   taxonomyTermCreate,
@@ -36,7 +23,7 @@ export enum EventType {
   entityLinkRemove,
 }
 
-export const eventMessages: Record<EventType, string> = {
+const eventMessages: Record<EventType, string> = {
   // TODO: which taxonomy term, entity etc.
   [EventType.taxonomyTermAssociate]: 'associated the taxonomy term on',
   [EventType.taxonomyTermCreate]: 'created taxonomy term on  created',
@@ -56,4 +43,47 @@ export const eventMessages: Record<EventType, string> = {
   [EventType.discussionRestore]: 'restored the discussion on',
   [EventType.taxonomyTermDissociate]: 'dissociated the taxonomy term on',
   [EventType.entityLinkRemove]: 'removed the entity link on',
+}
+
+interface Props {
+  username: string
+  dates: string[]
+  eventIds: string[]
+  actorNames: string[]
+}
+
+function formattedDate(date: Date) {
+  return moment(date).format('YYYY-MM-DD HH:mm')
+}
+
+export function NotificationEmail({
+  username,
+  actorNames,
+  dates,
+  eventIds,
+}: Props) {
+  return {
+    subject: 'You have unread notifications in serlo.org',
+    body: (
+      <>
+        <p>Hello {username}</p>
+        <br />
+        {actorNames.map((actor, i) => {
+          return (
+            <div key={i}>
+              <p>
+                {actor} {eventMessages[parseInt(eventIds[i]) as EventType]}{' '}
+                {formattedDate(new Date(dates[i]))}
+              </p>
+              <br />
+            </div>
+          )
+        })}
+        <br />
+        Best regards
+        <br />
+        <span>Serlo Team</span>
+      </>
+    ),
+  }
 }
