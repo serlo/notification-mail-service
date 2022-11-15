@@ -17,8 +17,7 @@ interface Result {
 export async function notifyUsers(
   dbConnection: DBConnection,
   transporter: Transporter,
-  apiGraphqlClient: ApiClient,
-  senderEmailAddress: string
+  apiGraphqlClient: ApiClient
 ): Promise<Result[]> {
   const notificationsRawData = await dbConnection.getAllUnsentEmailData()
 
@@ -30,7 +29,6 @@ export async function notifyUsers(
         payload: {
           userEmailAddress: data.email,
           body: createEmailBody(data),
-          senderEmailAddress,
         },
         transporter,
       })
@@ -63,7 +61,6 @@ export async function notifyUsers(
 }
 
 interface EmailPayload {
-  senderEmailAddress: string
   userEmailAddress: string
   body: string
 }
@@ -75,9 +72,8 @@ export async function sendMail({
   payload: EmailPayload
   transporter: Transporter
 }) {
-  const { userEmailAddress, senderEmailAddress, body } = payload
+  const { userEmailAddress, body } = payload
   const { response } = (await transporter.sendMail({
-    from: senderEmailAddress,
     to: userEmailAddress,
     subject: 'Notification Email From Serlo',
     // TODO: there should be also email as plain text

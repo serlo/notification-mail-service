@@ -16,7 +16,7 @@ test.skip('should send all emails and set notifications as sent', async () => {
 
   const mysqlConnection = new MysqlConnection(connection)
 
-  const transporter = createTransport(config.mail)
+  const transporter = createTransport(config.mail, { from: config.fromEmail })
 
   const apiGraphqlClient = new ApiGraphqlClient(
     config.serloApiGraphqlUrl || 'https://api.serlo-staging.dev/graphql'
@@ -24,8 +24,7 @@ test.skip('should send all emails and set notifications as sent', async () => {
   const firstOutput = await notifyUsers(
     mysqlConnection,
     transporter,
-    apiGraphqlClient,
-    'no-reply@serlo.test'
+    apiGraphqlClient
   )
 
   expect(firstOutput).toHaveLength(3)
@@ -38,8 +37,7 @@ test.skip('should send all emails and set notifications as sent', async () => {
   const secondOutput = await notifyUsers(
     mysqlConnection,
     transporter,
-    apiGraphqlClient,
-    'no-reply@serlo.test'
+    apiGraphqlClient
   )
   expect(secondOutput).toHaveLength(0)
 

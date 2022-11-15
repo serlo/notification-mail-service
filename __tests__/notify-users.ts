@@ -46,12 +46,7 @@ const fakeApiClient = {
 }
 
 async function notify() {
-  return notifyUsers(
-    fakeConnection,
-    fakeTransporter,
-    fakeApiClient,
-    'no-reply@serlo.test'
-  )
+  return notifyUsers(fakeConnection, fakeTransporter, fakeApiClient)
 }
 
 beforeEach(() => {
