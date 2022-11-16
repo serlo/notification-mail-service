@@ -21,22 +21,18 @@ async function run() {
     if (!config.serloApiGraphqlUrl) {
       throw new Error('SERLO_API_GRAPHQL_URL has to be set')
     }
-    const data = await notifyUsers(
+    const results = await notifyUsers(
       new MysqlConnection(connection),
       transporter,
       new ApiGraphqlClient(config.serloApiGraphqlUrl)
     )
 
     // eslint-disable-next-line no-console
-    console.log({
-      success: true,
-      data,
-    })
+    console.log(results)
     exitCode = 0
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error({
-      success: false,
       error,
     })
     exitCode = 1

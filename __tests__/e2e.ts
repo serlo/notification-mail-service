@@ -20,6 +20,7 @@ test.skip('should send all emails and set notifications as sent', async () => {
   const apiGraphqlClient = new ApiGraphqlClient(
     config.serloApiGraphqlUrl || 'https://api.serlo-staging.dev/graphql'
   )
+
   const firstOutput = await notifyUsers(
     mysqlConnection,
     transporter,
