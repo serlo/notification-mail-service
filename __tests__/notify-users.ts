@@ -12,13 +12,9 @@ const fakeConnection: DBConnection & { emailsSent: boolean } = {
 
     return Promise.resolve([
       {
-        user_id: 1,
+        id: 1,
         username: 'user',
         email: 'fakeemail@serlo.dev',
-        notification_ids: '12,3',
-        event_ids: '5,6',
-        actor_names: 'actor,actor2',
-        dates: '2022-10-11 11:50,2022-10-11 11:30',
       },
     ])
   },
@@ -41,7 +37,28 @@ const fakeTransporter = {
 
 const fakeApiClient = {
   async fetch() {
-    return Promise.reject('implement me')
+    return Promise.resolve({
+      notifications: {
+        nodes: [
+          {
+            id: 11605,
+            event: {
+              __typename: 'CheckoutRevisionNotificationEvent',
+              date: '2019-12-01T18:58:08+01:00',
+              actor: { username: 'admin' },
+            },
+          },
+          {
+            id: 11602,
+            event: {
+              __typename: 'CreateEntityRevisionNotificationEvent',
+              date: '2019-12-01T18:58:08+01:00',
+              actor: { username: 'admin' },
+            },
+          },
+        ],
+      },
+    })
   },
 }
 
@@ -60,7 +77,7 @@ test('should send all emails and do not send them again', async () => {
   expect(output).toHaveLength(1)
   expect(output[0]).toStrictEqual({
     success: true,
-    notificationsIds: [12, 3],
+    notificationsIds: [11605, 11602],
     userId: 1,
   })
 
@@ -73,7 +90,7 @@ test('should send all emails and send them again if not delivered', async () => 
   fakeTransporter.shouldFail = true
 
   const expectedOutput = {
-    notificationsIds: [12, 3],
+    notificationsIds: [11605, 11602],
     reason: '450 Requested mail action not taken',
     success: false,
     userId: 1,
