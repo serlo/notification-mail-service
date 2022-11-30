@@ -1,3 +1,5 @@
+import type { Transporter } from 'nodemailer'
+
 import { notifyUsers, DBConnection } from '../src/mail-service'
 
 const fakeConnection: DBConnection & { emailsSent: boolean } = {
@@ -12,9 +14,11 @@ const fakeConnection: DBConnection & { emailsSent: boolean } = {
       {
         user_id: 1,
         username: 'user',
-        email: 'email@serlo.org',
-        ids: ['12', '3'],
-        body: '<p>actor created taxonomy term on  created 2022-10-11 11:30</p><br/><p>actor2 created taxonomy term on  created 2022-10-11 11:50</p><br/>',
+        email: 'fakeemail@serlo.dev',
+        notification_ids: '12,3',
+        event_ids: '5,6',
+        actor_names: 'actor,actor2',
+        dates: '2022-10-11 11:50,2022-10-11 11:30',
       },
     ])
   },
@@ -33,7 +37,7 @@ const fakeTransporter = {
     fakeConnection.emailsSent = true
     return Promise.resolve({ response: '250 Ok' })
   },
-}
+} as { shouldFail: boolean } as Transporter & { shouldFail: boolean }
 
 const fakeApiClient = {
   async fetch() {
@@ -42,12 +46,7 @@ const fakeApiClient = {
 }
 
 async function notify() {
-  return notifyUsers(
-    fakeConnection,
-    fakeTransporter,
-    fakeApiClient,
-    'no-reply@serlo.test'
-  )
+  return notifyUsers(fakeConnection, fakeTransporter, fakeApiClient)
 }
 
 beforeEach(() => {

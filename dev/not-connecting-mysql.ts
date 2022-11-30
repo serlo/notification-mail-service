@@ -9,7 +9,6 @@
  *
  */
 
-// eslint-disable-next-line import/no-internal-modules
 import { Connection, createConnection } from 'mysql2/promise'
 
 import { config } from '../src/config'
