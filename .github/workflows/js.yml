@@ -42,4 +42,6 @@ jobs:
           node-version: 16.x
       - run: yarn --immutable --immutable-cache
       - run: yarn start
+      - name: Waiting 1 min for the database to be ready
+        run: sleep 60
       - run: yarn test

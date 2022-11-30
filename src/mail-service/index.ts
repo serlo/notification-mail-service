@@ -1,16 +1,24 @@
-// eslint-disable-next-line import/no-internal-modules
-import { Connection } from 'mysql2/promise'
-import { Transporter } from 'nodemailer'
+import { Transporter as NodemailerTransporter } from 'nodemailer'
 
-import { getAllUnsentEmailData, updateNotificationSendStatus } from './queries'
+import { DBConnection } from './db-connection'
 import { EmailPayload } from './utils'
 
+export * from './db-connection'
+
+type Transporter =
+  | NodemailerTransporter
+  | { sendMail(x: unknown): Promise<TransporterResponse> }
+
+interface TransporterResponse {
+  response: string
+}
+
 export async function notifyUsers(
-  connection: Connection,
+  dbConnection: DBConnection,
   transporter: Transporter,
   senderEmailAddress: string
 ): Promise<EmailPayload[]> {
-  const emailPayloads = await getAllUnsentEmailData(connection)
+  const emailPayloads = await dbConnection.getAllUnsentEmailData()
 
   for (const payload of emailPayloads) {
     const responseStatus = await sendMail({
@@ -19,11 +27,14 @@ export async function notifyUsers(
       senderEmailAddress,
     })
 
+    // actually there are other success codes, see https://en.wikipedia.org/wiki/List_of_SMTP_server_return_codes
     if (responseStatus == '250 Ok') {
-      await updateNotificationSendStatus(payload.ids, connection)
+      await dbConnection.updateNotificationSendStatus(payload.ids)
     }
   }
 
+  // TODO: get information of failed ones and return as list (currently, EmailPayload[] is too verbose)
+  // [{ success: true, userId: 1, username: 'user', notifications: [3,4] }, { success: false, reason: 'bad boy', userId: 2, username: 'user2', notifications: [5,6] }]
   return emailPayloads
 }
 
@@ -32,7 +43,7 @@ export async function sendMail({
   transporter,
   senderEmailAddress,
 }: {
-  payload: Omit<EmailPayload, 'ids' | 'user_id'>
+  payload: EmailPayload
   transporter: Transporter
   senderEmailAddress: string
 }) {
@@ -41,13 +52,14 @@ export async function sendMail({
     from: senderEmailAddress,
     to: userEmailAddress,
     subject: 'notification Email From Serlo',
+    // TODO: there should be also email as plain text
     html: `<p>Hello ${username}</p>
         <br/>
         ${body}
         <br/>
         Regards<br/>
         <span>Team</span>`,
-  })) as { response: string }
+  })) as TransporterResponse
 
   return response
 }

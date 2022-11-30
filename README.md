@@ -21,6 +21,11 @@ After cloning this repo and cd to it:
 
 \* You don't need this step if you bring your own database, smtp server and/or email client. In that case adapt the `.env` and maybe the `docker-compose.yaml`.
 
+## Running tests
+
+For e2e testing you need to have `yarn start`ed, with the database in the original state (use `yarn mysql:rollback`).
+Run `yarn test`.
+
 ## Helpful Commands
 
 Use `yarn mysql` to prompt to the cli of your local database.  
