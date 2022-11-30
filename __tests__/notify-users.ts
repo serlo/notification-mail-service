@@ -35,60 +35,58 @@ const fakeTransporter = {
   },
 }
 
+const fakeApiClient = {
+  async fetch() {
+    return Promise.reject('implement me')
+  },
+}
+
+async function notify() {
+  return notifyUsers(
+    fakeConnection,
+    fakeTransporter,
+    fakeApiClient,
+    'no-reply@serlo.test'
+  )
+}
+
 beforeEach(() => {
   fakeConnection.emailsSent = false
   fakeTransporter.shouldFail = false
 })
 
 test('should send all emails and do not send them again', async () => {
-  const result = await notifyUsers(
-    fakeConnection,
-    fakeTransporter,
-    'no-reply@serlo.test'
-  )
+  const output = await notify()
 
-  expect(result).toHaveLength(1)
-  expect(result[0]).toStrictEqual(
-    JSON.parse(
-      '{"body": "<p>actor created taxonomy term on  created 2022-10-11 11:30</p><br/><p>actor2 created taxonomy term on  created 2022-10-11 11:50</p><br/>", "email": "email@serlo.org", "ids": ["12", "3"], "user_id": 1, "username": "user"}'
-    )
-  )
+  expect(output).toHaveLength(1)
+  expect(output[0]).toStrictEqual({
+    success: true,
+    notificationsIds: [12, 3],
+    userId: 1,
+  })
 
-  const expectedEmptyResult = await notifyUsers(
-    fakeConnection,
-    fakeTransporter,
-    'no-reply@serlo.test'
-  )
+  const expectedEmptyOutput = await notify()
 
-  expect(expectedEmptyResult).toHaveLength(0)
+  expect(expectedEmptyOutput).toHaveLength(0)
 })
 
 test('should send all emails and send them again if not delivered', async () => {
   fakeTransporter.shouldFail = true
 
-  const firstResult = await notifyUsers(
-    fakeConnection,
-    fakeTransporter,
-    'no-reply@serlo.test'
-  )
+  const expectedOutput = {
+    notificationsIds: [12, 3],
+    reason: '450 Requested mail action not taken',
+    success: false,
+    userId: 1,
+  }
 
-  expect(firstResult).toHaveLength(1)
-  expect(firstResult[0]).toStrictEqual(
-    JSON.parse(
-      '{"body": "<p>actor created taxonomy term on  created 2022-10-11 11:30</p><br/><p>actor2 created taxonomy term on  created 2022-10-11 11:50</p><br/>", "email": "email@serlo.org", "ids": ["12", "3"], "user_id": 1, "username": "user"}'
-    )
-  )
+  const firstOutput = await notify()
 
-  const secondResult = await notifyUsers(
-    fakeConnection,
-    fakeTransporter,
-    'no-reply@serlo.test'
-  )
+  expect(firstOutput).toHaveLength(1)
+  expect(firstOutput[0]).toStrictEqual(expectedOutput)
 
-  expect(secondResult).toHaveLength(1)
-  expect(secondResult[0]).toStrictEqual(
-    JSON.parse(
-      '{"body": "<p>actor created taxonomy term on  created 2022-10-11 11:30</p><br/><p>actor2 created taxonomy term on  created 2022-10-11 11:50</p><br/>", "email": "email@serlo.org", "ids": ["12", "3"], "user_id": 1, "username": "user"}'
-    )
-  )
+  const secondOutput = await notify()
+
+  expect(secondOutput).toHaveLength(1)
+  expect(secondOutput[0]).toStrictEqual(expectedOutput)
 })

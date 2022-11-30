@@ -3,10 +3,9 @@
  * Sometimes the connection to the database doesn't work (unless you use the mysql cli)
  * Investigating if this a problem of the library, code (maybe use instead pool) or whatever...
  *
- * By me hugotiburtino it got stock at tryVeryComplexQuery.
+ * For me hugotiburtino it got stock at tryVeryComplexQuery.
  * After that running `top` in terminal the mysqld where still consuming a lot of memory
  * so that I had to `yarn stop` it.
- *
  *
  */
 

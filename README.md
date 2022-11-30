@@ -8,9 +8,9 @@ Required:
 
 - Nodejs
 - Yarn
-- Docker docker-compose (Highly recommended)
+- Docker and docker-compose (Highly recommended)
 
-After cloning this repo and cd to it:
+After cloning this repo and `cd` into it:
 
 1. `yarn` for installing dependencies.
 2. `yarn start` for running local testing database and fake email client.\*
@@ -26,7 +26,8 @@ After cloning this repo and cd to it:
 For e2e testing you need to have `yarn start`ed, with the database in the original state (use `yarn mysql:rollback`).
 Run `yarn test`.
 
-## Helpful Commands
+## Helpful Info
 
 Use `yarn mysql` to prompt to the cli of your local database.  
 Use `yarn format` for linting and formatting.
+By default, it will use the Serlo's staging API. If you prefer to use a local API, start it and set it in `.env`.
