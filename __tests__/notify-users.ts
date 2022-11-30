@@ -37,7 +37,7 @@ const fakeTransporter = {
     fakeConnection.emailsSent = true
     return Promise.resolve({ response: '250 Ok' })
   },
-} as { shouldFail: boolean } as unknown as Transporter & { shouldFail: boolean }
+} as { shouldFail: boolean } as Transporter & { shouldFail: boolean }
 
 const fakeApiClient = {
   async fetch() {
