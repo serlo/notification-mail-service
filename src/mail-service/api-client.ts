@@ -1,6 +1,7 @@
 import { GraphQLClient, RequestDocument, Variables } from 'graphql-request'
 
 export interface ApiClient {
+  // TODO: Types anpassen
   fetch(x: unknown): Promise<unknown>
 }
 

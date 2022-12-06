@@ -1,8 +1,9 @@
-import { Notification as ApiNotification } from '@serlo/api'
-import { gql } from 'graphql-request'
+import { GraphQLClient } from 'graphql-request'
 import type { Transporter } from 'nodemailer'
 import Mailer from 'nodemailer-react'
 
+import { graphql } from '../gql'
+import { GetNotificationsDocument } from '../gql/graphql'
 import { ApiClient } from './api-client'
 import { DBConnection } from './db-connection'
 import { NotificationEmail } from './templates'
@@ -17,11 +18,6 @@ interface Result {
   notificationsIds: number[]
 }
 
-// AbstractNotificationEvent has __typename, but it is not in its type...
-type Notification = ApiNotification & {
-  event: ApiNotification['event'] & { __typename: string }
-}
-
 export async function notifyUsers(
   dbConnection: DBConnection,
   transporter: Transporter,
@@ -31,39 +27,31 @@ export async function notifyUsers(
 
   if (!unnotifiedUsers.length) return []
 
-  const results = await Promise.all(
-    unnotifiedUsers.map(async (user) => {
-      const { notifications } = (await apiGraphqlClient.fetch({
-        query: gql`
-          query getNotifications($userId: Int!) {
-            notifications(
-              first: 500
-              unread: true
-              emailSent: false
-              emailSubscribed: true
-              userId: $userId
-            ) {
-              nodes {
-                id
-                event {
-                  __typename
-                  date
-                  actor {
-                    username
-                  }
-                }
-              }
+  // TODO: Make me better
+  const client = new GraphQLClient('...')
+  const query = graphql(`
+    query getNotifications($userId: Int!) {
+      notifications(
+        first: 500
+        unread: true # FIXME / TODO #emailSent: false #emailSubscribed: true #userId: $userId
+      ) {
+        nodes {
+          id
+          event {
+            __typename
+            date
+            actor {
+              username
             }
           }
-        `,
-        variables: {
-          userId: user.id,
-        },
-      })) as {
-        notifications: {
-          nodes: Notification[]
         }
       }
+    }
+  `) as typeof GetNotificationsDocument
+
+  const results = await Promise.all(
+    unnotifiedUsers.map(async (user) => {
+      const { notifications } = await client.request(query, { userId: user.id })
       const returnCode = await sendMail({
         data: {
           userEmail: user.email,
