@@ -27,6 +27,7 @@
   },
   "main": "index.js",
   "dependencies": {
+    "@graphql-typed-document-node/core": "^3.1.1",
     "@types/jest": "^29.1.2",
     "@typescript-eslint/parser": "^5.40.0",
     "dotenv": "^16.0.3",

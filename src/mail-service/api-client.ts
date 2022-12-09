@@ -4,7 +4,7 @@ import { AbstractNotificationEvent } from '../gql/graphql'
 
 export interface ApiClient {
   // TODO: Types anpassen
-  fetch(x: { RequestDocument; Variables }): Promise<any>
+  fetch(x: { RequestDocument; Variables }): Promise<Answer>
 }
 
 export class ApiGraphqlClient /*implements ApiClient*/ {
@@ -25,8 +25,8 @@ export class ApiGraphqlClient /*implements ApiClient*/ {
   }
 }
 
-interface Answer {
-  nodes: Node
+export interface Answer {
+  nodes: Node[]
 }
 
 export interface Node {

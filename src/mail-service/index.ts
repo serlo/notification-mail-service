@@ -3,7 +3,7 @@ import type { Transporter } from 'nodemailer'
 import Mailer from 'nodemailer-react'
 
 import { graphql } from '../gql'
-import { /*ApiClient,*/ ApiGraphqlClient, Node } from './api-client'
+import { Answer, /*ApiClient,*/ ApiGraphqlClient, Node } from './api-client'
 import { DBConnection } from './db-connection'
 import { NotificationEmail } from './templates'
 
@@ -55,7 +55,7 @@ export async function notifyUsers(
 
   return await Promise.all(
     unnotifiedUsers.map(async (user) => {
-      const { notifications } = await apiGraphqlClient.fetch({
+      const notifications: Answer = await apiGraphqlClient.fetch({
         query,
         variables: { userId: user.id },
       })
