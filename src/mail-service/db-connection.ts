@@ -5,7 +5,7 @@ export interface DBConnection {
   updateNotificationSendStatus(notificationsIds: string[]): Promise<void>
 }
 
-interface EmailData {
+export interface EmailData {
   id: number
   username: string
   email: string

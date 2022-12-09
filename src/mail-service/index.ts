@@ -4,7 +4,7 @@ import type { Transporter } from 'nodemailer'
 import Mailer from 'nodemailer-react'
 
 import { ApiClient } from './api-client'
-import { DBConnection } from './db-connection'
+import { DBConnection, EmailData } from './db-connection'
 import { NotificationEmail } from './templates'
 
 export * from './api-client'
@@ -27,12 +27,12 @@ export async function notifyUsers(
   transporter: Transporter,
   apiGraphqlClient: ApiClient
 ): Promise<Result[]> {
-  const unnotifiedUsers = await dbConnection.getAllUnsentEmailData()
+  const unnotifiedUsers = await dbConnection.fetchUnsentNotificationData()
 
   if (!unnotifiedUsers.length) return []
 
   const results = await Promise.all(
-    unnotifiedUsers.map(async (user) => {
+    unnotifiedUsers.map(async (user: EmailData) => {
       const { notifications } = (await apiGraphqlClient.fetch({
         query: gql`
           query getNotifications($userId: Int!) {
