@@ -8,7 +8,7 @@ export abstract class StringTransform extends Transform {
 
   abstract transformString(text: string): void
 
-  _transform(chunk: Buffer, encoding: BufferEncoding, callback: Function) {
+  _transform(chunk: Buffer, encoding: BufferEncoding, callback: () => void) {
     assert.strictEqual(
       encoding,
       'buffer',

@@ -1,15 +1,16 @@
 import { StringTransform } from './string-transformation'
 
 export abstract class LineTransform extends StringTransform {
-  private unfinishedLine: string = ''
+  private unfinishedLine = ''
 
   abstract transformLine(line: string): void
 
   transformString(newText: string): void {
     const text = this.unfinishedLine + newText
-    let start: number = 0
-    let end: number = 0
+    let start = 0
+    let end = 0
 
+    /* eslint-disable-next-line no-constant-condition */
     while (true) {
       start = end
       end = text.indexOf('\n', start) + 1
@@ -23,7 +24,7 @@ export abstract class LineTransform extends StringTransform {
     }
   }
 
-  _flush(callback: Function) {
+  _flush(callback: () => void) {
     if (this.unfinishedLine) {
       this.transformLine(this.unfinishedLine)
     }

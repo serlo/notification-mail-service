@@ -1,9 +1,10 @@
 import * as assert from 'assert'
+
 import { LineTransform } from './line-transformation'
 
 export class ConcatenateInsertCommands extends LineTransform {
-  private lastTable: string = ''
-  private currentCmdLength: number = 0
+  private lastTable = ''
+  private currentCmdLength = 0
   private maxInsertCmdLength: number
 
   constructor(encoding: BufferEncoding, maxInsertCmdLength: number) {
