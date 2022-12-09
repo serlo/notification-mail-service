@@ -5,7 +5,7 @@ import { notifyUsers, DBConnection } from '../src/mail-service'
 const fakeConnection: DBConnection & { emailsSent: boolean } = {
   emailsSent: false,
 
-  async getAllUnsentEmailData() {
+  async fetchUnsentNotificationData() {
     if (this.emailsSent) {
       return Promise.resolve([])
     }
@@ -33,7 +33,7 @@ const fakeTransporter = {
     fakeConnection.emailsSent = true
     return Promise.resolve({ response: '250 Ok' })
   },
-} as { shouldFail: boolean } as unknown as Transporter & { shouldFail: boolean }
+} as { shouldFail: boolean } as Transporter & { shouldFail: boolean }
 
 const fakeApiClient = {
   async fetch() {
