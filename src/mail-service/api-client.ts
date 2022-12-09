@@ -4,10 +4,10 @@ import { AbstractNotificationEvent } from '../gql/graphql'
 
 export interface ApiClient {
   // TODO: Types anpassen
-  fetch(x: { RequestDocument; Variables }): Promise<Answer>
+  fetch(x: { query: RequestDocument; variables: Variables }): Promise<Answer>
 }
 
-export class ApiGraphqlClient /*implements ApiClient*/ {
+export class ApiGraphqlClient implements ApiClient {
   client: GraphQLClient
 
   constructor(apiGraphqlUrl: string) {

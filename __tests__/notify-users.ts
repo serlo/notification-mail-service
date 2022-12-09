@@ -1,6 +1,7 @@
 import type { Transporter } from 'nodemailer'
 
 import { notifyUsers, DBConnection } from '../src/mail-service'
+import {Instance} from "../src/gql/graphql";
 
 const fakeConnection: DBConnection & { emailsSent: boolean } = {
   emailsSent: false,
@@ -38,7 +39,6 @@ const fakeTransporter = {
 const fakeApiClient = {
   async fetch() {
     return Promise.resolve({
-      notifications: {
         nodes: [
           {
             id: 11605,
@@ -46,6 +46,9 @@ const fakeApiClient = {
               __typename: 'CheckoutRevisionNotificationEvent',
               date: '2019-12-01T18:58:08+01:00',
               actor: { username: 'admin' },
+              id: 23,
+              instance: Instance.De,
+              objectId: 34
             },
           },
           {
@@ -54,10 +57,12 @@ const fakeApiClient = {
               __typename: 'CreateEntityRevisionNotificationEvent',
               date: '2019-12-01T18:58:08+01:00',
               actor: { username: 'admin' },
+              id: 23,
+              instance: Instance.De,
+              objectId: 34
             },
           },
         ],
-      },
     })
   },
 }
