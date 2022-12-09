@@ -1,10 +1,9 @@
-import { GraphQLClient } from 'graphql-request'
+import { RequestDocument } from 'graphql-request'
 import type { Transporter } from 'nodemailer'
 import Mailer from 'nodemailer-react'
 
 import { graphql } from '../gql'
-import { GetNotificationsDocument } from '../gql/graphql'
-import { ApiClient } from './api-client'
+import { /*ApiClient,*/ ApiGraphqlClient, Node } from './api-client'
 import { DBConnection } from './db-connection'
 import { NotificationEmail } from './templates'
 
@@ -21,15 +20,14 @@ interface Result {
 export async function notifyUsers(
   dbConnection: DBConnection,
   transporter: Transporter,
-  apiGraphqlClient: ApiClient
+  apiGraphqlClient: ApiGraphqlClient
 ): Promise<Result[]> {
   const unnotifiedUsers = await dbConnection.getAllUnsentEmailData()
 
   if (!unnotifiedUsers.length) return []
 
   // TODO: Make me better
-  const client = new GraphQLClient('...')
-  const query = graphql(`
+  const query: RequestDocument = graphql(`
     query getNotifications($userId: Int!) {
       notifications(
         first: 500
@@ -47,17 +45,26 @@ export async function notifyUsers(
         }
       }
     }
-  `) as typeof GetNotificationsDocument
+  `)
 
-  const results = await Promise.all(
+  interface Data {
+    userEmail: string
+    username: string
+    notifications: Node[]
+  }
+
+  return await Promise.all(
     unnotifiedUsers.map(async (user) => {
-      const { notifications } = await client.request(query, { userId: user.id })
+      const { notifications } = await apiGraphqlClient.fetch({
+        query,
+        variables: { userId: user.id },
+      })
       const returnCode = await sendMail({
         data: {
           userEmail: user.email,
           username: user.username,
           notifications: notifications.nodes,
-        },
+        } as Data,
         transporter,
       })
 
@@ -86,8 +93,6 @@ export async function notifyUsers(
       }
     })
   )
-
-  return results
 }
 
 async function sendMail({
@@ -97,7 +102,7 @@ async function sendMail({
   data: {
     username: string
     userEmail: string
-    notifications: Notification[]
+    notifications: Node[]
   }
   transporter: Transporter
 }) {
@@ -107,23 +112,22 @@ async function sendMail({
   // to keep it, let's refactor to declare it at the src/index
   const mailer = Mailer({ transport: transporter }, { NotificationEmail })
 
+  const test = {
+    username: data.username,
+    actorNames: notifications.map(
+      (notification) => notification.event.actor.username
+    ),
+    eventIds: notifications.map(
+      (notification) => notification.event.id as string
+    ),
+    dates: notifications.map(
+      (notification) => notification.event.date as string
+    ),
+  } as Parameters<NotificationEmail>
   // TODO: there should be also email as plain text
-  const { response } = await mailer.send(
-    'NotificationEmail',
-    {
-      username: data.username,
-      actorNames: notifications.map(
-        (notification) => notification.event.actor.username
-      ),
-      eventIds: notifications.map(
-        (notification) => notification.event.__typename
-      ),
-      dates: notifications.map((notification) => notification.event.date),
-    },
-    {
-      to: data.userEmail,
-    }
-  )
+  const { response } = await mailer.send('NotificationEmail', test, {
+    to: data.userEmail,
+  })
 
   return response
 }
