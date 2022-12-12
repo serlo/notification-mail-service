@@ -1,7 +1,9 @@
+import { RequestDocument, Variables } from 'graphql-request'
 import type { Transporter } from 'nodemailer'
 
-import { notifyUsers, DBConnection } from '../src/mail-service'
-import {Instance} from "../src/gql/graphql";
+import { user } from '../__fixtures__/user'
+import { AbstractNotificationEvent, Instance } from '../src/gql/graphql'
+import { notifyUsers, DBConnection, Answer } from '../src/mail-service'
 
 const fakeConnection: DBConnection & { emailsSent: boolean } = {
   emailsSent: false,
@@ -34,35 +36,39 @@ const fakeTransporter = {
     fakeConnection.emailsSent = true
     return Promise.resolve({ response: '250 Ok' })
   },
-} as { shouldFail: boolean } as unknown as Transporter & { shouldFail: boolean }
+} as { shouldFail: boolean } as Transporter & { shouldFail: boolean }
+
+const event1: AbstractNotificationEvent = {
+  //__typename: 'CheckoutRevisionNotificationEvent',
+  date: '2019-12-01T18:58:08+01:00',
+  actor: user,
+  id: 23,
+  instance: Instance.De,
+  objectId: 34,
+}
+
+const event2: AbstractNotificationEvent = {
+  //__typename: 'CreateEntityRevisionNotificationEvent',
+  date: '2019-12-01T18:58:08+01:00',
+  actor: user,
+  id: 23,
+  instance: Instance.De,
+  objectId: 34,
+}
 
 const fakeApiClient = {
-  async fetch() {
+  async fetch(_r: RequestDocument, _v: Variables): Promise<Answer> {
     return Promise.resolve({
-        nodes: [
-          {
-            id: 11605,
-            event: {
-              __typename: 'CheckoutRevisionNotificationEvent',
-              date: '2019-12-01T18:58:08+01:00',
-              actor: { username: 'admin' },
-              id: 23,
-              instance: Instance.De,
-              objectId: 34
-            },
-          },
-          {
-            id: 11602,
-            event: {
-              __typename: 'CreateEntityRevisionNotificationEvent',
-              date: '2019-12-01T18:58:08+01:00',
-              actor: { username: 'admin' },
-              id: 23,
-              instance: Instance.De,
-              objectId: 34
-            },
-          },
-        ],
+      nodes: [
+        {
+          id: 11605,
+          event: event1,
+        },
+        {
+          id: 11602,
+          event: event2,
+        },
+      ],
     })
   },
 }

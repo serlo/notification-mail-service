@@ -4,7 +4,7 @@ import { AbstractNotificationEvent } from '../gql/graphql'
 
 export interface ApiClient {
   // TODO: Types anpassen
-  fetch(x: { query: RequestDocument; variables: Variables }): Promise<Answer>
+  fetch(query: RequestDocument, variables: Variables): Promise<Answer>
 }
 
 export class ApiGraphqlClient implements ApiClient {
@@ -14,13 +14,7 @@ export class ApiGraphqlClient implements ApiClient {
     this.client = new GraphQLClient(apiGraphqlUrl)
   }
 
-  async fetch({
-    query,
-    variables,
-  }: {
-    query: RequestDocument
-    variables?: Variables | undefined
-  }): Promise<Answer> {
+  async fetch(query: RequestDocument, variables: Variables): Promise<Answer> {
     return this.client.request(query, variables)
   }
 }

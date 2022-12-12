@@ -17,6 +17,12 @@ interface Result {
   notificationsIds: number[]
 }
 
+interface Data {
+  userEmail: string
+  username: string
+  notifications: Node[]
+}
+
 export async function notifyUsers(
   dbConnection: DBConnection,
   transporter: Transporter,
@@ -47,24 +53,17 @@ export async function notifyUsers(
     }
   `)
 
-  interface Data {
-    userEmail: string
-    username: string
-    notifications: Node[]
-  }
-
   return await Promise.all(
     unnotifiedUsers.map(async (user) => {
-      const notifications: Answer = await apiClient.fetch({
-        query,
-        variables: { userId: user.id },
+      const notifications: Answer = await apiClient.fetch(query, {
+        userId: user.id,
       })
       const returnCode = await sendMail({
         data: {
           userEmail: user.email,
           username: user.username,
           notifications: notifications.nodes,
-        } as Data,
+        },
         transporter,
       })
 
@@ -99,11 +98,7 @@ async function sendMail({
   data,
   transporter,
 }: {
-  data: {
-    username: string
-    userEmail: string
-    notifications: Node[]
-  }
+  data: Data
   transporter: Transporter
 }) {
   const { notifications } = data
@@ -117,13 +112,11 @@ async function sendMail({
     actorNames: notifications.map(
       (notification) => notification.event.actor.username
     ),
-    eventIds: notifications.map(
-      (notification) => notification.event.id as string
+    eventIds: notifications.map((notification) =>
+      notification.event.id.toString()
     ),
-    dates: notifications.map(
-      (notification) => notification.event.date as string
-    ),
-  } as Parameters<NotificationEmail>
+    dates: notifications.map((notification) => String(notification.event.date)),
+  }
   // TODO: there should be also email as plain text
   const { response } = await mailer.send('NotificationEmail', test, {
     to: data.userEmail,
