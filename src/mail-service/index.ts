@@ -33,12 +33,10 @@ export async function notifyUsers(
   if (!unnotifiedUsers.length) return []
 
   // TODO: Make me better
-  const query: RequestDocument = graphql(`
+  // # FIXME / TODO #emailSent: false #emailSubscribed: true #userId: $userId
+  const query = graphql(`
     query getNotifications($userId: Int!) {
-      notifications(
-        first: 500
-        unread: true # FIXME / TODO #emailSent: false #emailSubscribed: true #userId: $userId
-      ) {
+      notifications(first: 500, unread: true) {
         nodes {
           id
           event {
@@ -55,7 +53,7 @@ export async function notifyUsers(
 
   return await Promise.all(
     unnotifiedUsers.map(async (user) => {
-      const notifications: Answer = await apiClient.fetch(query, {
+      const { notifications } = await apiClient.fetch(query, {
         userId: user.id,
       })
       const returnCode = await sendMail({
