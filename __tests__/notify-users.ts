@@ -1,9 +1,10 @@
-import { RequestDocument, Variables } from 'graphql-request'
 import type { Transporter } from 'nodemailer'
 
 import { user } from '../__fixtures__/user'
-import { AbstractNotificationEvent, Instance } from '../src/gql/graphql'
-import { notifyUsers, DBConnection, Answer } from '../src/mail-service'
+import { AbstractNotificationEvent, Exact, GetNotificationsQuery, Instance} from '../src/gql/graphql'
+import {notifyUsers, DBConnection, ApiClient} from '../src/mail-service'
+import {RequestDocument} from "graphql-request";
+import {TypedDocumentNode} from '@graphql-typed-document-node/core';
 
 const fakeConnection: DBConnection & { emailsSent: boolean } = {
   emailsSent: false,
@@ -22,7 +23,8 @@ const fakeConnection: DBConnection & { emailsSent: boolean } = {
     ])
   },
 
-  async updateNotificationSendStatus() {},
+  async updateNotificationSendStatus() {
+  },
 }
 
 const fakeTransporter = {
@@ -34,7 +36,7 @@ const fakeTransporter = {
       })
 
     fakeConnection.emailsSent = true
-    return Promise.resolve({ response: '250 Ok' })
+    return Promise.resolve({response: '250 Ok'})
   },
 } as { shouldFail: boolean } as Transporter & { shouldFail: boolean }
 
@@ -56,9 +58,10 @@ const event2: AbstractNotificationEvent = {
   objectId: 34,
 }
 
-const fakeApiClient = {
-  async fetch(_r: RequestDocument, _v: Variables): Promise<Answer> {
-    return Promise.resolve({
+class fakeApiClient {
+  fetch(_query: TypedDocumentNode<GetNotificationsQuery, Exact<{ userId: number; }>>, obj: object) {
+    console.log("test")
+    const value = Promise.resolve({
       nodes: [
         {
           id: 11605,
@@ -70,11 +73,13 @@ const fakeApiClient = {
         },
       ],
     })
-  },
+    console.log(value)
+    return value
+  }
 }
 
 async function notify() {
-  return notifyUsers(fakeConnection, fakeTransporter, fakeApiClient)
+  return notifyUsers(fakeConnection, fakeTransporter, new fakeApiClient())
 }
 
 beforeEach(() => {

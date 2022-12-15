@@ -1,9 +1,8 @@
-import { RequestDocument } from 'graphql-request'
 import type { Transporter } from 'nodemailer'
 import Mailer from 'nodemailer-react'
 
 import { graphql } from '../gql'
-import { Answer, ApiClient, Node } from './api-client'
+import { ApiClient } from './api-client'
 import { DBConnection } from './db-connection'
 import { NotificationEmail } from './templates'
 
@@ -17,10 +16,16 @@ interface Result {
   notificationsIds: number[]
 }
 
-interface Data {
-  userEmail: string
-  username: string
-  notifications: Node[]
+interface Node {
+  id: number
+  event: {
+    __typename: string
+    id: number
+    date: string
+    actor: {
+      username: string
+    }
+  }
 }
 
 export async function notifyUsers(
@@ -34,6 +39,9 @@ export async function notifyUsers(
 
   // TODO: Make me better
   // # FIXME / TODO #emailSent: false #emailSubscribed: true #userId: $userId
+  // put this in the next to lines when types are there in main API
+  // query getNotifications($userId: Int!) {
+  //       notifications(first: 500, unread: true, emailSent: false, emailSubscribed: true, userId: $userId) {
   const query = graphql(`
     query getNotifications($userId: Int!) {
       notifications(first: 500, unread: true) {
@@ -41,6 +49,7 @@ export async function notifyUsers(
           id
           event {
             __typename
+            id
             date
             actor {
               username
@@ -56,14 +65,16 @@ export async function notifyUsers(
       const { notifications } = await apiClient.fetch(query, {
         userId: user.id,
       })
-      const returnCode = await sendMail({
-        data: {
-          userEmail: user.email,
+      console.log("notifications")
+      console.log(notifications)
+      const returnCode = await sendMail(
+        {
           username: user.username,
-          notifications: notifications.nodes,
+          email: user.email,
         },
-        transporter,
-      })
+        notifications.nodes,
+        transporter
+      )
 
       const baseResult = {
         userId: user.id,
@@ -92,21 +103,17 @@ export async function notifyUsers(
   )
 }
 
-async function sendMail({
-  data,
-  transporter,
-}: {
-  data: Data
+async function sendMail(
+  { username, email }: { username: string; email: string },
+  notifications: Node[],
   transporter: Transporter
-}) {
-  const { notifications } = data
-
+) {
   // This is nice simple lib. We don't really need it, but if we are going
   // to keep it, let's refactor to declare it at the src/index
   const mailer = Mailer({ transport: transporter }, { NotificationEmail })
 
-  const test = {
-    username: data.username,
+  const props = {
+    username,
     actorNames: notifications.map(
       (notification) => notification.event.actor.username
     ),
@@ -116,8 +123,8 @@ async function sendMail({
     dates: notifications.map((notification) => String(notification.event.date)),
   }
   // TODO: there should be also email as plain text
-  const { response } = await mailer.send('NotificationEmail', test, {
-    to: data.userEmail,
+  const { response } = await mailer.send('NotificationEmail', props, {
+    to: email,
   })
 
   return response

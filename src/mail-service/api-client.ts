@@ -1,6 +1,4 @@
-import { GraphQLClient, RequestDocument, Variables } from 'graphql-request'
-
-import { AbstractNotificationEvent } from '../gql/graphql'
+import { GraphQLClient } from 'graphql-request'
 
 export interface ApiClient {
   fetch: GraphQLClient['request']
@@ -14,13 +12,4 @@ export class ApiGraphqlClient implements ApiClient {
 
     this.fetch = client.request.bind(client)
   }
-}
-
-export interface Answer {
-  nodes: Node[]
-}
-
-export interface Node {
-  id: number
-  event: AbstractNotificationEvent
 }
