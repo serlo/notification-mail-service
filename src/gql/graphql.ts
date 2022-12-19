@@ -1546,7 +1546,6 @@ export type Mutation = {
   _cache: _CacheMutation;
   entity: EntityMutation;
   notification: NotificationMutation;
-  oauth: OauthMutation;
   page: PageMutation;
   subscription: SubscriptionMutation;
   taxonomyTerm: TaxonomyTermMutation;
@@ -1629,39 +1628,6 @@ export type NotificationSetStateResponse = {
   __typename?: 'NotificationSetStateResponse';
   query: Query;
   success: Scalars['Boolean'];
-};
-
-export type OauthAcceptInput = {
-  challenge: Scalars['String'];
-  session: Scalars['JSON'];
-};
-
-export type OauthAcceptResponse = {
-  __typename?: 'OauthAcceptResponse';
-  redirectUri: Scalars['String'];
-  success: Scalars['Boolean'];
-};
-
-export type OauthMutation = {
-  __typename?: 'OauthMutation';
-  acceptConsent: OauthAcceptResponse;
-  acceptLogin: OauthAcceptResponse;
-  acceptLogout: OauthAcceptResponse;
-};
-
-
-export type OauthMutationAcceptConsentArgs = {
-  input: OauthAcceptInput;
-};
-
-
-export type OauthMutationAcceptLoginArgs = {
-  input: OauthAcceptInput;
-};
-
-
-export type OauthMutationAcceptLogoutArgs = {
-  challenge: Scalars['String'];
 };
 
 export type Page = AbstractNavigationChild & AbstractRepository & AbstractUuid & InstanceAware & ThreadAware & {
@@ -1881,9 +1847,12 @@ export type QueryNotificationEventArgs = {
 export type QueryNotificationsArgs = {
   after?: InputMaybe<Scalars['String']>;
   before?: InputMaybe<Scalars['String']>;
+  emailSent?: InputMaybe<Scalars['Boolean']>;
+  emailSubscribed?: InputMaybe<Scalars['Boolean']>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   unread?: InputMaybe<Scalars['Boolean']>;
+  userId?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -2997,4 +2966,4 @@ export type GetNotificationsQueryVariables = Exact<{
 export type GetNotificationsQuery = { __typename?: 'Query', notifications: { __typename?: 'NotificationConnection', nodes: Array<{ __typename?: 'Notification', id: number, event: { __typename: 'CheckoutRevisionNotificationEvent', id: number, date: any, actor: { __typename?: 'User', username: string } } | { __typename: 'CreateCommentNotificationEvent', id: number, date: any, actor: { __typename?: 'User', username: string } } | { __typename: 'CreateEntityLinkNotificationEvent', id: number, date: any, actor: { __typename?: 'User', username: string } } | { __typename: 'CreateEntityNotificationEvent', id: number, date: any, actor: { __typename?: 'User', username: string } } | { __typename: 'CreateEntityRevisionNotificationEvent', id: number, date: any, actor: { __typename?: 'User', username: string } } | { __typename: 'CreateTaxonomyLinkNotificationEvent', id: number, date: any, actor: { __typename?: 'User', username: string } } | { __typename: 'CreateTaxonomyTermNotificationEvent', id: number, date: any, actor: { __typename?: 'User', username: string } } | { __typename: 'CreateThreadNotificationEvent', id: number, date: any, actor: { __typename?: 'User', username: string } } | { __typename: 'RejectRevisionNotificationEvent', id: number, date: any, actor: { __typename?: 'User', username: string } } | { __typename: 'RemoveEntityLinkNotificationEvent', id: number, date: any, actor: { __typename?: 'User', username: string } } | { __typename: 'RemoveTaxonomyLinkNotificationEvent', id: number, date: any, actor: { __typename?: 'User', username: string } } | { __typename: 'SetLicenseNotificationEvent', id: number, date: any, actor: { __typename?: 'User', username: string } } | { __typename: 'SetTaxonomyParentNotificationEvent', id: number, date: any, actor: { __typename?: 'User', username: string } } | { __typename: 'SetTaxonomyTermNotificationEvent', id: number, date: any, actor: { __typename?: 'User', username: string } } | { __typename: 'SetThreadStateNotificationEvent', id: number, date: any, actor: { __typename?: 'User', username: string } } | { __typename: 'SetUuidStateNotificationEvent', id: number, date: any, actor: { __typename?: 'User', username: string } } }> } };
 
 
-export const GetNotificationsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getNotifications"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"notifications"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"500"}},{"kind":"Argument","name":{"kind":"Name","value":"unread"},"value":{"kind":"BooleanValue","value":true}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"event"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"actor"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"username"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetNotificationsQuery, GetNotificationsQueryVariables>;
+export const GetNotificationsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getNotifications"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"notifications"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"500"}},{"kind":"Argument","name":{"kind":"Name","value":"unread"},"value":{"kind":"BooleanValue","value":true}},{"kind":"Argument","name":{"kind":"Name","value":"emailSent"},"value":{"kind":"BooleanValue","value":false}},{"kind":"Argument","name":{"kind":"Name","value":"emailSubscribed"},"value":{"kind":"BooleanValue","value":true}},{"kind":"Argument","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"event"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"actor"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"username"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetNotificationsQuery, GetNotificationsQueryVariables>;

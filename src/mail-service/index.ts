@@ -37,14 +37,9 @@ export async function notifyUsers(
 
   if (!unnotifiedUsers.length) return []
 
-  // TODO: Make me better
-  // # FIXME / TODO #emailSent: false #emailSubscribed: true #userId: $userId
-  // put this in the next to lines when types are there in main API
-  // query getNotifications($userId: Int!) {
-  //       notifications(first: 500, unread: true, emailSent: false, emailSubscribed: true, userId: $userId) {
   const query = graphql(`
     query getNotifications($userId: Int!) {
-      notifications(first: 500, unread: true) {
+      notifications(first: 500, unread: true, emailSent: false, emailSubscribed: true, userId: $userId) {
         nodes {
           id
           event {
@@ -65,8 +60,6 @@ export async function notifyUsers(
       const { notifications } = await apiClient.fetch(query, {
         userId: user.id,
       })
-      console.log("notifications")
-      console.log(notifications)
       const returnCode = await sendMail(
         {
           username: user.username,

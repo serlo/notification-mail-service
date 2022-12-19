@@ -1,8 +1,10 @@
 import type { CodegenConfig } from '@graphql-codegen/cli'
 
+import { config as appConfig} from './src/config'
+
 const config: CodegenConfig = {
   overwrite: true,
-  schema: 'https://api.serlo-staging.dev/graphql',
+  schema: appConfig.serloApiGraphqlUrl,
   documents: 'src/**/*.ts',
   generates: {
     'src/gql/': {
