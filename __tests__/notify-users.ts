@@ -1,10 +1,8 @@
 import type { Transporter } from 'nodemailer'
 
 import { user } from '../__fixtures__/user'
-import { AbstractNotificationEvent, Exact, GetNotificationsQuery, Instance} from '../src/gql/graphql'
-import {notifyUsers, DBConnection, ApiClient} from '../src/mail-service'
-import {RequestDocument} from "graphql-request";
-import {TypedDocumentNode} from '@graphql-typed-document-node/core';
+import { AbstractNotificationEvent, Instance} from '../src/gql/graphql'
+import {notifyUsers, DBConnection } from '../src/mail-service'
 
 const fakeConnection: DBConnection & { emailsSent: boolean } = {
   emailsSent: false,
@@ -59,21 +57,21 @@ const event2: AbstractNotificationEvent = {
 }
 
 class fakeApiClient {
-  fetch(_query: TypedDocumentNode<GetNotificationsQuery, Exact<{ userId: number; }>>, obj: object) {
-    console.log("test")
+  fetch() {
     const value = Promise.resolve({
-      nodes: [
-        {
-          id: 11605,
-          event: event1,
-        },
-        {
-          id: 11602,
-          event: event2,
-        },
-      ],
+      notifications: {
+        nodes: [
+          {
+            id: 11605,
+            event: event1,
+          },
+          {
+            id: 11602,
+            event: event2,
+          },
+        ],
+      }
     })
-    console.log(value)
     return value
   }
 }
