@@ -10,7 +10,7 @@
     "_prettier": "prettier .",
     "format": "npm-run-all -c format:*",
     "format:eslint": "yarn _eslint --fix",
-    "format:prettier": "yarn _prettier --write",
+    "format:prettier": "yarn _prettier --write '!src/gql/**/*'",
     "lint": "npm-run-all --parallel lint:prettier lint:tsc lint:eslint",
     "lint:eslint": "yarn _eslint",
     "lint:prettier": "yarn _prettier --check",

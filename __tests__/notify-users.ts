@@ -1,8 +1,8 @@
 import type { Transporter } from 'nodemailer'
 
 import { user } from '../__fixtures__/user'
-import { AbstractNotificationEvent, Instance} from '../src/gql/graphql'
-import {notifyUsers, DBConnection } from '../src/mail-service'
+import { AbstractNotificationEvent, Instance } from '../src/gql/graphql'
+import { notifyUsers, DBConnection } from '../src/mail-service'
 
 const fakeConnection: DBConnection & { emailsSent: boolean } = {
   emailsSent: false,
@@ -21,8 +21,7 @@ const fakeConnection: DBConnection & { emailsSent: boolean } = {
     ])
   },
 
-  async updateNotificationSendStatus() {
-  },
+  async updateNotificationSendStatus() {},
 }
 
 const fakeTransporter = {
@@ -34,7 +33,7 @@ const fakeTransporter = {
       })
 
     fakeConnection.emailsSent = true
-    return Promise.resolve({response: '250 Ok'})
+    return Promise.resolve({ response: '250 Ok' })
   },
 } as { shouldFail: boolean } as Transporter & { shouldFail: boolean }
 
@@ -70,7 +69,7 @@ class fakeApiClient {
             event: event2,
           },
         ],
-      }
+      },
     })
     return value
   }

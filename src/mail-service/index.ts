@@ -39,7 +39,13 @@ export async function notifyUsers(
 
   const query = graphql(`
     query getNotifications($userId: Int!) {
-      notifications(first: 500, unread: true, emailSent: false, emailSubscribed: true, userId: $userId) {
+      notifications(
+        first: 500
+        unread: true
+        emailSent: false
+        emailSubscribed: true
+        userId: $userId
+      ) {
         nodes {
           id
           event {
