@@ -1,11 +1,11 @@
 import type { Connection } from 'mysql2/promise'
 
 export interface DBConnection {
-  getAllUnsentEmailData(): Promise<EmailData[]>
+  fetchUnsentNotificationData(): Promise<EmailData[]>
   updateNotificationSendStatus(notificationsIds: string[]): Promise<void>
 }
 
-interface EmailData {
+export interface EmailData {
   id: number
   username: string
   email: string
@@ -18,7 +18,7 @@ export class MysqlConnection implements DBConnection {
     this.connection = connection
   }
 
-  async getAllUnsentEmailData() {
+  async fetchUnsentNotificationData() {
     const [rows] = await this.connection.execute(
       `SELECT user.username, user.email, user.id          
         FROM notification

@@ -7,7 +7,7 @@ import { notifyUsers, DBConnection } from '../src/mail-service'
 const fakeConnection: DBConnection & { emailsSent: boolean } = {
   emailsSent: false,
 
-  async getAllUnsentEmailData() {
+  async fetchUnsentNotificationData() {
     if (this.emailsSent) {
       return Promise.resolve([])
     }

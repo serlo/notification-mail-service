@@ -3,7 +3,7 @@ import Mailer from 'nodemailer-react'
 
 import { graphql } from '../gql'
 import { ApiClient } from './api-client'
-import { DBConnection } from './db-connection'
+import { DBConnection, EmailData } from './db-connection'
 import { NotificationEmail } from './templates'
 
 export * from './api-client'
@@ -33,7 +33,7 @@ export async function notifyUsers(
   transporter: Transporter,
   apiClient: ApiClient
 ): Promise<Result[]> {
-  const unnotifiedUsers = await dbConnection.getAllUnsentEmailData()
+  const unnotifiedUsers = await dbConnection.fetchUnsentNotificationData()
 
   if (!unnotifiedUsers.length) return []
 
