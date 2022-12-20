@@ -8,7 +8,7 @@ import { NotificationEmail } from './templates'
 
 export * from './db-connection'
 
-export type ApiClient = GraphQLClient | { request: GraphQLClient['request'] }
+export type ApiClient = GraphQLClient | Pick<GraphQLClient, 'request'>
 
 interface Result {
   success: boolean
