@@ -1,8 +1,7 @@
-import { Notification as ApiNotification } from '@serlo/api'
-import { gql } from 'graphql-request'
 import type { Transporter } from 'nodemailer'
 import Mailer from 'nodemailer-react'
 
+import { graphql } from '../gql'
 import { ApiClient } from './api-client'
 import { DBConnection, EmailData } from './db-connection'
 import { NotificationEmail } from './templates'
@@ -17,61 +16,64 @@ interface Result {
   notificationsIds: number[]
 }
 
-// AbstractNotificationEvent has __typename, but it is not in its type...
-type Notification = ApiNotification & {
-  event: ApiNotification['event'] & { __typename: string }
+interface Node {
+  id: number
+  event: {
+    __typename: string
+    id: number
+    date: string
+    actor: {
+      username: string
+    }
+  }
 }
 
 export async function notifyUsers(
   dbConnection: DBConnection,
   transporter: Transporter,
-  apiGraphqlClient: ApiClient
+  apiClient: ApiClient
 ): Promise<Result[]> {
   const unnotifiedUsers = await dbConnection.fetchUnsentNotificationData()
 
   if (!unnotifiedUsers.length) return []
 
-  const results = await Promise.all(
-    unnotifiedUsers.map(async (user: EmailData) => {
-      const { notifications } = (await apiGraphqlClient.fetch({
-        query: gql`
-          query getNotifications($userId: Int!) {
-            notifications(
-              first: 500
-              unread: true
-              emailSent: false
-              emailSubscribed: true
-              userId: $userId
-            ) {
-              nodes {
-                id
-                event {
-                  __typename
-                  date
-                  actor {
-                    username
-                  }
-                }
-              }
+  const query = graphql(`
+    query getNotifications($userId: Int!) {
+      notifications(
+        first: 500
+        unread: true
+        emailSent: false
+        emailSubscribed: true
+        userId: $userId
+      ) {
+        nodes {
+          id
+          event {
+            __typename
+            id
+            date
+            actor {
+              username
             }
           }
-        `,
-        variables: {
-          userId: user.id,
-        },
-      })) as {
-        notifications: {
-          nodes: Notification[]
         }
       }
-      const returnCode = await sendMail({
-        data: {
-          userEmail: user.email,
-          username: user.username,
-          notifications: notifications.nodes,
-        },
-        transporter,
+    }
+  `)
+
+  return await Promise.all(
+    unnotifiedUsers.map(async (user) => {
+      const { notifications } = await apiClient.fetch(query, {
+        userId: user.id,
       })
+      const returnCode = await sendMail(
+        {
+          username: user.username,
+          email: user.email,
+        },
+        notifications.nodes,
+        transporter
+      )
 
       const baseResult = {
         userId: user.id,
@@ -98,44 +100,31 @@ export async function notifyUsers(
       }
     })
   )
-
-  return results
 }
 
-async function sendMail({
-  data,
-  transporter,
-}: {
-  data: {
-    username: string
-    userEmail: string
-    notifications: Notification[]
-  }
+async function sendMail(
+  { username, email }: { username: string; email: string },
+  notifications: Node[],
   transporter: Transporter
-}) {
-  const { notifications } = data
-
+) {
   // This is nice simple lib. We don't really need it, but if we are going
   // to keep it, let's refactor to declare it at the src/index
   const mailer = Mailer({ transport: transporter }, { NotificationEmail })
 
+  const props = {
+    username,
+    actorNames: notifications.map(
+      (notification) => notification.event.actor.username
+    ),
+    eventIds: notifications.map((notification) =>
+      notification.event.id.toString()
+    ),
+    dates: notifications.map((notification) => String(notification.event.date)),
+  }
   // TODO: there should be also email as plain text
-  const { response } = await mailer.send(
-    'NotificationEmail',
-    {
-      username: data.username,
-      actorNames: notifications.map(
-        (notification) => notification.event.actor.username
-      ),
-      eventIds: notifications.map(
-        (notification) => notification.event.__typename
-      ),
-      dates: notifications.map((notification) => notification.event.date),
-    },
-    {
-      to: data.userEmail,
-    }
-  )
+  const { response } = await mailer.send('NotificationEmail', props, {
+    to: email,
+  })
 
   return response
 }

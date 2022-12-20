@@ -1,5 +1,7 @@
 import type { Transporter } from 'nodemailer'
 
+import { user } from '../__fixtures__/user'
+import { AbstractNotificationEvent, Instance } from '../src/gql/graphql'
 import { notifyUsers, DBConnection } from '../src/mail-service'
 
 const fakeConnection: DBConnection & { emailsSent: boolean } = {
@@ -35,35 +37,46 @@ const fakeTransporter = {
   },
 } as { shouldFail: boolean } as Transporter & { shouldFail: boolean }
 
-const fakeApiClient = {
-  async fetch() {
-    return Promise.resolve({
+const event1: AbstractNotificationEvent = {
+  //__typename: 'CheckoutRevisionNotificationEvent',
+  date: '2019-12-01T18:58:08+01:00',
+  actor: user,
+  id: 23,
+  instance: Instance.De,
+  objectId: 34,
+}
+
+const event2: AbstractNotificationEvent = {
+  //__typename: 'CreateEntityRevisionNotificationEvent',
+  date: '2019-12-01T18:58:08+01:00',
+  actor: user,
+  id: 23,
+  instance: Instance.De,
+  objectId: 34,
+}
+
+class fakeApiClient {
+  fetch() {
+    const value = Promise.resolve({
       notifications: {
         nodes: [
           {
             id: 11605,
-            event: {
-              __typename: 'CheckoutRevisionNotificationEvent',
-              date: '2019-12-01T18:58:08+01:00',
-              actor: { username: 'admin' },
-            },
+            event: event1,
           },
           {
             id: 11602,
-            event: {
-              __typename: 'CreateEntityRevisionNotificationEvent',
-              date: '2019-12-01T18:58:08+01:00',
-              actor: { username: 'admin' },
-            },
+            event: event2,
           },
         ],
       },
     })
-  },
+    return value
+  }
 }
 
 async function notify() {
-  return notifyUsers(fakeConnection, fakeTransporter, fakeApiClient)
+  return notifyUsers(fakeConnection, fakeTransporter, new fakeApiClient())
 }
 
 beforeEach(() => {

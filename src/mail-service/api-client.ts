@@ -1,23 +1,15 @@
-import { GraphQLClient, RequestDocument, Variables } from 'graphql-request'
+import { GraphQLClient } from 'graphql-request'
 
 export interface ApiClient {
-  fetch(x: unknown): Promise<unknown>
+  fetch: GraphQLClient['request']
 }
 
 export class ApiGraphqlClient implements ApiClient {
-  client: GraphQLClient
+  fetch: GraphQLClient['request']
 
   constructor(apiGraphqlUrl: string) {
-    this.client = new GraphQLClient(apiGraphqlUrl)
-  }
+    const client = new GraphQLClient(apiGraphqlUrl)
 
-  async fetch({
-    query,
-    variables,
-  }: {
-    query: RequestDocument
-    variables?: Variables | undefined
-  }) {
-    return this.client.request(query, variables)
+    this.fetch = client.request.bind(client)
   }
 }
