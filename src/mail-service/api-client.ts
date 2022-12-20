@@ -1,29 +1,15 @@
-import { GraphQLClient, RequestDocument, Variables } from 'graphql-request'
-
-import { AbstractNotificationEvent } from '../gql/graphql'
+import { GraphQLClient } from 'graphql-request'
 
 export interface ApiClient {
-  // TODO: Types anpassen
-  fetch(query: RequestDocument, variables: Variables): Promise<Answer>
+  fetch: GraphQLClient['request']
 }
 
 export class ApiGraphqlClient implements ApiClient {
-  client: GraphQLClient
+  fetch: GraphQLClient['request']
 
   constructor(apiGraphqlUrl: string) {
-    this.client = new GraphQLClient(apiGraphqlUrl)
+    const client = new GraphQLClient(apiGraphqlUrl)
+
+    this.fetch = client.request.bind(client)
   }
-
-  async fetch(query: RequestDocument, variables: Variables): Promise<Answer> {
-    return this.client.request(query, variables)
-  }
-}
-
-export interface Answer {
-  nodes: Node[]
-}
-
-export interface Node {
-  id: number
-  event: AbstractNotificationEvent
 }

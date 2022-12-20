@@ -1,9 +1,8 @@
-import { RequestDocument, Variables } from 'graphql-request'
 import type { Transporter } from 'nodemailer'
 
 import { user } from '../__fixtures__/user'
 import { AbstractNotificationEvent, Instance } from '../src/gql/graphql'
-import { notifyUsers, DBConnection, Answer } from '../src/mail-service'
+import { notifyUsers, DBConnection } from '../src/mail-service'
 
 const fakeConnection: DBConnection & { emailsSent: boolean } = {
   emailsSent: false,
@@ -56,25 +55,28 @@ const event2: AbstractNotificationEvent = {
   objectId: 34,
 }
 
-const fakeApiClient = {
-  async fetch(_r: RequestDocument, _v: Variables): Promise<Answer> {
-    return Promise.resolve({
-      nodes: [
-        {
-          id: 11605,
-          event: event1,
-        },
-        {
-          id: 11602,
-          event: event2,
-        },
-      ],
+class fakeApiClient {
+  fetch() {
+    const value = Promise.resolve({
+      notifications: {
+        nodes: [
+          {
+            id: 11605,
+            event: event1,
+          },
+          {
+            id: 11602,
+            event: event2,
+          },
+        ],
+      },
     })
-  },
+    return value
+  }
 }
 
 async function notify() {
-  return notifyUsers(fakeConnection, fakeTransporter, fakeApiClient)
+  return notifyUsers(fakeConnection, fakeTransporter, new fakeApiClient())
 }
 
 beforeEach(() => {
