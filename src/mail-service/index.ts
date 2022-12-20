@@ -33,7 +33,7 @@ export async function notifyUsers(
   transporter: Transporter,
   apiClient: ApiClient
 ): Promise<Result[]> {
-  const unnotifiedUsers = await dbConnection.fetchUnsentNotificationData()
+  const unnotifiedUsers = await dbConnection.fetchUnnotifiedUsers()
 
   if (!unnotifiedUsers.length) return []
 

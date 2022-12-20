@@ -7,7 +7,7 @@ import { notifyUsers, DBConnection } from '../src/mail-service'
 const fakeConnection: DBConnection & { emailsSent: boolean } = {
   emailsSent: false,
 
-  async fetchUnsentNotificationData() {
+  async fetchUnnotifiedUsers() {
     if (this.emailsSent) {
       return Promise.resolve([])
     }
@@ -55,7 +55,7 @@ const event2: AbstractNotificationEvent = {
   objectId: 34,
 }
 
-class fakeApiClient {
+const fakeApiClient = {
   fetch() {
     const value = Promise.resolve({
       notifications: {
@@ -76,7 +76,7 @@ class fakeApiClient {
 }
 
 async function notify() {
-  return notifyUsers(fakeConnection, fakeTransporter, new fakeApiClient())
+  return notifyUsers(fakeConnection, fakeTransporter, fakeApiClient)
 }
 
 beforeEach(() => {

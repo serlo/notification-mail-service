@@ -1,7 +1,7 @@
 import type { Connection } from 'mysql2/promise'
 
 export interface DBConnection {
-  fetchUnsentNotificationData(): Promise<EmailData[]>
+  fetchUnnotifiedUsers(): Promise<EmailData[]>
   updateNotificationSendStatus(notificationsIds: string[]): Promise<void>
 }
 
@@ -18,7 +18,7 @@ export class MysqlConnection implements DBConnection {
     this.connection = connection
   }
 
-  async fetchUnsentNotificationData() {
+  async fetchUnnotifiedUsers() {
     const [rows] = await this.connection.execute(
       `SELECT user.username, user.email, user.id          
         FROM notification
@@ -29,7 +29,7 @@ export class MysqlConnection implements DBConnection {
     return rows as EmailData[]
   }
 
-  async updateNotificationSendStatus(notificationsIds: string[]) {
+  async updateNotificationSentStatus(notificationsIds: string[]) {
     await this.connection.query(
       `UPDATE notification
         SET email_sent = true
