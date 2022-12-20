@@ -84,7 +84,7 @@ export async function notifyUsers(
 
       // actually there are other success codes, see https://en.wikipedia.org/wiki/List_of_SMTP_server_return_codes
       if (returnCode === '250 Ok') {
-        await dbConnection.updateNotificationSendStatus(
+        await dbConnection.updateNotificationSentStatus(
           notifications.nodes.map((notification) => notification.id.toString())
         )
         return {

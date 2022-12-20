@@ -2,7 +2,7 @@ import type { Connection } from 'mysql2/promise'
 
 export interface DBConnection {
   fetchUnnotifiedUsers(): Promise<EmailData[]>
-  updateNotificationSendStatus(notificationsIds: string[]): Promise<void>
+  updateNotificationSentStatus(notificationsIds: string[]): Promise<void>
 }
 
 export interface EmailData {

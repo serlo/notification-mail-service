@@ -21,7 +21,7 @@ const fakeConnection: DBConnection & { emailsSent: boolean } = {
     ])
   },
 
-  async updateNotificationSendStatus() {},
+  async updateNotificationSentStatus() {},
 }
 
 const fakeTransporter = {
@@ -72,7 +72,7 @@ const fakeApiClient = {
       },
     })
     return value
-  }
+  },
 }
 
 async function notify() {
