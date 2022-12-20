@@ -3,7 +3,7 @@ import Mailer from 'nodemailer-react'
 
 import { graphql } from '../gql'
 import { ApiClient } from './api-client'
-import { DBConnection, EmailData } from './db-connection'
+import { DBConnection } from './db-connection'
 import { NotificationEmail } from './templates'
 
 export * from './api-client'

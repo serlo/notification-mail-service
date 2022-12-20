@@ -3,38 +3,45 @@ import { BrowserRouter } from 'react-router-dom'
 
 import './App.css'
 
-interface Props {
+interface NotificationEmailProps {
   username: string
-  dates: string[]
-  eventIds: string[]
-  actorNames: string[]
+  events: Event[]
+}
+
+interface Event {
+  date: string
+  eventId: string
+  actorName: string // TODO: use actor object?
 }
 
 export function NotificationEmail({
   username,
-  actorNames,
-  dates,
-  eventIds,
-}: Props) {
+  events,
+}: NotificationEmailProps) {
   return (
     <>
       <p>Hello {username}</p>
       <br />
-      {actorNames.map((actor, i) => {
-        return (
-          <div key={i}>
-            <p>
-              {actor} {dates[i]}
-            </p>
-            <br />
-          </div>
-        )
+      {events.map((event) => {
+        return <Event event={event} />
       })}
       <br />
       Best regards
       <br />
       <span>Serlo Team</span>
     </>
+  )
+}
+
+function Event({ event }: { event: Event }) {
+  const { date, eventId, actorName } = event
+  return (
+    <div key={eventId}>
+      <p>
+        {actorName} {date} 
+      </p>
+      <br />
+    </div>
   )
 }
 
@@ -45,9 +52,17 @@ function App() {
         <Route
           path="/notifications"
           element={NotificationEmail({
-            actorNames: ['admin', 'devuser'],
-            dates: ['2022-11-15', '2022-11-15'],
-            eventIds: ['1', '2'],
+            events: [{
+              actorName: 'admin',
+              eventId: '1',
+              date: '2022-11-15 00:00:00'
+            },
+            {
+              actorName: 'devuser',
+              eventId: '2',
+              date: '2022-11-16 00:00:00'
+            }
+          ],
             username: 'user',
           })}
         />
