@@ -38,35 +38,36 @@ export async function notifyUsers(
 
   if (!unnotifiedUsers.length) return []
 
-  const query = graphql(`
-    query getNotifications($userId: Int!) {
-      notifications(
-        first: 500
-        unread: true
-        emailSent: false
-        emailSubscribed: true
-        userId: $userId
-      ) {
-        nodes {
-          id
-          event {
-            __typename
-            id
-            date
-            actor {
-              username
-            }
-          }
-        }
-      }
-    }
-  `)
-
   return await Promise.all(
     unnotifiedUsers.map(async (user) => {
-      const { notifications } = await apiClient.request(query, {
-        userId: user.id,
-      })
+      const { notifications } = await apiClient.request(
+        graphql(`
+          query getNotifications($userId: Int!) {
+            notifications(
+              first: 500
+              unread: true
+              emailSent: false
+              emailSubscribed: true
+              userId: $userId
+            ) {
+              nodes {
+                id
+                event {
+                  __typename
+                  id
+                  date
+                  actor {
+                    username
+                  }
+                }
+              }
+            }
+          }
+        `),
+        {
+          userId: user.id,
+        }
+      )
       const returnCode = await sendMail(
         {
           username: user.username,
