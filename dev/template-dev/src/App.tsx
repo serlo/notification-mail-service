@@ -38,7 +38,7 @@ function Event({ event }: { event: Event }) {
   return (
     <div key={eventId}>
       <p>
-        {actorName} {date} 
+        {actorName} {date}
       </p>
       <br />
     </div>
@@ -52,17 +52,18 @@ function App() {
         <Route
           path="/notifications"
           element={NotificationEmail({
-            events: [{
-              actorName: 'admin',
-              eventId: '1',
-              date: '2022-11-15 00:00:00'
-            },
-            {
-              actorName: 'devuser',
-              eventId: '2',
-              date: '2022-11-16 00:00:00'
-            }
-          ],
+            events: [
+              {
+                actorName: 'admin',
+                eventId: '1',
+                date: '2022-11-15 00:00:00',
+              },
+              {
+                actorName: 'devuser',
+                eventId: '2',
+                date: '2022-11-16 00:00:00',
+              },
+            ],
             username: 'user',
           })}
         />

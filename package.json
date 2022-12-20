@@ -8,7 +8,7 @@
   "scripts": {
     "_eslint": "eslint \"{{__tests__,scripts,src}/**/*,*}.{js,ts}\"",
     "_prettier": "prettier .",
-    "format": "npm-run-all -c format:*",
+    "format": "npm-run-all -c format:eslint format:prettier",
     "format:eslint": "yarn _eslint --fix",
     "format:prettier": "yarn _prettier --write '!src/gql/**/*'",
     "lint": "npm-run-all --parallel lint:prettier lint:tsc lint:eslint",
