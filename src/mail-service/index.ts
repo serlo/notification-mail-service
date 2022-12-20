@@ -1,13 +1,14 @@
+import { GraphQLClient } from 'graphql-request'
 import type { Transporter } from 'nodemailer'
 import Mailer from 'nodemailer-react'
 
 import { graphql } from '../gql'
-import { ApiClient } from './api-client'
 import { DBConnection } from './db-connection'
 import { NotificationEmail } from './templates'
 
-export * from './api-client'
 export * from './db-connection'
+
+export type ApiClient = GraphQLClient | { request: GraphQLClient['request'] }
 
 interface Result {
   success: boolean
@@ -63,7 +64,7 @@ export async function notifyUsers(
 
   return await Promise.all(
     unnotifiedUsers.map(async (user) => {
-      const { notifications } = await apiClient.fetch(query, {
+      const { notifications } = await apiClient.request(query, {
         userId: user.id,
       })
       const returnCode = await sendMail(

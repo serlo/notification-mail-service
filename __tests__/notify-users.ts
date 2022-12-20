@@ -56,7 +56,7 @@ const event2: AbstractNotificationEvent = {
 }
 
 const fakeApiClient = {
-  fetch() {
+  request() {
     const value = Promise.resolve({
       notifications: {
         nodes: [

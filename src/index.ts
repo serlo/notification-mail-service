@@ -1,9 +1,10 @@
 // eslint-disable-next-line import/no-internal-modules
+import { GraphQLClient } from 'graphql-request'
 import mysql from 'mysql2/promise'
 import { createTransport } from 'nodemailer'
 
 import { config } from './config'
-import { ApiGraphqlClient, MysqlConnection, notifyUsers } from './mail-service'
+import { MysqlConnection, notifyUsers } from './mail-service'
 
 void run()
 
@@ -24,7 +25,7 @@ async function run() {
     const results = await notifyUsers(
       new MysqlConnection(connection),
       transporter,
-      new ApiGraphqlClient(config.serloApiGraphqlUrl)
+      new GraphQLClient(config.serloApiGraphqlUrl)
     )
 
     // eslint-disable-next-line no-console

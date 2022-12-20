@@ -1,12 +1,9 @@
+import { GraphQLClient } from 'graphql-request'
 import { createConnection } from 'mysql2/promise'
 import { createTransport } from 'nodemailer'
 
 import { config } from '../src/config'
-import {
-  notifyUsers,
-  MysqlConnection,
-  ApiGraphqlClient,
-} from '../src/mail-service'
+import { notifyUsers, MysqlConnection } from '../src/mail-service'
 
 test.skip('should send all emails and set notifications as sent', async () => {
   const connection = await createConnection(config.db)
@@ -17,7 +14,7 @@ test.skip('should send all emails and set notifications as sent', async () => {
 
   const transporter = createTransport(config.mail, { from: config.fromEmail })
 
-  const apiGraphqlClient = new ApiGraphqlClient(
+  const apiGraphqlClient = new GraphQLClient(
     config.serloApiGraphqlUrl || 'https://api.serlo-staging.dev/graphql'
   )
 
