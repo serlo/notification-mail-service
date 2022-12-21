@@ -30,6 +30,7 @@ async function run() {
 
     // eslint-disable-next-line no-console
     console.log(results)
+    // TODO: should it exit with error code if one notification has success=false?
     exitCode = 0
   } catch (error) {
     // eslint-disable-next-line no-console
