@@ -1,14 +1,13 @@
 import { GraphQLClient } from 'graphql-request'
 import type { Transporter } from 'nodemailer'
-import Mailer from 'nodemailer-react'
+import SMTPTransport from 'nodemailer/lib/smtp-transport'
+import { renderToStaticMarkup } from 'react-dom/server'
 
 import { graphql } from '../gql'
 import { DBConnection } from './db-connection'
-import { NotificationEmail } from './templates'
+import { NotificationEmailComponent } from './templates'
 
 export * from './db-connection'
-
-export type ApiClient = GraphQLClient | Pick<GraphQLClient, 'request'>
 
 interface Result {
   success: boolean
@@ -31,8 +30,8 @@ interface Node {
 
 export async function notifyUsers(
   dbConnection: DBConnection,
-  transporter: Transporter,
-  apiClient: ApiClient
+  transporter: Transporter<SMTPTransport.SentMessageInfo>,
+  apiClient: Pick<GraphQLClient, 'request'>
 ): Promise<Result[]> {
   const unnotifiedUsers = await dbConnection.fetchUnnotifiedUsers()
 
@@ -107,18 +106,18 @@ export async function notifyUsers(
 async function sendMail(
   { username, email }: { username: string; email: string },
   notifications: Node[],
-  transporter: Transporter
+  transporter: Transporter<SMTPTransport.SentMessageInfo>
 ) {
-  // This is nice simple lib. We don't really need it, but if we are going
-  // to keep it, let's refactor to declare it at the src/index
-  const mailer = Mailer({ transport: transporter }, { NotificationEmail })
-
   const props = {
     username,
     events: notifications.map((node) => node.event),
   }
+  const body = renderToStaticMarkup(NotificationEmailComponent(props))
+
   // TODO: there should be also email as plain text
-  const { response } = await mailer.send('NotificationEmail', props, {
+  const { response } = await transporter.sendMail({
+    html: `<!DOCTYPE html>${body}`,
+    subject: 'You have unread notifications in serlo.org',
     to: email,
   })
 

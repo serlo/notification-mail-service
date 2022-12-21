@@ -2025,7 +2025,6 @@ __metadata:
     msw: ^0.47.4
     mysql2: ^2.3.3
     nodemailer: ^6.8.0
-    nodemailer-react: ^1.0.2
     nodemon: ^2.0.20
     npm-run-all: ^4.1.5
     prettier: ^2.8.1
@@ -7936,17 +7935,6 @@ __metadata:
   version: 2.0.8
   resolution: "node-releases@npm:2.0.8"
   checksum: b1ab02c0d5d8e081bf9537232777a7a787dc8fef07f70feabe70a344599b220fe16462f746ac30f3eed5a58549445ad69368964d12a1f8b3b764f6caab7ba34a
-  languageName: node
-  linkType: hard
-
-"nodemailer-react@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "nodemailer-react@npm:1.0.2"
-  peerDependencies:
-    nodemailer: ">=5"
-    react: ">= 15"
-    react-dom: ">= 15"
-  checksum: d78bcb3b4565b0c06aa53272f24bf61e5d62d01f41303912d05b44a3a01d7053de443e7a55b37cc01590063b43f70a7b95fb15412aa2c26a0a6b79a2a630f22a
   languageName: node
   linkType: hard
 

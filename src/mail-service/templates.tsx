@@ -19,13 +19,6 @@ interface Event {
   }
 }
 
-export function NotificationEmail(props: NotificationEmailProps) {
-  return {
-    subject: 'You have unread notifications in serlo.org',
-    body: NotificationEmailComponent(props),
-  }
-}
-
 export function NotificationEmailComponent({
   username,
   events,
