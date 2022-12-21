@@ -12,7 +12,7 @@ test.skip('should send all emails and set notifications as sent', async () => {
 
   const mysqlConnection = new MysqlConnection(connection)
 
-  const transporter = createTransport(config.mail, { from: config.fromEmail })
+  const transporter = createTransport(config.smtp, { from: config.fromEmail })
 
   const apiGraphqlClient = new GraphQLClient(
     config.serloApiGraphqlUrl || 'https://api.serlo-staging.dev/graphql'
