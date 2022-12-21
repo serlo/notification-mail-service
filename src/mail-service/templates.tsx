@@ -1,5 +1,4 @@
 import moment from 'moment'
-import { Email } from 'nodemailer-react'
 import React from 'react'
 
 interface NotificationEmailProps {
@@ -36,7 +35,7 @@ export function NotificationEmailComponent({
       <p>Hello {username}</p>
       <br />
       {events.map((event) => {
-        return <Event event={event} key={event.id} />
+        return <EventComponent event={event} key={event.id} />
       })}
       <br />
       Best regards
@@ -46,7 +45,7 @@ export function NotificationEmailComponent({
   )
 }
 
-function Event({ event }: { event: Event }) {
+function EventComponent({ event }: { event: Event }) {
   const { date, actor } = event
   return (
     <div>
