@@ -108,11 +108,11 @@ async function sendMail(
   notifications: Node[],
   transporter: Transporter<SMTPTransport.SentMessageInfo>
 ) {
-  const props = {
+  const emailPayload = {
     username,
     events: notifications.map((node) => node.event),
   }
-  const body = renderToStaticMarkup(NotificationEmailComponent(props))
+  const body = renderToStaticMarkup(NotificationEmailComponent(emailPayload))
 
   // TODO: there should be also email as plain text
   const { response } = await transporter.sendMail({
