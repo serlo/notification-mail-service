@@ -115,13 +115,7 @@ async function sendMail(
 
   const props = {
     username,
-    actorNames: notifications.map(
-      (notification) => notification.event.actor.username
-    ),
-    eventIds: notifications.map((notification) =>
-      notification.event.id.toString()
-    ),
-    dates: notifications.map((notification) => String(notification.event.date)),
+    events: notifications.map((node) => node.event),
   }
   // TODO: there should be also email as plain text
   const { response } = await mailer.send('NotificationEmail', props, {

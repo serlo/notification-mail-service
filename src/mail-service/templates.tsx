@@ -1,4 +1,5 @@
 import moment from 'moment'
+import { Email } from 'nodemailer-react'
 import React from 'react'
 
 interface NotificationEmailProps {
@@ -13,11 +14,20 @@ function formattedDate(date: Date) {
 
 interface Event {
   date: string
-  eventId: string
-  actorName: string // TODO: use actor object?
+  id: number
+  actor: {
+    username: string
+  }
 }
 
-export function NotificationEmail({
+export function NotificationEmail(props: NotificationEmailProps) {
+  return {
+    subject: 'You have unread notifications in serlo.org',
+    body: NotificationEmailComponent(props),
+  }
+}
+
+export function NotificationEmailComponent({
   username,
   events,
 }: NotificationEmailProps) {
@@ -26,7 +36,7 @@ export function NotificationEmail({
       <p>Hello {username}</p>
       <br />
       {events.map((event) => {
-        return <Event event={event} key={event.eventId} />
+        return <Event event={event} key={event.id} />
       })}
       <br />
       Best regards
@@ -37,11 +47,11 @@ export function NotificationEmail({
 }
 
 function Event({ event }: { event: Event }) {
-  const { date, actorName } = event
+  const { date, actor } = event
   return (
     <div>
       <p>
-        {actorName} {date}
+        {actor.username} {date}
       </p>
       <br />
     </div>
