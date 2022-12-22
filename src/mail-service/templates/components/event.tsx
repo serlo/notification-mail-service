@@ -27,6 +27,7 @@ export function EventComponent({ event }: { event: EventAbstractUuid }) {
     string: string,
     replaceables: { [key: string]: JSX.Element | string }
   ) {
+    replaceables.actor = <UserLink user={event.actor} />
     return replacePlaceholders(string, replaceables)
   }
 
@@ -90,7 +91,6 @@ export function EventComponent({ event }: { event: EventAbstractUuid }) {
 
       case 'CheckoutRevisionNotificationEvent':
         return parseString(strings.events.checkoutRevision, {
-          actor: actor,
           revision: renderRevision(event.revision.id),
           repository: renderObject(event.repository),
         })
