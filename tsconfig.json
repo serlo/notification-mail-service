@@ -4,7 +4,7 @@
     "esModuleInterop": true,
     "importHelpers": true,
     "jsx": "react-jsx",
-    "lib": ["esnext"],
+    "lib": ["esnext", "dom"],
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "skipLibCheck": true,

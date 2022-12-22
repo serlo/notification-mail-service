@@ -21,6 +21,10 @@ After cloning this repo and `cd` into it:
 
 \* You don't need this step if you bring your own database, smtp server and/or email client. In that case adapt the `.env` and maybe the `docker-compose.yaml`.
 
+## Developing templates
+
+Run `yarn template`.
+
 ## Running tests
 
 For e2e testing you need to have `yarn start`ed, with the database in the original state (use `yarn mysql:rollback`).
