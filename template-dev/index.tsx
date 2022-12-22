@@ -9,6 +9,4 @@ const events = notifications.notifications.nodes.map((node) => node.event)
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
-root.render(
-  <NotificationEmailComponent events={events} username="user" />
-)
+root.render(<NotificationEmailComponent events={events} username="user" />)

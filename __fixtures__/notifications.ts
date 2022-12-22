@@ -1,4 +1,4 @@
-import { GetNotificationsQuery } from "../src/gql/graphql";
+import { GetNotificationsQuery } from '../src/gql/graphql'
 
 export const notifications = {
   notifications: {
@@ -145,7 +145,8 @@ export const notifications = {
             title: 'Aufgaben zur Umkehrfunktion',
             alias: '/mathe/13827/13827',
           },
-        },
+          // Why is it necessary?
+        } as GetNotificationsQuery['notifications']['nodes'][number]['event'],
       },
       {
         id: 11621,
@@ -656,4 +657,4 @@ export const notifications = {
       },
     ],
   } as GetNotificationsQuery['notifications'],
-} 
+}
