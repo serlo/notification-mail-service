@@ -79,9 +79,11 @@ async function sendMail(
   }
   const body = renderToStaticMarkup(NotificationEmailComponent(emailPayload))
 
-  // TODO: there should be also email as plain text
+  const bodyPlainText = body.replaceAll('<br/>', '\n').replace(/<[^>]*>?/gm, '')
+
   const { response } = await transporter.sendMail({
     html: `<!DOCTYPE html>${body}`,
+    text: bodyPlainText,
     subject: 'You have unread notifications in serlo.org',
     to: email,
   })
