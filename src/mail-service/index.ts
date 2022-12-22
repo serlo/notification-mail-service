@@ -7,6 +7,8 @@ import { graphql } from '../gql'
 import { DBConnection } from './db-connection'
 import { NotificationEmailComponent } from './templates'
 
+import {Event} from './templates/components/event'
+
 export * from './db-connection'
 
 interface Result {
@@ -18,14 +20,7 @@ interface Result {
 
 interface Node {
   id: number
-  event: {
-    __typename: string
-    id: number
-    date: string
-    actor: {
-      username: string
-    }
-  }
+  event: Event
 }
 
 export async function notifyUsers(
@@ -57,6 +52,12 @@ export async function notifyUsers(
                   date
                   actor {
                     username
+                  }
+                  ... on SetThreadStateNotificationEvent {
+                    thread {
+                      id
+                      archived
+                    }
                   }
                 }
               }
