@@ -32,8 +32,6 @@ export function EventComponent({ event }: { event: EventAbstractUuid }) {
   }
 
   function renderText() {
-    const actor = <UserLink user={event.actor} />
-
     switch (event.__typename) {
       case 'SetThreadStateNotificationEvent':
         return parseString(
@@ -49,7 +47,7 @@ export function EventComponent({ event }: { event: EventAbstractUuid }) {
         return parseString(strings.events.createComment, {
           thread: renderThread(event.thread),
           comment: (
-            <a href={`/${event.comment.id}`}>
+            <a href={`${domain}/${event.comment.id}`}>
               {strings.entities.comment}&nbsp;<sup>{event.comment.id}</sup>
             </a>
           ),
