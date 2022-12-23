@@ -18,7 +18,12 @@ type EventAbstractUuid = Extract<Event, { __typename: string }>
 export function EventComponent({ event }: { event: EventAbstractUuid }) {
   return (
     <>
-      <p>{renderText()}</p>
+      <p>
+        {renderText()}{' '}
+        <small>
+          <abbr title={event.date as string}>{event.date}</abbr>
+        </small>
+      </p>
       <br />
     </>
   )

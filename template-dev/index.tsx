@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-internal-modules
 import ReactDOM from 'react-dom/client'
 
 import { getNotificationsQueryResponse } from '../__fixtures__/notifications'
