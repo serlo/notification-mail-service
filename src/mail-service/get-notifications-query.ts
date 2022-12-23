@@ -1,6 +1,8 @@
+import { gql } from 'graphql-request'
+
 import { graphql } from '../gql'
 
-// For any reason (probably we have misconfigured it), codegen is not handling correctly graphql fragments, TODO: fix it
+// FIXME: For any reason (probably we have misconfigured it), codegen is not handling correctly graphql fragments
 // we suppose there aren't any user that have more than 500 unseen notifications, but TODO: paginate
 export const getNotificationsQuery = graphql(`
   query getNotifications($userId: Int!) {
@@ -837,3 +839,61 @@ export const getNotificationsQuery = graphql(`
     }
   }
 `)
+
+// TODO: fix codegen configuration to use fragments correctly or delete them. See https://github.com/serlo/frontend/blob/staging/src/fetcher/query-fragments.ts#L59-L280
+gql`
+  fragment entityInfo on AbstractUuid {
+    __typename
+    id
+    title
+    alias
+  }
+
+  fragment withTaxonomyTerms on AbstractUuid {
+    ... on Exercise {
+      taxonomyTerms {
+        nodes {
+          type
+        }
+      }
+    }
+    ... on ExerciseGroup {
+      taxonomyTerms {
+        nodes {
+          type
+        }
+      }
+    }
+    ... on GroupedExercise {
+      exerciseGroup {
+        taxonomyTerms {
+          nodes {
+            type
+          }
+        }
+      }
+    }
+    ... on Solution {
+      exercise {
+        ... on Exercise {
+          __typename
+          taxonomyTerms {
+            nodes {
+              type
+            }
+          }
+        }
+        ... on GroupedExercise {
+          __typename
+          exerciseGroup {
+            taxonomyTerms {
+              nodes {
+                type
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`

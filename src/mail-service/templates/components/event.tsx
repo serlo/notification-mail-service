@@ -9,18 +9,18 @@ import { UserLink } from './user-link'
 export type Event =
   GetNotificationsQuery['notifications']['nodes'][number]['event']
 
-type EventThread = Extract<Event, { thread: any }>['thread']
-type EventObject = Extract<Event, { object: any }>['object']
-type EventParent = Extract<Event, { parent: any }>['parent']
+type EventThread = Extract<Event, { thread: unknown }>['thread']
+type EventObject = Extract<Event, { object: unknown }>['object']
+type EventParent = Extract<Event, { parent: unknown }>['parent']
 
 type EventAbstractUuid = Extract<Event, { __typename: string }>
 
 export function EventComponent({ event }: { event: EventAbstractUuid }) {
   return (
-    <div>
+    <>
       <p>{renderText()}</p>
       <br />
-    </div>
+    </>
   )
 
   function parseString(

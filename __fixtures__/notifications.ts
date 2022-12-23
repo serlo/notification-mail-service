@@ -1,6 +1,6 @@
 import { GetNotificationsQuery } from '../src/gql/graphql'
 
-export const notifications = {
+export const getNotificationsQueryResponse = {
   notifications: {
     nodes: [
       {
