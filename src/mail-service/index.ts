@@ -7,6 +7,7 @@ import { GetNotificationsQuery } from '../gql/graphql'
 import { DBConnection } from './db-connection'
 import { getNotificationsQuery } from './get-notifications-query'
 import { NotificationEmailComponent } from './templates'
+import { strings } from './templates/helper/german-strings'
 
 export * from './db-connection'
 
@@ -84,7 +85,7 @@ async function sendMail(
   const { response } = await transporter.sendMail({
     html: `<!DOCTYPE html>${body}`,
     text: bodyPlainText,
-    subject: 'You have unread notifications in serlo.org',
+    subject: strings.emailSubject,
     to: email,
   })
 
