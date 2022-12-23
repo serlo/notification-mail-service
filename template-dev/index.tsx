@@ -1,4 +1,3 @@
-import React from 'react'
 // eslint-disable-next-line import/no-internal-modules
 import ReactDOM from 'react-dom/client'
 
