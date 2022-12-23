@@ -29,7 +29,6 @@ export async function notifyUsers(
 
   return await Promise.all(
     unnotifiedUsers.map(async (user) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const { notifications } = await apiClient.request(getNotificationsQuery, {
         userId: user.id,
       })
