@@ -15,7 +15,13 @@ type EventParent = Extract<Event, { parent: unknown }>['parent']
 
 type EventAbstractUuid = Extract<Event, { __typename: string }>
 
-export function EventComponent({ event }: { event: EventAbstractUuid }) {
+export function EventComponent({
+  event,
+  noPrivateContent,
+}: {
+  event: EventAbstractUuid
+  noPrivateContent?: boolean
+}) {
   return (
     <>
       <p>
@@ -24,6 +30,7 @@ export function EventComponent({ event }: { event: EventAbstractUuid }) {
           <abbr title={event.date as string}>{event.date}</abbr>
         </small>
       </p>
+      {renderAdditionalText()}
       <br />
     </>
   )
@@ -234,5 +241,34 @@ export function EventComponent({ event }: { event: EventAbstractUuid }) {
         {strings.entities.thread}&nbsp;<sup>{id}</sup>
       </a>
     )
+  }
+  function renderAdditionalText() {
+    if (noPrivateContent) return null
+
+    if (
+      event.__typename === 'RejectRevisionNotificationEvent' ||
+      event.__typename === 'CheckoutRevisionNotificationEvent'
+    ) {
+      return <div className="text-truegray-500">{event.reason}</div>
+    }
+    if (event.__typename === 'CreateThreadNotificationEvent') {
+      return renderCommentContent(event.thread.thread.nodes[0].content)
+    }
+    if (event.__typename === 'CreateCommentNotificationEvent') {
+      return renderCommentContent(event.thread.comment.nodes[0].content)
+    }
+  }
+  function renderCommentContent(content?: string) {
+    if (!content) return null
+    const maxLength = 200
+    const shortened =
+      content.length > maxLength
+        ? content.substring(0, maxLength) + '…'
+        : content
+    // TODO: maybe proper render math signs
+    // const withMath = replaceWithJSX([shortened], /%%(.+?)%%/g, (str, i) => (
+    //   <MathSpan key={`math-${i}`} formula={str} />
+    // ))
+    return <div>{shortened}</div>
   }
 }
