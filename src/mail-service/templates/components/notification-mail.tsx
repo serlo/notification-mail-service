@@ -1,3 +1,4 @@
+import { domain } from '..'
 import { Event, EventComponent } from './event'
 
 interface Props {
@@ -8,15 +9,27 @@ interface Props {
 export function NotificationEmailComponent({ username, events }: Props) {
   return (
     <>
-      <p>Hello {username}</p>
+      <p>Hallo {username}!</p>
+      <br />
+      <p>
+        Hier ist eine Übersicht, was mit Inhalten passiert ist, die du erstellt
+        oder bearbeitet hast:
+      </p>
       <br />
       {events.map((event) => {
         return <EventComponent event={event} key={event.id} />
       })}
       <br />
-      Best regards
-      <br />
-      <span>Serlo Team</span>
+      <p>
+        Zu welchen Inhalten du Benachrichtigungen erhältst, kannst du in den{' '}
+        <a
+          href={`${domain}/subscriptions/manage`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          Einstellungen ändern.
+        </a>
+      </p>
     </>
   )
 }

@@ -1,11 +1,11 @@
 import type { Connection } from 'mysql2/promise'
 
 export interface DBConnection {
-  fetchUnnotifiedUsers(): Promise<EmailData[]>
+  fetchUnnotifiedUsers(): Promise<User[]>
   updateNotificationSentStatus(notificationsIds: string[]): Promise<void>
 }
 
-export interface EmailData {
+export interface User {
   id: number
   username: string
   email: string
@@ -26,7 +26,7 @@ export class MysqlConnection implements DBConnection {
         WHERE notification.email = 1 AND notification.email_sent = 0 AND notification.seen = 0
         GROUP BY notification.user_id;`
     )
-    return rows as EmailData[]
+    return rows as User[]
   }
 
   async updateNotificationSentStatus(notificationsIds: string[]) {

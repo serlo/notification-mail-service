@@ -123,6 +123,7 @@ module.exports = {
           'mysql2/promise',
           'react-dom/server',
           'nodemailer/lib/smtp-transport',
+          'react-dom/client',
         ],
       },
     ],

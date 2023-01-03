@@ -3,9 +3,11 @@ import type { Transporter } from 'nodemailer'
 import SMTPTransport from 'nodemailer/lib/smtp-transport'
 import { renderToStaticMarkup } from 'react-dom/server'
 
-import { graphql } from '../gql'
+import { GetNotificationsQuery } from '../gql/graphql'
 import { DBConnection } from './db-connection'
+import { getNotificationsQuery } from './get-notifications-query'
 import { NotificationEmailComponent } from './templates'
+import { strings } from './templates/helper/german-strings'
 
 export * from './db-connection'
 
@@ -14,18 +16,6 @@ interface Result {
   reason?: unknown
   userId: number
   notificationsIds: number[]
-}
-
-interface Node {
-  id: number
-  event: {
-    __typename: string
-    id: number
-    date: string
-    actor: {
-      username: string
-    }
-  }
 }
 
 export async function notifyUsers(
@@ -39,34 +29,9 @@ export async function notifyUsers(
 
   return await Promise.all(
     unnotifiedUsers.map(async (user) => {
-      const { notifications } = await apiClient.request(
-        graphql(`
-          query getNotifications($userId: Int!) {
-            notifications(
-              first: 500
-              unread: true
-              emailSent: false
-              emailSubscribed: true
-              userId: $userId
-            ) {
-              nodes {
-                id
-                event {
-                  __typename
-                  id
-                  date
-                  actor {
-                    username
-                  }
-                }
-              }
-            }
-          }
-        `),
-        {
-          userId: user.id,
-        }
-      )
+      const { notifications } = await apiClient.request(getNotificationsQuery, {
+        userId: user.id,
+      })
       const returnCode = await sendMail(
         {
           username: user.username,
@@ -105,7 +70,7 @@ export async function notifyUsers(
 
 async function sendMail(
   { username, email }: { username: string; email: string },
-  notifications: Node[],
+  notifications: GetNotificationsQuery['notifications']['nodes'],
   transporter: Transporter<SMTPTransport.SentMessageInfo>
 ) {
   const emailPayload = {
@@ -114,10 +79,12 @@ async function sendMail(
   }
   const body = renderToStaticMarkup(NotificationEmailComponent(emailPayload))
 
-  // TODO: there should be also email as plain text
+  const bodyPlainText = body.replaceAll('<br/>', '\n').replace(/<[^>]*>?/gm, '')
+
   const { response } = await transporter.sendMail({
     html: `<!DOCTYPE html>${body}`,
-    subject: 'You have unread notifications in serlo.org',
+    text: bodyPlainText,
+    subject: strings.emailSubject,
     to: email,
   })
 
