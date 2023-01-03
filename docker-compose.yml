@@ -13,5 +13,5 @@ services:
     image: marcopas/docker-mailslurper:latest
     ports:
       - '2500:2500'
-      - '8080:8080'
+      - '4444:8080'
       - '8085:8085'

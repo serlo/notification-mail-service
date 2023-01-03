@@ -1,12 +1,14 @@
+import { GraphQLClient } from 'graphql-request'
 import type { Transporter } from 'nodemailer'
-import Mailer from 'nodemailer-react'
+import SMTPTransport from 'nodemailer/lib/smtp-transport'
+import { renderToStaticMarkup } from 'react-dom/server'
 
-import { ApiClient } from './api-client'
+import { GetNotificationsQuery } from '../gql/graphql'
 import { DBConnection } from './db-connection'
-import { EmailData } from './email-data'
-import { NotificationEmail } from './templates'
+import { getNotificationsQuery } from './get-notifications-query'
+import { NotificationEmailComponent } from './templates'
+import { strings } from './templates/helper/german-strings'
 
-export * from './api-client'
 export * from './db-connection'
 
 interface Result {
@@ -18,30 +20,39 @@ interface Result {
 
 export async function notifyUsers(
   dbConnection: DBConnection,
-  transporter: Transporter,
-  _apiGraphqlClient: ApiClient
+  transporter: Transporter<SMTPTransport.SentMessageInfo>,
+  apiClient: Pick<GraphQLClient, 'request'>
 ): Promise<Result[]> {
-  const notificationsRawData = await dbConnection.fetchUnsentNotificationData()
+  const unnotifiedUsers = await dbConnection.fetchUnnotifiedUsers()
 
-  if (!notificationsRawData.length) return []
+  if (!unnotifiedUsers.length) return []
 
-  const results = await Promise.all(
-    notificationsRawData.map(async (data) => {
-      const returnCode = await sendMail({
-        data,
-        transporter,
+  return await Promise.all(
+    unnotifiedUsers.map(async (user) => {
+      const { notifications } = await apiClient.request(getNotificationsQuery, {
+        userId: user.id,
       })
-
-      const notificationIds = data.notification_ids.split(',')
+      const returnCode = await sendMail(
+        {
+          username: user.username,
+          email: user.email,
+        },
+        notifications.nodes,
+        transporter
+      )
 
       const baseResult = {
-        userId: data.user_id,
-        notificationsIds: notificationIds.map((x) => parseInt(x, 10)),
+        userId: user.id,
+        notificationsIds: notifications.nodes.map(
+          (notification) => notification.id
+        ),
       }
 
       // actually there are other success codes, see https://en.wikipedia.org/wiki/List_of_SMTP_server_return_codes
       if (returnCode === '250 Ok') {
-        await dbConnection.updateNotificationSendStatus(notificationIds)
+        await dbConnection.updateNotificationSentStatus(
+          notifications.nodes.map((notification) => notification.id.toString())
+        )
         return {
           success: true,
           ...baseResult,
@@ -55,34 +66,27 @@ export async function notifyUsers(
       }
     })
   )
-
-  return results
 }
 
-export async function sendMail({
-  data,
-  transporter,
-}: {
-  data: EmailData
-  transporter: Transporter
-}) {
-  // This is nice simple lib. We don't really need it, but if we are going
-  // to keep it, let's refactor to declare it at the src/index
-  const mailer = Mailer({ transport: transporter }, { NotificationEmail })
+async function sendMail(
+  { username, email }: { username: string; email: string },
+  notifications: GetNotificationsQuery['notifications']['nodes'],
+  transporter: Transporter<SMTPTransport.SentMessageInfo>
+) {
+  const emailPayload = {
+    username,
+    events: notifications.map((node) => node.event),
+  }
+  const body = renderToStaticMarkup(NotificationEmailComponent(emailPayload))
 
-  // TODO: there should be also email as plain text
-  const { response } = await mailer.send(
-    'NotificationEmail',
-    {
-      username: data.username,
-      actorNames: data.actor_names.split(','),
-      eventIds: data.event_ids.split(','),
-      dates: data.dates.split(','),
-    },
-    {
-      to: data.email,
-    }
-  )
+  const bodyPlainText = body.replaceAll('<br/>', '\n').replace(/<[^>]*>?/gm, '')
+
+  const { response } = await transporter.sendMail({
+    html: `<!DOCTYPE html>${body}`,
+    text: bodyPlainText,
+    subject: strings.emailSubject,
+    to: email,
+  })
 
   return response
 }
