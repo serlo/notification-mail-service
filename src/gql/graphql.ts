@@ -1546,6 +1546,7 @@ export type Mutation = {
   _cache: _CacheMutation;
   entity: EntityMutation;
   notification: NotificationMutation;
+  oauth: OauthMutation;
   page: PageMutation;
   subscription: SubscriptionMutation;
   taxonomyTerm: TaxonomyTermMutation;
@@ -1628,6 +1629,39 @@ export type NotificationSetStateResponse = {
   __typename?: 'NotificationSetStateResponse';
   query: Query;
   success: Scalars['Boolean'];
+};
+
+export type OauthAcceptInput = {
+  challenge: Scalars['String'];
+  session: Scalars['JSON'];
+};
+
+export type OauthAcceptResponse = {
+  __typename?: 'OauthAcceptResponse';
+  redirectUri: Scalars['String'];
+  success: Scalars['Boolean'];
+};
+
+export type OauthMutation = {
+  __typename?: 'OauthMutation';
+  acceptConsent: OauthAcceptResponse;
+  acceptLogin: OauthAcceptResponse;
+  acceptLogout: OauthAcceptResponse;
+};
+
+
+export type OauthMutationAcceptConsentArgs = {
+  input: OauthAcceptInput;
+};
+
+
+export type OauthMutationAcceptLoginArgs = {
+  input: OauthAcceptInput;
+};
+
+
+export type OauthMutationAcceptLogoutArgs = {
+  challenge: Scalars['String'];
 };
 
 export type Page = AbstractNavigationChild & AbstractRepository & AbstractUuid & InstanceAware & ThreadAware & {
@@ -2616,6 +2650,7 @@ export type User = AbstractUuid & ThreadAware & {
   isActiveDonor: Scalars['Boolean'];
   isActiveReviewer: Scalars['Boolean'];
   isNewAuthor: Scalars['Boolean'];
+  language?: Maybe<Instance>;
   lastLogin?: Maybe<Scalars['DateTime']>;
   motivation?: Maybe<Scalars['String']>;
   roles: ScopedRoleConnection;
