@@ -1,5 +1,4 @@
 export const strings = {
-  emailSubject: 'Your unread notifications on Serlo',
   entities: {
     applet: 'Applet',
     article: 'Article',
@@ -53,5 +52,11 @@ export const strings = {
     inviteToChat:
       '%actor% invited you to the Chat: %comment% Go to %chatLink% to chat with %actor% and others.',
     entityPlaceholderFallback: 'Content',
+  },
+  email: {
+    subject: 'Your unread notifications on Serlo',
+    greeting: 'Hello %user%!',
+    initiation: 'Here\'s a heads up of what has happened with content you edited or created:',
+    settings: 'You can <a href=%href%>change the settings</a> for which content you want to receive notifications.',
   },
 }

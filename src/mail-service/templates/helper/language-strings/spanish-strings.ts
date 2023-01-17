@@ -1,6 +1,4 @@
 export const strings = {
-  //TODO: translate
-  emailSubject: 'Your unread notifications on Serlo',
   entities: {
     applet: 'Applet',
     article: "Artículo",
@@ -51,5 +49,13 @@ export const strings = {
     setUuidStateRestored: "%actor% restauró %object%.",
     inviteToChat: "%actor% te ha invitado al chat: %comment% Visita %chatLink% para chatear con %actor% y otros.",
     entityPlaceholderFallback: "Contenido"
+  },
+  email: {
+    //TODO: translate
+    subject: 'Your unread notifications on Serlo',
+    greeting: '¡Hola %user%!',
+    initiation: 'Aquí hay una visión general de lo que pasó con el contenido que creaste o editaste:',
+    settings:
+      'Puedes <a href=%href%>cambiar la configuración</a> para el contenido del cual quieres recibir notificaciones.',
   },
 }

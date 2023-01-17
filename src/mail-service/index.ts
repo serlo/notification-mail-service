@@ -1,13 +1,14 @@
-import { GraphQLClient } from 'graphql-request'
-import type { Transporter } from 'nodemailer'
+import {GraphQLClient} from 'graphql-request'
+import type {Transporter} from 'nodemailer'
 import SMTPTransport from 'nodemailer/lib/smtp-transport'
-import { renderToStaticMarkup } from 'react-dom/server'
+import {renderToStaticMarkup} from 'react-dom/server'
 
-import { GetNotificationsQuery } from '../gql/graphql'
-import { DBConnection } from './db-connection'
-import { getNotificationsQuery } from './get-notifications-query'
-import { NotificationEmailComponent } from './templates'
-import { strings } from './templates/helper/german-strings'
+import {GetNotificationsQuery, Instance} from '../gql/graphql'
+import {DBConnection} from './db-connection'
+import {getNotificationsQuery} from './get-notifications-query'
+import {NotificationEmailComponent} from './templates'
+import {strings} from './templates/helper/german-strings'
+import {getUserLanguageQuery} from "./language-query";
 
 export * from './db-connection'
 
@@ -32,10 +33,14 @@ export async function notifyUsers(
       const { notifications } = await apiClient.request(getNotificationsQuery, {
         userId: user.id,
       })
+      const { language } = await apiClient.request(getUserLanguageQuery, {
+        userId: user.id,
+      })
       const returnCode = await sendMail(
         {
           username: user.username,
           email: user.email,
+          language: language? language : null,
         },
         notifications.nodes,
         transporter
@@ -69,13 +74,14 @@ export async function notifyUsers(
 }
 
 async function sendMail(
-  { username, email }: { username: string; email: string },
+  { username, email, language }: { username: string; email: string; language: Instance | null },
   notifications: GetNotificationsQuery['notifications']['nodes'],
   transporter: Transporter<SMTPTransport.SentMessageInfo>
 ) {
   const emailPayload = {
     username,
     events: notifications.map((node) => node.event),
+    language,
   }
   const body = renderToStaticMarkup(NotificationEmailComponent(emailPayload))
 
