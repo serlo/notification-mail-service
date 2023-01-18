@@ -1,5 +1,3 @@
-import { gql } from 'graphql-request'
-
 import { graphql } from '../gql'
 
 export const getUserLanguage = graphql(`

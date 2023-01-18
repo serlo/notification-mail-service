@@ -1,15 +1,14 @@
-import {GraphQLClient} from 'graphql-request'
-import type {Transporter} from 'nodemailer'
+import { GraphQLClient } from 'graphql-request'
+import type { Transporter } from 'nodemailer'
 import SMTPTransport from 'nodemailer/lib/smtp-transport'
-import {renderToStaticMarkup} from 'react-dom/server'
+import { renderToStaticMarkup } from 'react-dom/server'
 
-import {GetNotificationsQuery, GetNotificationsQueryVariables, Instance} from '../gql/graphql'
-import {DBConnection} from './db-connection'
-import {getNotifications} from './get-notifications-query'
-import {NotificationEmailComponent} from './templates'
-import {strings} from './templates/helper/german-strings'
-import {getUserLanguage} from "./language-query";
-import {TypedDocumentNode} from "@graphql-typed-document-node/core";
+import { GetNotificationsQuery, Instance } from '../gql/graphql'
+import { DBConnection } from './db-connection'
+import { getNotifications } from './get-notifications-query'
+import { getUserLanguage } from './language-query'
+import { NotificationEmailComponent } from './templates'
+import { strings } from './templates/helper/german-strings'
 
 export * from './db-connection'
 
@@ -31,19 +30,19 @@ export async function notifyUsers(
 
   return await Promise.all(
     unnotifiedUsers.map(async (user) => {
-      //TODO: Das as ist drin, da sich Intellij beschwert, aber vermutlich brauchen wir es nicht.
-      const { notifications } = await apiClient.request(getNotifications as TypedDocumentNode<GetNotificationsQuery, GetNotificationsQueryVariables>, {
+      // remember to run codegen with the api running in the right branch
+      const { notifications } = await apiClient.request(getNotifications, {
         userId: user.id,
       })
       const { uuid } = await apiClient.request(getUserLanguage, {
         userId: user.id,
       })
-      if (uuid?.__typename != "User") throw Error
+      if (uuid?.__typename != 'User') throw Error
       const returnCode = await sendMail(
         {
           username: user.username,
           email: user.email,
-          language: uuid.language? uuid.language : null,
+          language: uuid.language ? uuid.language : null,
         },
         notifications.nodes,
         transporter
@@ -77,7 +76,11 @@ export async function notifyUsers(
 }
 
 async function sendMail(
-  { username, email, language }: { username: string; email: string; language: Instance | null },
+  {
+    username,
+    email,
+    language,
+  }: { username: string; email: string; language: Instance | null },
   notifications: GetNotificationsQuery['notifications']['nodes'],
   transporter: Transporter<SMTPTransport.SentMessageInfo>
 ) {

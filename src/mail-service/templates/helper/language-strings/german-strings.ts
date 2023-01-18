@@ -62,7 +62,8 @@ export const strings = {
   email: {
     subject: 'Du hast ungelesene Benachrichtigungen auf Serlo',
     greeting: 'Hallo %user%!',
-    initiation: 'Hier ist eine Übersicht, was mit Inhalten passiert ist, die du erstellt oder bearbeitet hast:',
+    initiation:
+      'Hier ist eine Übersicht, was mit Inhalten passiert ist, die du erstellt oder bearbeitet hast:',
     settings:
       'Zu welchen Inhalten du Benachrichtigungen erhältst, kannst du in deinen <a href=%href%>Einstellungen ändern</a>.',
   },

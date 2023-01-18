@@ -1,28 +1,28 @@
 export const strings = {
   entities: {
-    applet: "ஆப்லெட்",
-    article: "கட்டுரை",
-    course: "வகுப்பு",
-    coursePage: "வகுப்பு-பக்கம்",
+    applet: 'ஆப்லெட்',
+    article: 'கட்டுரை',
+    course: 'வகுப்பு',
+    coursePage: 'வகுப்பு-பக்கம்',
     event: 'Event',
     exercise: 'Exercise',
-    exerciseGroup: "பயிற்சிப் பதிவுகள்",
+    exerciseGroup: 'பயிற்சிப் பதிவுகள்',
     topic: 'Folder',
     groupedExercise: 'Grouped Exercise',
-    page: "பக்கம்",
-    solution: "தீர்வு",
+    page: 'பக்கம்',
+    solution: 'தீர்வு',
     taxonomyTerm: 'Taxonomy Term',
-    user: "பயனர்",
-    video: "காணொளி",
+    user: 'பயனர்',
+    video: 'காணொளி',
     exerciseFolder: 'Exercise folder',
-    comment: "கருத்து",
-    revision: "மீட்டல்",
+    comment: 'கருத்து',
+    revision: 'மீட்டல்',
     thread: 'Thread',
     threads: 'Threads',
     subject: 'Subject',
     userProfile: 'User Profile',
     privacyPolicy: 'Privacy Policy',
-    content: 'Content'
+    content: 'Content',
   },
   events: {
     entityInParentPreposition: 'in',
@@ -43,18 +43,22 @@ export const strings = {
     createTaxonomyTerm: '%actor% created %term%.',
     setTaxonomyTerm: '%actor% updated %term%.',
     setTaxonomyParentDeleted: '%actor% removed the parent of %child%.',
-    setTaxonomyParentChangedFrom: '%actor% changed parent of %child% from %previousparent% to %parent%.',
+    setTaxonomyParentChangedFrom:
+      '%actor% changed parent of %child% from %previousparent% to %parent%.',
     setTaxonomyParentChanged: '%actor% changed parent of %child% to %parent%.',
     setUuidStateTrashed: '%actor% trashed %object%.',
     setUuidStateRestored: '%actor% restored %object%.',
-    inviteToChat: '%actor% invited you to the Chat: %comment% Go to %chatLink% to chat with %actor% and others.',
-    entityPlaceholderFallback: 'Content'
+    inviteToChat:
+      '%actor% invited you to the Chat: %comment% Go to %chatLink% to chat with %actor% and others.',
+    entityPlaceholderFallback: 'Content',
   },
   email: {
     //TODO: translate
     subject: 'Your unread notifications on Serlo',
     greeting: 'வணக்கம் %user%!',
-    initiation: 'நீங்கள் திருத்திய அல்லது உருவாக்கிய உள்ளடக்கத்துடன் என்ன நடந்தது என்பதற்கான தலைப்பை இங்கே காணலாம்:',
-    settings: 'எந்த உள்ளடக்கத்துக்கு உங்களுக்கு அறிவிப்பு வேண்டும் என்னப்பதை நீங்கள் <a href=%href%>அமைத்துக்கொள்ளலாம்</a>.',
+    initiation:
+      'நீங்கள் திருத்திய அல்லது உருவாக்கிய உள்ளடக்கத்துடன் என்ன நடந்தது என்பதற்கான தலைப்பை இங்கே காணலாம்:',
+    settings:
+      'எந்த உள்ளடக்கத்துக்கு உங்களுக்கு அறிவிப்பு வேண்டும் என்னப்பதை நீங்கள் <a href=%href%>அமைத்துக்கொள்ளலாம்</a>.',
   },
 }

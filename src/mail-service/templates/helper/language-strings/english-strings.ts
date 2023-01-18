@@ -45,8 +45,7 @@ export const strings = {
     setTaxonomyParentDeleted: '%actor% removed the parent of %child%.',
     setTaxonomyParentChangedFrom:
       '%actor% changed parent of %child% from %previousparent% to %parent%.',
-    setTaxonomyParentChanged:
-      '%actor% changed parent of %child% to %parent%.',
+    setTaxonomyParentChanged: '%actor% changed parent of %child% to %parent%.',
     setUuidStateTrashed: '%actor% trashed %object%.',
     setUuidStateRestored: '%actor% restored %object%.',
     inviteToChat:
@@ -56,7 +55,9 @@ export const strings = {
   email: {
     subject: 'Your unread notifications on Serlo',
     greeting: 'Hello %user%!',
-    initiation: 'Here\'s a heads up of what has happened with content you edited or created:',
-    settings: 'You can <a href=%href%>change the settings</a> for which content you want to receive notifications.',
+    initiation:
+      "Here's a heads up of what has happened with content you edited or created:",
+    settings:
+      'You can <a href=%href%>change the settings</a> for which content you want to receive notifications.',
   },
 }
