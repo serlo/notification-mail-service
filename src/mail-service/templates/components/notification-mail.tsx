@@ -18,12 +18,7 @@ export function NotificationEmailComponent({
   events,
   language,
 }: Props) {
-  if (!language) {
-    //TODO
-  }
   const strings = getLanguageStrings(language)
-  //TODO
-  if (!strings) throw Error
   return (
     <>
       <p>{strings.greeting}</p>
@@ -54,6 +49,6 @@ function getLanguageStrings(language: Instance | null) {
     case Instance.Ta:
       return ta.strings.email
     default:
-      return null
+      return de.strings.email
   }
 }

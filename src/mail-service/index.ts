@@ -37,7 +37,9 @@ export async function notifyUsers(
       const { uuid } = await apiClient.request(getUserLanguage, {
         userId: user.id,
       })
-      if (uuid?.__typename != 'User') throw Error
+      // TODO: do not throw error, since it would stop also the notification of other users
+      // return instead an object with success: false and reason
+      if (uuid?.__typename != 'User') throw new Error('uuid is not a user')
       const returnCode = await sendMail(
         {
           username: user.username,
@@ -89,6 +91,7 @@ async function sendMail(
     events: notifications.map((node) => node.event),
     language,
   }
+
   const body = renderToStaticMarkup(NotificationEmailComponent(emailPayload))
 
   const bodyPlainText = body.replaceAll('<br/>', '\n').replace(/<[^>]*>?/gm, '')
