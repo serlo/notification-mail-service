@@ -21,34 +21,26 @@ export function NotificationEmailComponent({ username, events, language }: Props
   }
   else {
     const strings = getLanguageStrings(language)
+    //TODO
+    if(!strings) throw Error
+    return (
+      <>
+        <p>{strings.greeting}</p>
+        <br />
+        <p>
+          {strings.initiation}
+        </p>
+        <br />
+        {events.map((event) => {
+          return <EventComponent event={event} key={event.id} />
+        })}
+        <br />
+        <p>
+          {strings.settings}
+        </p>
+      </>
+    )
   }
-
-  // Work in Progress
-  return (
-    <>
-      <p>Hallo {username}!</p>
-      <br />
-      <p>
-        Hier ist eine Übersicht, was mit Inhalten passiert ist, die du erstellt
-        oder bearbeitet hast:
-      </p>
-      <br />
-      {events.map((event) => {
-        return <EventComponent event={event} key={event.id} />
-      })}
-      <br />
-      <p>
-        Zu welchen Inhalten du Benachrichtigungen erhältst, kannst du in den{' '}
-        <a
-          href={`${domain}/subscriptions/manage`}
-          target="_blank"
-          rel="noreferrer"
-        >
-          Einstellungen ändern.
-        </a>
-      </p>
-    </>
-  )
 }
 
 function getLanguageStrings(language: Instance) {

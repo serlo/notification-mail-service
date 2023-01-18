@@ -3,12 +3,13 @@ import type {Transporter} from 'nodemailer'
 import SMTPTransport from 'nodemailer/lib/smtp-transport'
 import {renderToStaticMarkup} from 'react-dom/server'
 
-import {GetNotificationsQuery, Instance} from '../gql/graphql'
+import {GetNotificationsQuery, GetNotificationsQueryVariables, Instance} from '../gql/graphql'
 import {DBConnection} from './db-connection'
-import {getNotificationsQuery} from './get-notifications-query'
+import {getNotifications} from './get-notifications-query'
 import {NotificationEmailComponent} from './templates'
 import {strings} from './templates/helper/german-strings'
-import {getUserLanguageQuery} from "./language-query";
+import {getUserLanguage} from "./language-query";
+import {TypedDocumentNode} from "@graphql-typed-document-node/core";
 
 export * from './db-connection'
 
@@ -30,17 +31,19 @@ export async function notifyUsers(
 
   return await Promise.all(
     unnotifiedUsers.map(async (user) => {
-      const { notifications } = await apiClient.request(getNotificationsQuery, {
+      //TODO: Das as ist drin, da sich Intellij beschwert, aber vermutlich brauchen wir es nicht.
+      const { notifications } = await apiClient.request(getNotifications as TypedDocumentNode<GetNotificationsQuery, GetNotificationsQueryVariables>, {
         userId: user.id,
       })
-      const { language } = await apiClient.request(getUserLanguageQuery, {
+      const { uuid } = await apiClient.request(getUserLanguage, {
         userId: user.id,
       })
+      if (uuid?.__typename != "User") throw Error
       const returnCode = await sendMail(
         {
           username: user.username,
           email: user.email,
-          language: language? language : null,
+          language: uuid.language? uuid.language : null,
         },
         notifications.nodes,
         transporter

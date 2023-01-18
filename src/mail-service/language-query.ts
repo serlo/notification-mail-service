@@ -2,11 +2,12 @@ import { gql } from 'graphql-request'
 
 import { graphql } from '../gql'
 
-export const getUserLanguageQuery = graphql(`
-  query getUserLanguageQuery($userId: Int!) {
-    uuid(d: $userId) {
+export const getUserLanguage = graphql(`
+  query getUserLanguage($userId: Int!) {
+    uuid(id: $userId) {
       ... on User {
         language
       }
+    }
   }
 `)
