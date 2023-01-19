@@ -20,6 +20,28 @@ export function NotificationEmailComponent({
   events,
   language,
 }: Props) {
+  if (!language)
+    return (
+      <>
+        <p>English message below</p>
+        <br />
+        <p>
+          {NotificationEmailComponent({
+            username,
+            events,
+            language: Instance.De,
+          })}
+        </p>
+        <br />
+        <p>
+          {NotificationEmailComponent({
+            username,
+            events,
+            language: Instance.En,
+          })}
+        </p>
+      </>
+    )
   const strings = getLanguageStrings(language)
   const link = (
     <a href={`${domain}/subscriptions/manage`} target="_blank" rel="noreferrer">
