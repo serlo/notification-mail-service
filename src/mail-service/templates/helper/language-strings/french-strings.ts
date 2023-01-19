@@ -1,4 +1,6 @@
-export const strings = {
+import {LanguageStrings} from "../type-language-strings";
+
+export const strings: LanguageStrings = {
   entities: {
     applet: 'applet',
     article: 'article',
@@ -60,6 +62,7 @@ export const strings = {
     initiation:
       "Voici un apercu de ce qui s'est passé avec le contenu que tu as édité ou créé :",
     settings:
-      'Vous pouvez <a href=\\"%href%\\"> changez les paramètres</a> pour déterminer le contenu duquel vous voulez recevoir des notifications.',
+      'Vous pouvez %link% pour déterminer le contenu duquel vous voulez recevoir des notifications.',
+    linkText: 'changez les paramètres',
   },
 }

@@ -7,8 +7,7 @@ import { GetNotificationsQuery, Instance } from '../gql/graphql'
 import { DBConnection } from './db-connection'
 import { getNotifications } from './get-notifications-query'
 import { getUserLanguage } from './language-query'
-import { NotificationEmailComponent } from './templates'
-import { strings } from './templates/helper/german-strings'
+import {getLanguageStrings, NotificationEmailComponent} from './templates'
 
 export * from './db-connection'
 
@@ -99,7 +98,7 @@ async function sendMail(
   const { response } = await transporter.sendMail({
     html: `<!DOCTYPE html>${body}`,
     text: bodyPlainText,
-    subject: strings.emailSubject,
+    subject: getLanguageStrings(language).email.subject,
     to: email,
   })
 

@@ -1,4 +1,6 @@
-export const strings = {
+import {LanguageStrings} from "../type-language-strings";
+
+export const strings: LanguageStrings = {
   entities: {
     applet: 'ஆப்லெட்',
     article: 'கட்டுரை',
@@ -59,6 +61,7 @@ export const strings = {
     initiation:
       'நீங்கள் திருத்திய அல்லது உருவாக்கிய உள்ளடக்கத்துடன் என்ன நடந்தது என்பதற்கான தலைப்பை இங்கே காணலாம்:',
     settings:
-      'எந்த உள்ளடக்கத்துக்கு உங்களுக்கு அறிவிப்பு வேண்டும் என்னப்பதை நீங்கள் <a href=%href%>அமைத்துக்கொள்ளலாம்</a>.',
+      'எந்த உள்ளடக்கத்துக்கு உங்களுக்கு அறிவிப்பு வேண்டும் என்னப்பதை நீங்கள் %link%.',
+    linkText: 'அமைத்துக்கொள்ளலாம்',
   },
 }

@@ -1,10 +1,10 @@
 import { domain } from '..'
 import { GetNotificationsQuery } from '../../../gql/graphql'
-import { strings } from '../helper/german-strings'
 import { getEntityStringByTypename } from '../helper/get-string-by-typename'
 import { replacePlaceholders } from '../helper/replace-placeholders'
 import { UuidType } from '../helper/uuid-type'
 import { UserLink } from './user-link'
+import {LanguageStrings} from "../helper/type-language-strings";
 
 export type Event =
   GetNotificationsQuery['notifications']['nodes'][number]['event']
@@ -18,9 +18,11 @@ type EventAbstractUuid = Extract<Event, { __typename: string }>
 export function EventComponent({
   event,
   noPrivateContent,
+  strings
 }: {
   event: EventAbstractUuid
   noPrivateContent?: boolean
+  strings: LanguageStrings
 }) {
   return (
     <>
@@ -171,7 +173,7 @@ export function EventComponent({
     id,
   }: EventObject | EventParent) {
     return (
-      <a href={alias}>
+      <a href={domain+alias}>
         <>
           {renderTitle(title, __typename as UuidType, id)}
           {shouldRenderParent(__typename as UuidType) ? (
@@ -218,7 +220,7 @@ export function EventComponent({
     ) {
       return (
         <>
-          {getEntityStringByTypename(typename)}&nbsp;<sup>{id}</sup>
+          {getEntityStringByTypename(typename, strings)}&nbsp;<sup>{id}</sup>
         </>
       )
     } else {

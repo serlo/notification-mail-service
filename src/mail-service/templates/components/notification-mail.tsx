@@ -6,6 +6,8 @@ import * as hi from '../helper/language-strings/hindi-strings'
 import * as es from '../helper/language-strings/spanish-strings'
 import * as ta from '../helper/language-strings/tamil-strings'
 import { Event, EventComponent } from './event'
+import { replacePlaceholders } from '../helper/replace-placeholders'
+import { domain } from '..'
 
 interface Props {
   username: string
@@ -19,36 +21,41 @@ export function NotificationEmailComponent({
   language,
 }: Props) {
   const strings = getLanguageStrings(language)
+  const link = (
+    <a href={`${domain}/subscriptions/manage`} target="_blank" rel="noreferrer">
+      {strings.email.linkText}
+    </a>
+  )
   return (
     <>
-      <p>{strings.greeting}</p>
+      <p>{replacePlaceholders(strings.email.greeting, { username })}</p>
       <br />
-      <p>{strings.initiation}</p>
+      <p>{strings.email.initiation}</p>
       <br />
       {events.map((event) => {
-        return <EventComponent event={event} key={event.id} />
+        return <EventComponent event={event} key={event.id} strings={strings} />
       })}
       <br />
-      <p>{strings.settings}</p>
+      <p>{replacePlaceholders(strings.email.settings, { link })}</p>
     </>
   )
 }
 
-function getLanguageStrings(language: Instance | null) {
+export function getLanguageStrings(language: Instance | null) {
   switch (language) {
     case Instance.De:
-      return de.strings.email
+      return de.strings
     case Instance.En:
-      return en.strings.email
+      return en.strings
     case Instance.Es:
-      return es.strings.email
+      return es.strings
     case Instance.Fr:
-      return fr.strings.email
+      return fr.strings
     case Instance.Hi:
-      return hi.strings.email
+      return hi.strings
     case Instance.Ta:
-      return ta.strings.email
+      return ta.strings
     default:
-      return de.strings.email
+      return de.strings
   }
 }

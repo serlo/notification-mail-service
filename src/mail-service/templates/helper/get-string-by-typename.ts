@@ -1,8 +1,9 @@
-import { strings } from './german-strings'
 import { UuidWithRevType } from './uuid-type'
+import {LanguageStrings} from "./type-language-strings";
 
 export function getEntityStringByTypename(
-  typename: UuidWithRevType | undefined
+  typename: UuidWithRevType | undefined,
+  strings: LanguageStrings
 ) {
   const typenameNoRevs = typename?.replace('Revision', '')
   const lookup = {
