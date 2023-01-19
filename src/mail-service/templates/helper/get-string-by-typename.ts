@@ -1,5 +1,5 @@
+import { LanguageStrings } from './type-language-strings'
 import { UuidWithRevType } from './uuid-type'
-import {LanguageStrings} from "./type-language-strings";
 
 export function getEntityStringByTypename(
   typename: UuidWithRevType | undefined,

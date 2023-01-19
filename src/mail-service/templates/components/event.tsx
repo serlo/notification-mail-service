@@ -4,7 +4,7 @@ import { getEntityStringByTypename } from '../helper/get-string-by-typename'
 import { replacePlaceholders } from '../helper/replace-placeholders'
 import { UuidType } from '../helper/uuid-type'
 import { UserLink } from './user-link'
-import {LanguageStrings} from "../helper/type-language-strings";
+import { LanguageStrings } from '../helper/type-language-strings'
 
 export type Event =
   GetNotificationsQuery['notifications']['nodes'][number]['event']
@@ -18,7 +18,7 @@ type EventAbstractUuid = Extract<Event, { __typename: string }>
 export function EventComponent({
   event,
   noPrivateContent,
-  strings
+  strings,
 }: {
   event: EventAbstractUuid
   noPrivateContent?: boolean
@@ -173,7 +173,7 @@ export function EventComponent({
     id,
   }: EventObject | EventParent) {
     return (
-      <a href={domain+alias}>
+      <a href={domain + alias}>
         <>
           {renderTitle(title, __typename as UuidType, id)}
           {shouldRenderParent(__typename as UuidType) ? (

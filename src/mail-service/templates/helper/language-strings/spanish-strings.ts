@@ -1,4 +1,4 @@
-import {LanguageStrings} from "../type-language-strings";
+import { LanguageStrings } from '../type-language-strings'
 
 export const strings: LanguageStrings = {
   entities: {
