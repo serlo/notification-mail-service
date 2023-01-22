@@ -1,8 +1,9 @@
 #!/bin/bash
-trap stop EXIT
+trap stop INT
 
 function stop() {
   source ../notification-mail-service/dev/stop.sh
+  exit
 }
 
 cd ../api.serlo.org
