@@ -36,9 +36,12 @@ export async function notifyUsers(
       const { uuid } = await apiClient.request(getUserLanguage, {
         userId: user.id,
       })
-      // TODO: do not throw error, since it would stop also the notification of other users
-      // return instead an object with success: false and reason
-      if (uuid?.__typename != 'User') throw new Error('uuid is not a user')
+      if (uuid?.__typename != 'User') return {
+        success: false,
+        reason: 'uuid is no user',
+        userId: user.id,
+        notificationsIds: []
+      }
       const returnCode = await sendMail(
         {
           username: user.username,
