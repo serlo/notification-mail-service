@@ -33,20 +33,22 @@ export async function notifyUsers(
       const { notifications } = await apiClient.request(getNotifications, {
         userId: user.id,
       })
-      if (notifications.nodes.length === 0) return {
-        success: true,
-        userId: user.id,
-        notificationsIds: []
-      }
+      if (notifications.nodes.length === 0)
+        return {
+          success: true,
+          userId: user.id,
+          notificationsIds: [],
+        }
       const { uuid } = await apiClient.request(getUserLanguage, {
         userId: user.id,
       })
-      if (uuid?.__typename != 'User') return {
-        success: false,
-        reason: 'uuid is no user',
-        userId: user.id,
-        notificationsIds: []
-      }
+      if (uuid?.__typename != 'User')
+        return {
+          success: false,
+          reason: 'uuid is no user',
+          userId: user.id,
+          notificationsIds: [],
+        }
       const returnCode = await sendMail(
         {
           username: user.username,
