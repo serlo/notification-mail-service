@@ -7,7 +7,8 @@ import { GetNotificationsQuery, Instance } from '../gql/graphql'
 import { DBConnection } from './db-connection'
 import { getNotifications } from './get-notifications-query'
 import { getUserLanguage } from './language-query'
-import { getLanguageStrings, NotificationEmailComponent } from './templates'
+import { NotificationEmailComponent } from './templates'
+import { getLanguageStrings } from './templates/helper/get-language-strings'
 
 export * from './db-connection'
 

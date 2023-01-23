@@ -1,13 +1,8 @@
 import { Instance } from '../../../gql/graphql'
-import * as en from '../helper/language-strings/english-strings'
-import * as fr from '../helper/language-strings/french-strings'
-import * as de from '../helper/language-strings/german-strings'
-import * as hi from '../helper/language-strings/hindi-strings'
-import * as es from '../helper/language-strings/spanish-strings'
-import * as ta from '../helper/language-strings/tamil-strings'
 import { Event, EventComponent } from './event'
 import { replacePlaceholders } from '../helper/replace-placeholders'
 import { domain } from '..'
+import { getLanguageStrings } from '../helper/get-language-strings'
 
 interface Props {
   username: string
@@ -54,30 +49,31 @@ export function NotificationEmailComponent({
       <br />
       <p>{strings.email.initiation}</p>
       <br />
-      {events.map((event) => {
-        return <EventComponent event={event} key={event.id} strings={strings} />
-      })}
+      {events
+        .filter((event) => isThreadEvent(event))
+        .map((event) => {
+          return (
+            <EventComponent event={event} key={event.id} strings={strings} />
+          )
+        })}
+      <br />
+      {events
+        .filter((event) => !isThreadEvent(event))
+        .map((event) => {
+          return (
+            <EventComponent event={event} key={event.id} strings={strings} />
+          )
+        })}
       <br />
       <p>{replacePlaceholders(strings.email.settings, { link })}</p>
     </>
   )
 }
 
-export function getLanguageStrings(language: Instance | null) {
-  switch (language) {
-    case Instance.De:
-      return de.strings
-    case Instance.En:
-      return en.strings
-    case Instance.Es:
-      return es.strings
-    case Instance.Fr:
-      return fr.strings
-    case Instance.Hi:
-      return hi.strings
-    case Instance.Ta:
-      return ta.strings
-    default:
-      return de.strings
-  }
+function isThreadEvent(event: Event): boolean {
+  return (
+    event.__typename === 'CreateThreadNotificationEvent' ||
+    event.__typename === 'CreateCommentNotificationEvent' ||
+    event.__typename === 'SetThreadStateNotificationEvent'
+  )
 }
