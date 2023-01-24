@@ -16,7 +16,6 @@ async function run() {
   try {
     // TODO: retry to connect
     connection = await mysql.createConnection(config.db)
-
     const transporter = createTransport(config.smtp, { from: config.fromEmail })
 
     if (!config.serloApiGraphqlUrl) {
@@ -35,7 +34,7 @@ async function run() {
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error({
-      error,
+      error: error as Error,
     })
     exitCode = 1
   } finally {

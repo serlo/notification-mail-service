@@ -9,4 +9,6 @@ const events = getNotificationsQueryResponse.notifications.nodes.map(
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
-root.render(<NotificationEmailComponent events={events} username="user" />)
+root.render(
+  <NotificationEmailComponent events={events} username="user" language={null} />
+)

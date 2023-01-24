@@ -4,7 +4,7 @@ import { graphql } from '../gql'
 
 // FIXME: For any reason (probably we have misconfigured it), codegen is not handling correctly graphql fragments
 // we suppose there aren't any user that have more than 500 unseen notifications, but TODO: paginate
-export const getNotificationsQuery = graphql(`
+export const getNotifications = graphql(`
   query getNotifications($userId: Int!) {
     notifications(
       first: 500

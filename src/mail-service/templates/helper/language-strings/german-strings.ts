@@ -1,5 +1,6 @@
-export const strings = {
-  emailSubject: 'Du hast ungelesene Benachrichtigungen auf Serlo',
+import { LanguageStrings } from '../type-language-strings'
+
+export const strings: LanguageStrings = {
   entities: {
     applet: 'Applet',
     article: 'Artikel',
@@ -59,5 +60,14 @@ export const strings = {
     inviteToChat:
       '%actor% hat dich in den Chat eingeladen: %comment% Gehe zu %chatLink% , um mit %actor% und anderen zu chatten.',
     entityPlaceholderFallback: 'Inhalt',
+  },
+  email: {
+    subject: 'Du hast ungelesene Benachrichtigungen auf Serlo',
+    greeting: 'Hallo %user%!',
+    initiation:
+      'Hier ist eine Übersicht, was mit Inhalten passiert ist, die du erstellt oder bearbeitet hast:',
+    settings:
+      'Zu welchen Inhalten du Benachrichtigungen erhältst, kannst du in deinen %link% ändern.',
+    linkText: 'Einstellungen',
   },
 }
