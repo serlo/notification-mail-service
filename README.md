@@ -15,11 +15,15 @@ After cloning this repo and `cd` into it:
 1. `yarn` for installing dependencies.
 2. `yarn start` for running local testing database and fake email client.\*
 3. `yarn notify`
-4. Navigate to the `http://localhost:8080/` to see your local mail client.\*
+4. Navigate to the `http://localhost:4444/` to see your local mail client.\*
 5. Use `yarn mysql:rollback` for rolling back the database changes.
 6. When you are done, `yarn stop`.
 
-\* You don't need this step if you bring your own database, smtp server and/or email client. In that case adapt the `.env` and maybe the `docker-compose.yaml`.
+\* You don't need this step if you bring your own database, smtp server and/or email client. In that case adapt the `.env` and maybe the `docker-compose.yml`.
+
+## Developing templates
+
+Run `yarn template`.
 
 ## Running tests
 

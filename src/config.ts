@@ -9,13 +9,13 @@ export const config = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
   },
-  mail: {
-    host: process.env.MAIL_HOST,
-    port: parseInt(process.env.MAIL_PORT as string, 10),
+  smtp: {
+    host: process.env.SMTP_HOST,
+    port: parseInt(process.env.SMTP_PORT as string, 10),
     secure: false,
     auth: {
-      user: process.env.MAIL_USER,
-      pass: process.env.MAIL_PASSWORD,
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASSWORD,
     },
   },
   fromEmail: process.env.FROM_EMAIL || 'notifications@mail.serlo.org',

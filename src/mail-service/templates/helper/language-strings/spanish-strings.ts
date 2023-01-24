@@ -1,0 +1,67 @@
+import { LanguageStrings } from '../type-language-strings'
+
+export const strings: LanguageStrings = {
+  entities: {
+    applet: 'Applet',
+    article: 'Artículo',
+    course: 'Curso',
+    coursePage: 'Página del curso',
+    event: 'Evento',
+    exercise: 'Ejercicio',
+    exerciseGroup: 'Grupo de ejercicios',
+    topic: 'Carpeta',
+    groupedExercise: 'Ejercicio agrupado',
+    page: 'Página',
+    solution: 'Solución',
+    taxonomyTerm: 'Término de taxonomía',
+    user: 'Usuario',
+    video: 'Vídeo',
+    exerciseFolder: 'Carpeta de ejercicios',
+    comment: 'Comentario',
+    revision: 'Revisión',
+    thread: 'Hilo de conversación',
+    threads: 'Hilos de conversación',
+    subject: 'Asunto',
+    userProfile: 'Perfil de usuario',
+    privacyPolicy: 'Política de privacidad',
+    content: 'Contenido',
+  },
+  events: {
+    entityInParentPreposition: 'en',
+    commentInParentPreposition: 'en',
+    setThreadStateArchived: '%actor% archivó %thread%.',
+    setThreadStateUnarchived: '%actor% restauró %thread%.',
+    createComment: '%actor% comentó en %thread%: %comment%.',
+    createThread: '%actor% ha iniciado %thread% en %object%.',
+    createEntity: '%actor% creó %object%.',
+    setLicense: '%actor% cambió la licencia de %repository%.',
+    createEntityLink: '%actor% asoció %child% con %parent%.',
+    removeEntityLink: '%actor% disoció %child% de %parent%.',
+    createEntityRevision: '%actor% creó %revision% de %entity%.',
+    checkoutRevision: '%actor% ha verificado %revision% en %repository%',
+    rejectRevision: '%actor% no aceptó %revision% en %repository%.',
+    createTaxonomyLink: '%actor% agregó %child% a %parent%.',
+    removeTaxonomyLink: '%actor% eliminó %child% de %parent%.',
+    createTaxonomyTerm: '%actor% creó %term%.',
+    setTaxonomyTerm: '%actor% actualizó %term%.',
+    setTaxonomyParentDeleted: '%actor% eliminó padre de %child%.',
+    setTaxonomyParentChangedFrom:
+      '%actor% cambió padre de %child% del %previousparent% a %parent%.',
+    setTaxonomyParentChanged: '%actor% cambió padre de %child% a %parent%.',
+    setUuidStateTrashed: '%actor% desechó %object%.',
+    setUuidStateRestored: '%actor% restauró %object%.',
+    inviteToChat:
+      '%actor% te ha invitado al chat: %comment% Visita %chatLink% para chatear con %actor% y otros.',
+    entityPlaceholderFallback: 'Contenido',
+  },
+  email: {
+    //TODO: translate
+    subject: 'Your unread notifications on Serlo',
+    greeting: '¡Hola %user%!',
+    initiation:
+      'Aquí hay una visión general de lo que pasó con el contenido que creaste o editaste:',
+    settings:
+      'Puedes %link% para el contenido del cual quieres recibir notificaciones.',
+    linkText: 'cambiar la configuración',
+  },
+}

@@ -1,9 +1,10 @@
 // eslint-disable-next-line import/no-internal-modules
+import { GraphQLClient } from 'graphql-request'
 import mysql from 'mysql2/promise'
 import { createTransport } from 'nodemailer'
 
 import { config } from './config'
-import { ApiGraphqlClient, MysqlConnection, notifyUsers } from './mail-service'
+import { MysqlConnection, notifyUsers } from './mail-service'
 
 void run()
 
@@ -15,8 +16,7 @@ async function run() {
   try {
     // TODO: retry to connect
     connection = await mysql.createConnection(config.db)
-
-    const transporter = createTransport(config.mail, { from: config.fromEmail })
+    const transporter = createTransport(config.smtp, { from: config.fromEmail })
 
     if (!config.serloApiGraphqlUrl) {
       throw new Error('SERLO_API_GRAPHQL_URL has to be set')
@@ -24,16 +24,17 @@ async function run() {
     const results = await notifyUsers(
       new MysqlConnection(connection),
       transporter,
-      new ApiGraphqlClient(config.serloApiGraphqlUrl)
+      new GraphQLClient(config.serloApiGraphqlUrl)
     )
 
     // eslint-disable-next-line no-console
     console.log(results)
+    // TODO: should it exit with error code if one notification has success=false?
     exitCode = 0
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error({
-      error,
+      error: error as Error,
     })
     exitCode = 1
   } finally {
