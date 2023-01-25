@@ -1,6 +1,4 @@
-import { LanguageStrings } from '../type-language-strings'
-
-export const strings: LanguageStrings = {
+export const strings = {
   entities: {
     applet: 'Applet',
     article: 'Artikel',
@@ -63,7 +61,7 @@ export const strings: LanguageStrings = {
   },
   email: {
     subject: 'Du hast ungelesene Benachrichtigungen auf Serlo',
-    greeting: 'Hallo %user%!',
+    greeting: 'Hallo %username%!',
     initiation:
       'Hier ist eine Übersicht, was mit Inhalten passiert ist, die du erstellt oder bearbeitet hast:',
     settings:

@@ -43,7 +43,7 @@ export async function notifyUsers(
         ),
       }
 
-      // TODO: this check had to be unnecessary, since
+      // TODO: this check had to be unnecessary
       if (uuid?.__typename !== 'User')
         return {
           success: false,
@@ -55,7 +55,7 @@ export async function notifyUsers(
         {
           username: user.username,
           email: user.email,
-          language: uuid.language ? uuid.language : null,
+          language: uuid.language,
         },
         notifications.nodes,
         transporter
@@ -87,14 +87,16 @@ async function sendMail(
     username,
     email,
     language,
-  }: { username: string; email: string; language: Instance | null },
+  }: { username: string; email: string; language?: Instance | null },
   notifications: GetNotificationsQuery['notifications']['nodes'],
   transporter: Transporter<SMTPTransport.SentMessageInfo>
 ) {
+  const strings = getLanguageStrings(language)
   const emailPayload = {
     username,
     events: notifications.map((node) => node.event),
     language,
+    strings
   }
 
   const body = renderToStaticMarkup(NotificationEmailComponent(emailPayload))
@@ -104,7 +106,7 @@ async function sendMail(
   const { response } = await transporter.sendMail({
     html: `<!DOCTYPE html>${body}`,
     text: bodyPlainText,
-    subject: getLanguageStrings(language).email.subject,
+    subject: .email.subject,
     to: email,
   })
 

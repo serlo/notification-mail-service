@@ -6,10 +6,8 @@ import * as hi from './language-strings/hindi-strings'
 import * as es from './language-strings/spanish-strings'
 import * as ta from './language-strings/tamil-strings'
 
-export function getLanguageStrings(language: Instance | null) {
+export function getLanguageStrings(language?: Instance | null) {
   switch (language) {
-    case Instance.De:
-      return de.strings
     case Instance.En:
       return en.strings
     case Instance.Es:
