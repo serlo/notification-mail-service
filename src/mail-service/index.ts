@@ -96,7 +96,7 @@ async function sendMail(
     username,
     events: notifications.map((node) => node.event),
     language,
-    strings
+    strings,
   }
 
   const body = renderToStaticMarkup(NotificationEmailComponent(emailPayload))
@@ -106,7 +106,7 @@ async function sendMail(
   const { response } = await transporter.sendMail({
     html: `<!DOCTYPE html>${body}`,
     text: bodyPlainText,
-    subject: .email.subject,
+    subject: strings.email.subject,
     to: email,
   })
 

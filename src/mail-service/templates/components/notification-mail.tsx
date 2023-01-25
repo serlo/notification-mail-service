@@ -15,7 +15,7 @@ export function NotificationEmailComponent({
   username,
   events,
   language,
-  strings
+  strings,
 }: Props) {
   if (!language)
     return (
@@ -27,7 +27,7 @@ export function NotificationEmailComponent({
             username,
             events,
             language: Instance.De,
-            strings
+            strings,
           })}
         </p>
         <br />
@@ -36,7 +36,7 @@ export function NotificationEmailComponent({
             username,
             events,
             language: Instance.En,
-            strings
+            strings,
           })}
         </p>
       </>
