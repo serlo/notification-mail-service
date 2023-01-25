@@ -1,11 +1,11 @@
-import type { Connection } from 'mysql2/promise'
+import type { Connection, RowDataPacket } from 'mysql2/promise'
 
 export interface DBConnection {
   fetchUnnotifiedUsers(): Promise<User[]>
   updateNotificationSentStatus(notificationsIds: string[]): Promise<void>
 }
 
-export interface User {
+export interface User extends RowDataPacket {
   id: number
   username: string
   email: string
@@ -19,14 +19,14 @@ export class MysqlConnection implements DBConnection {
   }
 
   async fetchUnnotifiedUsers() {
-    const [rows] = await this.connection.execute(
-      `SELECT user.username, user.email, user.id          
+    const [users] = await this.connection.query<User[]>(
+      `SELECT username, user.email, user.id
         FROM notification
-        JOIN user ON user.id = notification.user_id 
+        JOIN user ON user.id = notification.user_id
         WHERE notification.email = 1 AND notification.email_sent = 0 AND notification.seen = 0
         GROUP BY notification.user_id;`
     )
-    return rows as User[]
+    return users
   }
 
   async updateNotificationSentStatus(notificationsIds: string[]) {

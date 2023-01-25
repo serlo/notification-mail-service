@@ -14,7 +14,6 @@ yarn start &
 cd ../database-layer
 git checkout notification-email-sent
 git pull
-yarn start
 sleep 30
 cargo run &
 
