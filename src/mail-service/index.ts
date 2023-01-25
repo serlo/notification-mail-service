@@ -69,6 +69,7 @@ export async function notifyUsers(
 
       // actually there are other success codes, see https://en.wikipedia.org/wiki/List_of_SMTP_server_return_codes
       if (returnCode === '250 Ok') {
+        // Possible performance improvement: group all successful and update them all in the end
         await dbConnection.updateNotificationSentStatus(
           notifications.nodes.map((notification) => notification.id.toString())
         )
@@ -104,7 +105,7 @@ async function sendMail(
 
   const body = renderToStaticMarkup(NotificationEmailComponent(emailPayload))
 
-  const bodyPlainText = body.replaceAll('<br/>', '\n').replace(/<[^>]*>?/gm, '')
+  const bodyPlainText = removeHtmlTags(body)
 
   const { response } = await transporter.sendMail({
     html: `<!DOCTYPE html>${body}`,
@@ -114,4 +115,8 @@ async function sendMail(
   })
 
   return response
+}
+
+function removeHtmlTags(html: string) {
+  return html.replaceAll('<br/>', '\n').replace(/<[^>]*>?/gm, '')
 }
