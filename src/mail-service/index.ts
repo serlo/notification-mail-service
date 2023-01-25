@@ -6,7 +6,6 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { GetNotificationsQuery, Instance } from '../gql/graphql'
 import { DBConnection } from './db-connection'
 import { getNotifications } from './get-notifications-query'
-import { getUserLanguage } from './language-query'
 import { NotificationEmailComponent } from './templates'
 import { getLanguageStrings } from './templates/helper/get-language-strings'
 
@@ -30,26 +29,28 @@ export async function notifyUsers(
 
   return await Promise.all(
     unnotifiedUsers.map(async (user) => {
-      // remember to run codegen with the api running in the right branch
-      const { notifications } = await apiClient.request(getNotifications, {
-        userId: user.id,
-      })
-      if (notifications.nodes.length === 0)
-        return {
-          success: true,
+      const { notifications, uuid } = await apiClient.request(
+        getNotifications,
+        {
           userId: user.id,
-          notificationsIds: [],
         }
-      const { uuid } = await apiClient.request(getUserLanguage, {
+      )
+
+      const baseResult = {
         userId: user.id,
-      })
-      if (uuid?.__typename != 'User')
+        notificationsIds: notifications.nodes.map(
+          (notification) => notification.id
+        ),
+      }
+
+      // TODO: this check had to be unnecessary, since
+      if (uuid?.__typename !== 'User')
         return {
           success: false,
-          reason: 'uuid is no user',
-          userId: user.id,
-          notificationsIds: [],
+          reason: 'Server error: user.id is not of a user',
+          ...baseResult,
         }
+
       const returnCode = await sendMail(
         {
           username: user.username,
@@ -59,13 +60,6 @@ export async function notifyUsers(
         notifications.nodes,
         transporter
       )
-
-      const baseResult = {
-        userId: user.id,
-        notificationsIds: notifications.nodes.map(
-          (notification) => notification.id
-        ),
-      }
 
       // actually there are other success codes, see https://en.wikipedia.org/wiki/List_of_SMTP_server_return_codes
       if (returnCode === '250 Ok') {
