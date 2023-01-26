@@ -14,33 +14,8 @@ interface Props {
 export function NotificationEmailComponent({
   username,
   events,
-  language,
   strings,
 }: Props) {
-  if (!language)
-    return (
-      <>
-        <p>English message below</p>
-        <br />
-        <p>
-          {NotificationEmailComponent({
-            username,
-            events,
-            language: Instance.De,
-            strings,
-          })}
-        </p>
-        <br />
-        <p>
-          {NotificationEmailComponent({
-            username,
-            events,
-            language: Instance.En,
-            strings,
-          })}
-        </p>
-      </>
-    )
   const link = (
     <a href={`${domain}/subscriptions/manage`} target="_blank" rel="noreferrer">
       {strings.email.linkText}

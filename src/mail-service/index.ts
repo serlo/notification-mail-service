@@ -8,6 +8,7 @@ import { DBConnection } from './db-connection'
 import { getNotifications } from './get-notifications-query'
 import { NotificationEmailComponent } from './templates'
 import { getLanguageStrings } from './templates/helper/get-language-strings'
+import { de, en } from './templates/helper/language-strings'
 
 export * from './db-connection'
 
@@ -91,26 +92,66 @@ async function sendMail(
   notifications: GetNotificationsQuery['notifications']['nodes'],
   transporter: Transporter<SMTPTransport.SentMessageInfo>
 ) {
-  const strings = getLanguageStrings(language)
-  const emailPayload = {
+  const { subject, body } = createEmailSubjectAndBody({
     username,
     events: notifications.map((node) => node.event),
     language,
-    strings,
-  }
-
-  const body = renderToStaticMarkup(NotificationEmailComponent(emailPayload))
+  })
 
   const bodyPlainText = removeHtmlTags(body)
 
   const { response } = await transporter.sendMail({
     html: `<!DOCTYPE html>${body}`,
     text: bodyPlainText,
-    subject: strings.email.subject,
+    subject,
     to: email,
   })
 
   return response
+}
+
+export function createEmailSubjectAndBody({
+  username,
+  events,
+  language,
+}: {
+  username: string
+  events: GetNotificationsQuery['notifications']['nodes'][number]['event'][]
+  language?: Instance | null
+}) {
+  if (!language) {
+    const germanBody = renderToStaticMarkup(
+      NotificationEmailComponent({
+        username,
+        events,
+        strings: de.strings,
+      })
+    )
+    const englishBody = renderToStaticMarkup(
+      NotificationEmailComponent({
+        username,
+        events,
+        strings: en.strings,
+      })
+    )
+
+    return {
+      body: `<p>English message below</p><br>${germanBody}<br>${englishBody}`,
+      subject: `${de.strings.email.subject} | ${en.strings.email.subject}`,
+    }
+  }
+  const strings = getLanguageStrings(language)
+
+  return {
+    subject: strings.email.subject,
+    body: renderToStaticMarkup(
+      NotificationEmailComponent({
+        username,
+        events,
+        strings,
+      })
+    ),
+  }
 }
 
 function removeHtmlTags(html: string) {
