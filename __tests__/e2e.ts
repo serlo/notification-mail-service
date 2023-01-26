@@ -5,7 +5,7 @@ import { createTransport } from 'nodemailer'
 import { config } from '../src/config'
 import { notifyUsers, MysqlConnection } from '../src/mail-service'
 
-test.skip('should send all emails and set notifications as sent', async () => {
+test('should send all emails and set notifications as sent', async () => {
   const connection = await createConnection(config.db)
 
   await connection.beginTransaction()
@@ -18,25 +18,25 @@ test.skip('should send all emails and set notifications as sent', async () => {
     config.serloApiGraphqlUrl || 'https://api.serlo-staging.dev/graphql'
   )
 
-  const firstOutput = await notifyUsers(
+  const firstResults = await notifyUsers(
     mysqlConnection,
     transporter,
     apiGraphqlClient
   )
 
-  expect(firstOutput).toHaveLength(3)
-  expect(firstOutput[0]).toStrictEqual({
+  expect(firstResults).toHaveLength(3)
+  expect(firstResults[0]).toStrictEqual({
     success: true,
     notificationsIds: [11605, 11602],
     userId: 677,
   })
 
-  const secondOutput = await notifyUsers(
+  const secondResults = await notifyUsers(
     mysqlConnection,
     transporter,
     apiGraphqlClient
   )
-  expect(secondOutput).toHaveLength(0)
+  expect(secondResults).toHaveLength(0)
 
   await connection.rollback()
   await connection.end()

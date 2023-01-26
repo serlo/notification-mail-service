@@ -33,7 +33,7 @@ declare global {
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 global.server = setupServer()
 
-beforeAll(() => global.server.listen({ onUnhandledRequest: 'error' }))
+beforeAll(() => global.server.listen({ onUnhandledRequest: 'bypass' }))
 
 afterEach(() => {
   global.server.resetHandlers()
