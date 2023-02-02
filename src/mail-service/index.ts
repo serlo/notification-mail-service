@@ -19,8 +19,6 @@ export async function notifyUsers(
 ): Promise<Result[]> {
   const unnotifiedUsers = await dbConnection.fetchUnnotifiedUsers()
 
-  if (!unnotifiedUsers.length) return []
-
   return await Promise.all(
     unnotifiedUsers.map(async (user) => {
       const { notifications, uuid } = await apiClient.request(
