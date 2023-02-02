@@ -41,7 +41,7 @@ export function EventComponent({
     string: string,
     replaceables: { [key: string]: JSX.Element | string }
   ) {
-    replaceables.actor = <UserLink user={event.actor} />
+    replaceables.actor = <UserLink username={event.actor.username} />
     return replacePlaceholders(string, replaceables)
   }
 
