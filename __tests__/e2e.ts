@@ -15,7 +15,7 @@ test('should send all emails and set notifications as sent', async () => {
   const transporter = createTransport(config.smtp, { from: config.fromEmail })
 
   const apiGraphqlClient = new GraphQLClient(
-    config.serloApiGraphqlUrl || 'https://api.serlo-staging.dev/graphql'
+    config.serloApi.graphqlUrl || 'https://api.serlo-staging.dev/graphql'
   )
 
   const firstResults = await notifyUsers(
