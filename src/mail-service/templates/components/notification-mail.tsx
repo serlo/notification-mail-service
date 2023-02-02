@@ -27,25 +27,19 @@ export function NotificationEmailComponent({
       <br />
       <p>{strings.email.initiation}</p>
       <br />
-      {events
-        .filter((event) => isThreadEvent(event))
-        .map((event) => {
-          return (
-            <EventComponent event={event} key={event.id} strings={strings} />
-          )
-        })}
+      {renderEvents(isThreadEvent)}
       <br />
-      {events
-        .filter((event) => !isThreadEvent(event))
-        .map((event) => {
-          return (
-            <EventComponent event={event} key={event.id} strings={strings} />
-          )
-        })}
+      {renderEvents((event) => !isThreadEvent(event))}
       <br />
       <p>{replacePlaceholders(strings.email.settings, { link })}</p>
     </>
   )
+
+  function renderEvents(predicate: (x: Event) => boolean) {
+    return events.filter(predicate).map((event) => {
+      return <EventComponent event={event} key={event.id} strings={strings} />
+    })
+  }
 }
 
 function isThreadEvent(event: Event): boolean {
