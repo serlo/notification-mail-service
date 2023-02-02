@@ -17,6 +17,6 @@ const config: CodegenConfig = {
   },
 }
 
-// TODO: Better way to implement this?!
+// For @graphql-codegen/cli we actually need a default export here
 // eslint-disable-next-line import/no-default-export
 export default config
