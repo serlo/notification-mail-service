@@ -2,9 +2,6 @@
 .idea/*
 .tool-versions
 
-# place to test things
-dev/sandbox
-
 # Yarn (with Zero-Installs)
 .yarn/*
 !.yarn/cache
