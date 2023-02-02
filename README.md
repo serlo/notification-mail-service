@@ -1,21 +1,37 @@
 # serlo.org - Notification Mail Service
 
-Micro-service that notify user by emails
+Micro-service that notify users by email about last events
 
 ## Getting stated
 
-`docker-compose up -d` (or, if you have Yarn installed `yarn start`) for running local testing database and fake email client.
-When you are done, `docker-compose down` or `yarn stop`.
-to run server use `yarn serve` (Todo :: run through dockers )
-to run scheduler use `yarn scheduler`(Todo: run through dockers )
+Required:
 
-## Helpful Tips
+- Nodejs
+- Yarn
+- Docker and docker-compose (Highly recommended)
 
-For running scripts you need Node, Yarn and Typescript installed.  
-Use `yarn mysql` to prompt to the cli of your local databse.  
-Use `smtps://test:test@localhost:2500/?skip_ssl_verify=true` to set you stmp.  
-Navigate to the `http://localhost:8080/` to see your local mail client.
+After cloning this repo and `cd` into it:
 
-## Purpose of this Service
+1. `yarn` for installing dependencies.
+2. `yarn start` for running local testing database and fake email client.\*
+3. `yarn notify`
+4. Navigate to the `http://localhost:4444/` to see your local mail client.\*
+5. Use `yarn mysql:rollback` for rolling back the database changes.
+6. When you are done, `yarn stop`.
 
-Handle the email sending process through cron as well by API `${host}/email` for sending Urgent mail
+\* You don't need this step if you bring your own database, smtp server and/or email client. In that case adapt the `.env` and maybe the `docker-compose.yml`.
+
+## Developing templates
+
+Run `yarn template`.
+
+## Running tests
+
+For e2e testing you need to have `yarn start`ed, with the database in the original state (use `yarn mysql:rollback`).
+Run `yarn test`.
+
+## Helpful Info
+
+Use `yarn mysql` to prompt to the cli of your local database.  
+Use `yarn format` for linting and formatting.
+By default, it will use the Serlo's staging API. If you prefer to use a local API, start it and set it in `.env`.

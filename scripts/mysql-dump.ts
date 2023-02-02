@@ -8,6 +8,7 @@ import { spawn } from 'child_process'
 import * as fs from 'fs'
 import * as path from 'path'
 import * as process from 'process'
+
 import {
   ConcatenateInsertCommands,
   IgnoreInsecurePasswordWarning,
@@ -53,9 +54,11 @@ mysqldump.stderr
   .pipe(process.stderr)
 
 mysqldump.on('error', (error) => {
-  console.error('ERROR: ' + error)
+  /* eslint-disable-next-line no-console */
+  console.error(`ERROR: ${String(error)}`)
 })
 
-mysqldump.on('exit', (code, signal) => {
+mysqldump.on('exit', (code) => {
+  /* eslint-disable-next-line no-console */
   process.exit(code !== null ? code : 1)
 })
