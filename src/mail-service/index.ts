@@ -59,16 +59,9 @@ export async function notifyUsers(
         await dbConnection.updateNotificationSentStatus(
           notifications.nodes.map((notification) => notification.id.toString())
         )
-        return {
-          success: true,
-          ...baseResult,
-        }
+        return { success: true, ...baseResult }
       } else {
-        return {
-          success: false,
-          reason: returnCode,
-          ...baseResult,
-        }
+        return { success: false, reason: returnCode, ...baseResult }
       }
     })
   )
