@@ -3,13 +3,13 @@ import type { Transporter } from 'nodemailer'
 import SMTPTransport from 'nodemailer/lib/smtp-transport'
 import { renderToStaticMarkup } from 'react-dom/server'
 
-import { Instance } from '../gql/graphql'
 import { DBConnection } from './db-connection'
 import { getNotifications } from './get-notifications-query'
 import { NotificationEmailComponent } from './templates'
 import { Event } from './templates/components/event'
 import { getLanguageStrings } from './templates/helper/get-language-strings'
 import { de, en } from './templates/helper/language-strings'
+import { Instance } from '../gql/graphql'
 
 export * from './db-connection'
 
