@@ -43,15 +43,13 @@ export async function notifyUsers(
         }
       }
 
-      const returnCode = await sendMail(
-        {
-          username: user.username,
-          email: user.email,
-          language: uuid.language,
-        },
-        notifications.nodes,
-        transporter
-      )
+      const returnCode = await sendMail({
+        username: user.username,
+        email: user.email,
+        language: uuid.language,
+        notifications: notifications.nodes,
+        transporter,
+      })
 
       // actually there are other success codes, see https://en.wikipedia.org/wiki/List_of_SMTP_server_return_codes
       if (returnCode === '250 Ok') {
@@ -84,15 +82,19 @@ interface BaseResult {
   notificationsIds: number[]
 }
 
-async function sendMail(
-  {
-    username,
-    email,
-    language,
-  }: { username: string; email: string; language?: Instance | null },
-  notifications: GetNotificationsQuery['notifications']['nodes'],
+async function sendMail({
+  username,
+  email,
+  language,
+  notifications,
+  transporter,
+}: {
+  username: string
+  email: string
+  language?: Instance | null
+  notifications: GetNotificationsQuery['notifications']['nodes']
   transporter: Transporter<SMTPTransport.SentMessageInfo>
-) {
+}) {
   const { subject, body } = createEmailSubjectAndBody({
     username,
     events: notifications.map((node) => node.event),
