@@ -57,8 +57,9 @@ export async function notifyUsers(
       if (returnCode === '250 Ok') {
         // Possible performance improvement: group all successful and update them all in the end
         await dbConnection.updateNotificationSentStatus(
-          notifications.nodes.map((notification) => notification.id.toString())
+          baseResult.notificationsIds
         )
+
         return { success: true, ...baseResult }
       } else {
         return { success: false, reason: returnCode, ...baseResult }
