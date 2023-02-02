@@ -45,7 +45,7 @@ export async function notifyUsers(
           }
         }
 
-        const returnCode = await sendMail({
+        const statusCode = await sendMail({
           username: user.username,
           email: user.email,
           language: uuid.language,
@@ -53,8 +53,8 @@ export async function notifyUsers(
           transporter,
         })
 
-        // actually there are other success codes, see https://en.wikipedia.org/wiki/List_of_SMTP_server_return_codes
-        if (returnCode === '250 Ok') {
+        // See https://en.wikipedia.org/wiki/List_of_SMTP_server_return_codes for successful status codes
+        if (statusCode[0] === '2') {
           // Possible performance improvement: group all successful and update them all in the end
           await dbConnection.updateNotificationSentStatus(
             baseResult.notificationsIds
@@ -62,7 +62,7 @@ export async function notifyUsers(
 
           return { success: true, ...baseResult }
         } else {
-          return { success: false, reason: returnCode, ...baseResult }
+          return { success: false, reason: statusCode, ...baseResult }
         }
       } catch (error) {
         return { success: false, reason: error }
