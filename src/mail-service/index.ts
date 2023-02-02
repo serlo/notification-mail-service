@@ -22,63 +22,64 @@ export async function notifyUsers(
 
   return await Promise.all(
     unnotifiedUsers.map(async (user) => {
-      const { notifications, uuid } = await apiClient.request(
-        getNotifications,
-        { userId: user.id }
-      )
-
-      const baseResult = {
-        userId: user.id,
-        notificationsIds: notifications.nodes.map(
-          (notification) => notification.id
-        ),
-      }
-
-      // Since we can only requests UUIDs we need a check whether the requested
-      // uuid is a user (which shall always be the case)
-      if (uuid?.__typename !== 'User') {
-        return {
-          success: false,
-          reason: 'Server error: user.id is not of a user',
-          ...baseResult,
-        }
-      }
-
-      const returnCode = await sendMail({
-        username: user.username,
-        email: user.email,
-        language: uuid.language,
-        events: notifications.nodes.map((n) => n.event),
-        transporter,
-      })
-
-      // actually there are other success codes, see https://en.wikipedia.org/wiki/List_of_SMTP_server_return_codes
-      if (returnCode === '250 Ok') {
-        // Possible performance improvement: group all successful and update them all in the end
-        await dbConnection.updateNotificationSentStatus(
-          baseResult.notificationsIds
+      try {
+        const { notifications, uuid } = await apiClient.request(
+          getNotifications,
+          { userId: user.id }
         )
 
-        return { success: true, ...baseResult }
-      } else {
-        return { success: false, reason: returnCode, ...baseResult }
+        const baseResult = {
+          userId: user.id,
+          notificationsIds: notifications.nodes.map(
+            (notification) => notification.id
+          ),
+        }
+
+        // Since we can only requests UUIDs we need a check whether the requested
+        // uuid is a user (which shall always be the case)
+        if (uuid?.__typename !== 'User') {
+          return {
+            success: false,
+            reason: 'Server error: user.id is not of a user',
+            ...baseResult,
+          }
+        }
+
+        const returnCode = await sendMail({
+          username: user.username,
+          email: user.email,
+          language: uuid.language,
+          events: notifications.nodes.map((n) => n.event),
+          transporter,
+        })
+
+        // actually there are other success codes, see https://en.wikipedia.org/wiki/List_of_SMTP_server_return_codes
+        if (returnCode === '250 Ok') {
+          // Possible performance improvement: group all successful and update them all in the end
+          await dbConnection.updateNotificationSentStatus(
+            baseResult.notificationsIds
+          )
+
+          return { success: true, ...baseResult }
+        } else {
+          return { success: false, reason: returnCode, ...baseResult }
+        }
+      } catch (error) {
+        return { success: false, reason: error }
       }
     })
   )
 }
 
-type Result = Succees | Fail
+type Result = SucceededResult | FailedResult
 
-interface Fail extends BaseResult {
+interface FailedResult {
   success: false
   reason: unknown
 }
 
-interface Succees extends BaseResult {
+interface SucceededResult {
   success: true
-}
-
-interface BaseResult {
   userId: number
   notificationsIds: number[]
 }
