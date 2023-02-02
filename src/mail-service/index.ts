@@ -102,11 +102,9 @@ async function sendMail({
     language,
   })
 
-  const bodyPlainText = removeHtmlTags(body)
-
   const { response } = await transporter.sendMail({
     html: `<!DOCTYPE html>${body}`,
-    text: bodyPlainText,
+    text: removeHtmlTags(body),
     subject,
     to: email,
   })
