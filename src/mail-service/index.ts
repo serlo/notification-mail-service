@@ -3,10 +3,11 @@ import type { Transporter } from 'nodemailer'
 import SMTPTransport from 'nodemailer/lib/smtp-transport'
 import { renderToStaticMarkup } from 'react-dom/server'
 
-import { GetNotificationsQuery, Instance } from '../gql/graphql'
+import { Instance } from '../gql/graphql'
 import { DBConnection } from './db-connection'
 import { getNotifications } from './get-notifications-query'
 import { NotificationEmailComponent } from './templates'
+import { Event } from './templates/components/event'
 import { getLanguageStrings } from './templates/helper/get-language-strings'
 import { de, en } from './templates/helper/language-strings'
 
@@ -47,7 +48,7 @@ export async function notifyUsers(
         username: user.username,
         email: user.email,
         language: uuid.language,
-        notifications: notifications.nodes,
+        events: notifications.nodes.map((n) => n.event),
         transporter,
       })
 
@@ -86,18 +87,18 @@ async function sendMail({
   username,
   email,
   language,
-  notifications,
+  events,
   transporter,
 }: {
   username: string
   email: string
   language?: Instance | null
-  notifications: GetNotificationsQuery['notifications']['nodes']
+  events: Event[]
   transporter: Transporter<SMTPTransport.SentMessageInfo>
 }) {
   const { subject, body } = createEmailSubjectAndBody({
     username,
-    events: notifications.map((node) => node.event),
+    events,
     language,
   })
 
@@ -119,7 +120,7 @@ export function createEmailSubjectAndBody({
   language,
 }: {
   username: string
-  events: GetNotificationsQuery['notifications']['nodes'][number]['event'][]
+  events: Event[]
   language?: Instance | null
 }) {
   if (!language) {
