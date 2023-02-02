@@ -1,43 +1,21 @@
-import { Instance } from '../../../gql/graphql'
-import { Event, EventComponent } from './event'
-import { replacePlaceholders } from '../helper/replace-placeholders'
 import { domain } from '..'
-import { getLanguageStrings } from '../helper/get-language-strings'
+import { Instance } from '../../../gql/graphql'
+import { replacePlaceholders } from '../helper/replace-placeholders'
+import { LanguageStrings } from '../helper/type-language-strings'
+import { Event, EventComponent } from './event'
 
 interface Props {
   username: string
   events: Event[]
-  language: Instance | null
+  language?: Instance | null
+  strings: LanguageStrings
 }
 
 export function NotificationEmailComponent({
   username,
   events,
-  language,
+  strings,
 }: Props) {
-  if (!language)
-    return (
-      <>
-        <p>English message below</p>
-        <br />
-        <p>
-          {NotificationEmailComponent({
-            username,
-            events,
-            language: Instance.De,
-          })}
-        </p>
-        <br />
-        <p>
-          {NotificationEmailComponent({
-            username,
-            events,
-            language: Instance.En,
-          })}
-        </p>
-      </>
-    )
-  const strings = getLanguageStrings(language)
   const link = (
     <a href={`${domain}/subscriptions/manage`} target="_blank" rel="noreferrer">
       {strings.email.linkText}

@@ -1,0 +1,6 @@
+export * as en from './english-strings'
+export * as fr from './french-strings'
+export * as de from './german-strings'
+export * as hi from './hindi-strings'
+export * as es from './spanish-strings'
+export * as ta from './tamil-strings'

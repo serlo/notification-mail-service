@@ -1,8 +1,16 @@
 import type { Transporter } from 'nodemailer'
 
-import { user } from '../__fixtures__/user'
-import { AbstractNotificationEvent, Instance } from '../src/gql/graphql'
-import { notifyUsers, DBConnection } from '../src/mail-service'
+import { getNotificationsQueryResponse } from '../__fixtures__/notifications'
+import { notifyUsers, DBConnection, User } from '../src/mail-service'
+
+const unnotifiedUser = {
+  id: 2,
+  username: 'user',
+  email: 'fakeemail@serlo.dev',
+}
+const notificationsIds = getNotificationsQueryResponse.notifications.nodes.map(
+  (notification) => notification.id
+)
 
 const fakeConnection: DBConnection & { emailsSent: boolean } = {
   emailsSent: false,
@@ -12,13 +20,7 @@ const fakeConnection: DBConnection & { emailsSent: boolean } = {
       return Promise.resolve([])
     }
 
-    return Promise.resolve([
-      {
-        id: 1,
-        username: 'user',
-        email: 'fakeemail@serlo.dev',
-      },
-    ])
+    return Promise.resolve([unnotifiedUser] as User[])
   },
 
   async updateNotificationSentStatus() {},
@@ -27,51 +29,25 @@ const fakeConnection: DBConnection & { emailsSent: boolean } = {
 const fakeTransporter = {
   shouldFail: false,
   async sendMail() {
-    if (this.shouldFail)
+    if (this.shouldFail) {
       return Promise.resolve({
         response: '450 Requested mail action not taken',
       })
-
+    }
     fakeConnection.emailsSent = true
     return Promise.resolve({ response: '250 Ok' })
   },
 } as { shouldFail: boolean } as Transporter & { shouldFail: boolean }
 
-const event1: AbstractNotificationEvent = {
-  //__typename: 'CheckoutRevisionNotificationEvent',
-  date: '2019-12-01T18:58:08+01:00',
-  actor: user,
-  id: 23,
-  instance: Instance.De,
-  objectId: 34,
-}
-
-const event2: AbstractNotificationEvent = {
-  //__typename: 'CreateEntityRevisionNotificationEvent',
-  date: '2019-12-01T18:58:08+01:00',
-  actor: user,
-  id: 23,
-  instance: Instance.De,
-  objectId: 34,
-}
-
 const fakeApiClient = {
   request() {
-    const value = Promise.resolve({
-      notifications: {
-        nodes: [
-          {
-            id: 11605,
-            event: event1,
-          },
-          {
-            id: 11602,
-            event: event2,
-          },
-        ],
+    return Promise.resolve({
+      uuid: {
+        __typename: 'User',
+        language: 'en',
       },
+      ...getNotificationsQueryResponse,
     })
-    return value
   },
 }
 
@@ -85,37 +61,37 @@ beforeEach(() => {
 })
 
 test('should send all emails and do not send them again', async () => {
-  const output = await notify()
+  const results = await notify()
 
-  expect(output).toHaveLength(1)
-  expect(output[0]).toStrictEqual({
+  expect(results).toHaveLength(1)
+  expect(results[0]).toStrictEqual({
     success: true,
-    notificationsIds: [11605, 11602],
-    userId: 1,
+    notificationsIds,
+    userId: unnotifiedUser.id,
   })
 
-  const expectedEmptyOutput = await notify()
+  const expectedEmptyResults = await notify()
 
-  expect(expectedEmptyOutput).toHaveLength(0)
+  expect(expectedEmptyResults).toHaveLength(0)
 })
 
 test('should send all emails and send them again if not delivered', async () => {
   fakeTransporter.shouldFail = true
 
-  const expectedOutput = {
-    notificationsIds: [11605, 11602],
+  const expectedResults = {
+    notificationsIds,
     reason: '450 Requested mail action not taken',
     success: false,
-    userId: 1,
+    userId: unnotifiedUser.id,
   }
 
-  const firstOutput = await notify()
+  const firstResults = await notify()
 
-  expect(firstOutput).toHaveLength(1)
-  expect(firstOutput[0]).toStrictEqual(expectedOutput)
+  expect(firstResults).toHaveLength(1)
+  expect(firstResults[0]).toStrictEqual(expectedResults)
 
-  const secondOutput = await notify()
+  const secondResults = await notify()
 
-  expect(secondOutput).toHaveLength(1)
-  expect(secondOutput[0]).toStrictEqual(expectedOutput)
+  expect(secondResults).toHaveLength(1)
+  expect(secondResults[0]).toStrictEqual(expectedResults)
 })

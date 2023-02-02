@@ -1,6 +1,4 @@
-import { LanguageStrings } from '../type-language-strings'
-
-export const strings: LanguageStrings = {
+export const strings = {
   entities: {
     applet: 'एप्लेट',
     article: 'लेख',
@@ -56,8 +54,8 @@ export const strings: LanguageStrings = {
   },
   email: {
     //TODO: translate
-    subject: 'Your unread notifications on Serlo',
-    greeting: 'Hello %user%!',
+    subject: 'Your have unread notifications on Serlo',
+    greeting: 'Hello %username%!',
     initiation:
       "Here's a heads up of what has happened with content you edited or created:",
     settings:
