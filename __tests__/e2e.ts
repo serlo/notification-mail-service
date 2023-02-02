@@ -2,6 +2,7 @@ import { GraphQLClient } from 'graphql-request'
 import { createConnection } from 'mysql2/promise'
 import { createTransport } from 'nodemailer'
 
+import { createToken } from '../src'
 import { config } from '../src/config'
 import { notifyUsers, MysqlConnection } from '../src/mail-service'
 
@@ -15,7 +16,16 @@ test('should send all emails and set notifications as sent', async () => {
   const transporter = createTransport(config.smtp, { from: config.fromEmail })
 
   const apiGraphqlClient = new GraphQLClient(
-    config.serloApi.graphqlUrl || 'https://api.serlo-staging.dev/graphql'
+    config.serloApi.graphqlUrl || 'https://api.serlo-staging.dev/graphql',
+    {
+      headers: {
+        Authorization: `Serlo Service=${createToken({
+          secret:
+            config.serloApi.sharedSecret ||
+            'api.serlo.org-notification-email-service-secret',
+        })}`,
+      },
+    }
   )
 
   const firstResults = await notifyUsers(
