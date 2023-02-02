@@ -12,13 +12,6 @@ import { de, en } from './templates/helper/language-strings'
 
 export * from './db-connection'
 
-interface Result {
-  success: boolean
-  reason?: unknown
-  userId: number
-  notificationsIds: number[]
-}
-
 export async function notifyUsers(
   dbConnection: DBConnection,
   transporter: Transporter<SMTPTransport.SentMessageInfo>,
@@ -32,9 +25,7 @@ export async function notifyUsers(
     unnotifiedUsers.map(async (user) => {
       const { notifications, uuid } = await apiClient.request(
         getNotifications,
-        {
-          userId: user.id,
-        }
+        { userId: user.id }
       )
 
       const baseResult = {
@@ -81,6 +72,22 @@ export async function notifyUsers(
       }
     })
   )
+}
+
+type Result = Succees | Fail
+
+interface Fail extends BaseResult {
+  success: false
+  reason: unknown
+}
+
+interface Succees extends BaseResult {
+  success: true
+}
+
+interface BaseResult {
+  userId: number
+  notificationsIds: number[]
 }
 
 async function sendMail(
