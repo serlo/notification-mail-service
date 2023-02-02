@@ -2,9 +2,9 @@ import { domain } from '..'
 import { GetNotificationsQuery } from '../../../gql/graphql'
 import { getEntityStringByTypename } from '../helper/get-string-by-typename'
 import { replacePlaceholders } from '../helper/replace-placeholders'
+import { LanguageStrings } from '../helper/type-language-strings'
 import { UuidType } from '../helper/uuid-type'
 import { UserLink } from './user-link'
-import { LanguageStrings } from '../helper/type-language-strings'
 
 export type Event =
   GetNotificationsQuery['notifications']['nodes'][number]['event']
