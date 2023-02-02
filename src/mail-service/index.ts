@@ -33,13 +33,15 @@ export async function notifyUsers(
         ),
       }
 
-      // TODO: this check had to be unnecessary
-      if (uuid?.__typename !== 'User')
+      // Since we can only requests UUIDs we need a check whether the requested
+      // uuid is a user (which shall always be the case)
+      if (uuid?.__typename !== 'User') {
         return {
           success: false,
           reason: 'Server error: user.id is not of a user',
           ...baseResult,
         }
+      }
 
       const returnCode = await sendMail(
         {
