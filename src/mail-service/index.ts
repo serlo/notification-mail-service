@@ -112,7 +112,7 @@ async function sendMail({
   return response
 }
 
-export function createEmailSubjectAndBody({
+function createEmailSubjectAndBody({
   username,
   events,
   language,
