@@ -1,4 +1,4 @@
-import { domain } from '..'
+import { domain } from '../../../config'
 import { GetNotificationsQuery } from '../../../gql/graphql'
 import { getEntityStringByTypename } from '../helper/get-string-by-typename'
 import { replacePlaceholders } from '../helper/replace-placeholders'

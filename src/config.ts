@@ -22,3 +22,5 @@ export const config = {
   },
   fromEmail: process.env.FROM_EMAIL || 'notifications@mail.serlo.org',
 }
+
+export const domain = 'https://serlo.org'

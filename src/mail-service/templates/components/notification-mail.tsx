@@ -1,4 +1,4 @@
-import { domain } from '..'
+import { domain } from '../../../config'
 import { Instance } from '../../../gql/graphql'
 import { replacePlaceholders } from '../helper/replace-placeholders'
 import { LanguageStrings } from '../helper/type-language-strings'

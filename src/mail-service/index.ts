@@ -121,7 +121,7 @@ export function createEmailSubjectAndBody({
   events: Event[]
   language?: Instance | null
 }) {
-  if (!language) {
+  if (language == null) {
     const germanBody = renderToStaticMarkup(
       NotificationEmailComponent({
         username,

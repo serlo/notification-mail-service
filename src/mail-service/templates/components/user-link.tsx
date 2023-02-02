@@ -1,4 +1,4 @@
-import { domain } from '..'
+import { domain } from '../../../config'
 
 export function UserLink({
   user,
