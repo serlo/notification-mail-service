@@ -1,4 +1,5 @@
 import { GraphQLClient } from 'graphql-request'
+import jwt from 'jsonwebtoken'
 import mysql from 'mysql2/promise'
 import { createTransport } from 'nodemailer'
 
@@ -16,13 +17,20 @@ async function run() {
     connection = await mysql.createConnection(config.db)
     const transporter = createTransport(config.smtp, { from: config.fromEmail })
 
-    if (!config.serloApiGraphqlUrl) {
-      throw new Error('SERLO_API_GRAPHQL_URL has to be set')
+    // TODO: use env.d.ts
+    if (!config.serloApi.graphqlUrl || !config.serloApi.sharedSecret) {
+      throw new Error('serlo api env vars have to be set')
     }
     const results = await notifyUsers(
       new MysqlConnection(connection),
       transporter,
-      new GraphQLClient(config.serloApiGraphqlUrl)
+      new GraphQLClient(config.serloApi.graphqlUrl, {
+        headers: {
+          Authorization: `Serlo Service=${createToken({
+            secret: config.serloApi.sharedSecret,
+          })}`,
+        },
+      })
     )
 
     // eslint-disable-next-line no-console
@@ -37,4 +45,12 @@ async function run() {
   }
 
   process.exit(exitCode)
+}
+
+export function createToken({ secret }: { secret: string }) {
+  return jwt.sign({}, secret, {
+    expiresIn: '2h',
+    audience: 'api.serlo.org',
+    issuer: 'notification-email-service',
+  })
 }

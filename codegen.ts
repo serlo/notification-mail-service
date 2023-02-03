@@ -4,7 +4,7 @@ import { config as appConfig } from './src/config'
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: appConfig.serloApiGraphqlUrl,
+  schema: appConfig.serloApi.graphqlUrl,
   documents: 'src/**/*.ts',
   generates: {
     'src/gql/': {

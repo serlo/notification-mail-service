@@ -5,7 +5,10 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export const config = {
-  serloApiGraphqlUrl: process.env.SERLO_API_GRAPHQL_URL,
+  serloApi: {
+    graphqlUrl: process.env.SERLO_API_GRAPHQL_URL,
+    sharedSecret: process.env.SERLO_API_NOTIFICATION_EMAIL_SERVICE_SECRET,
+  },
   db: {
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,

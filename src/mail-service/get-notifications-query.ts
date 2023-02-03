@@ -15,7 +15,7 @@ export const getNotifications = graphql(`
       first: 500
       unread: true
       emailSent: false
-      emailSubscribed: true
+      email: true
       userId: $userId
     ) {
       nodes {
