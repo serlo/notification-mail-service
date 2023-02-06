@@ -13,3 +13,6 @@ dev/sandbox
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# build
+dist/
