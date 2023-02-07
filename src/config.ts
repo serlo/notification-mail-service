@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-function checkEnvVars() {
+function createConfig() {
   if (
     !process.env.SERLO_API_GRAPHQL_URL ||
     !process.env.SERLO_API_NOTIFICATION_EMAIL_SERVICE_SECRET ||
@@ -22,4 +22,4 @@ function checkEnvVars() {
   }
 }
 
-export const config = checkEnvVars()
+export const config = createConfig()
