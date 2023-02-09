@@ -1,10 +1,10 @@
-import { domain } from '..'
+import { domain } from '../../../config'
 import { GetNotificationsQuery } from '../../../gql/graphql'
 import { getEntityStringByTypename } from '../helper/get-string-by-typename'
 import { replacePlaceholders } from '../helper/replace-placeholders'
+import { LanguageStrings } from '../helper/type-language-strings'
 import { UuidType } from '../helper/uuid-type'
 import { UserLink } from './user-link'
-import { LanguageStrings } from '../helper/type-language-strings'
 
 export type Event =
   GetNotificationsQuery['notifications']['nodes'][number]['event']
@@ -36,14 +36,6 @@ export function EventComponent({
       <br />
     </>
   )
-
-  function parseString(
-    string: string,
-    replaceables: { [key: string]: JSX.Element | string }
-  ) {
-    replaceables.actor = <UserLink user={event.actor} />
-    return replacePlaceholders(string, replaceables)
-  }
 
   function renderText() {
     switch (event.__typename) {
@@ -166,6 +158,31 @@ export function EventComponent({
     }
   }
 
+  function renderAdditionalText() {
+    if (noPrivateContent) return null
+
+    if (
+      event.__typename === 'RejectRevisionNotificationEvent' ||
+      event.__typename === 'CheckoutRevisionNotificationEvent'
+    ) {
+      return <div className="text-truegray-500">{event.reason}</div>
+    }
+    if (event.__typename === 'CreateThreadNotificationEvent') {
+      return renderCommentContent(event.thread.thread.nodes[0].content)
+    }
+    if (event.__typename === 'CreateCommentNotificationEvent') {
+      return renderCommentContent(event.thread.comment.nodes[0].content)
+    }
+  }
+
+  function parseString(
+    string: string,
+    replaceables: { [key: string]: JSX.Element | string }
+  ) {
+    replaceables.actor = <UserLink username={event.actor.username} />
+    return replacePlaceholders(string, replaceables)
+  }
+
   function renderObject({
     alias,
     title,
@@ -244,22 +261,7 @@ export function EventComponent({
       </a>
     )
   }
-  function renderAdditionalText() {
-    if (noPrivateContent) return null
 
-    if (
-      event.__typename === 'RejectRevisionNotificationEvent' ||
-      event.__typename === 'CheckoutRevisionNotificationEvent'
-    ) {
-      return <div className="text-truegray-500">{event.reason}</div>
-    }
-    if (event.__typename === 'CreateThreadNotificationEvent') {
-      return renderCommentContent(event.thread.thread.nodes[0].content)
-    }
-    if (event.__typename === 'CreateCommentNotificationEvent') {
-      return renderCommentContent(event.thread.comment.nodes[0].content)
-    }
-  }
   function renderCommentContent(content?: string) {
     if (!content) return null
     const maxLength = 200

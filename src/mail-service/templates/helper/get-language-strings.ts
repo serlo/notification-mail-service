@@ -1,5 +1,5 @@
-import { Instance } from '../../../gql/graphql'
 import { en, fr, de, hi, es, ta } from './language-strings'
+import { Instance } from '../../../gql/graphql'
 
 export function getLanguageStrings(language: Instance) {
   switch (language) {

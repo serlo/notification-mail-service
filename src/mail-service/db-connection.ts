@@ -2,7 +2,7 @@ import type { Connection, RowDataPacket } from 'mysql2/promise'
 
 export interface DBConnection {
   fetchUnnotifiedUsers(): Promise<User[]>
-  updateNotificationSentStatus(notificationsIds: string[]): Promise<void>
+  updateNotificationSentStatus(notificationsIds: number[]): Promise<void>
 }
 
 export interface User extends RowDataPacket {
@@ -29,11 +29,11 @@ export class MysqlConnection implements DBConnection {
     return users
   }
 
-  async updateNotificationSentStatus(notificationsIds: string[]) {
+  async updateNotificationSentStatus(notificationsIds: number[]) {
     await this.connection.query(
       `UPDATE notification
         SET email_sent = true
-        WHERE id in (${notificationsIds.join().replace("'", ' ')});`
+        WHERE id in (${notificationsIds.join(',')});`
     )
   }
 }

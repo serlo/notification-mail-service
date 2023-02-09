@@ -1,6 +1,10 @@
 import dotenv from 'dotenv'
 
-dotenv.config()
+export const domain = 'https://serlo.org'
+
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config()
+}
 
 function createConfig() {
   if (
@@ -23,3 +27,4 @@ function createConfig() {
 }
 
 export const config = createConfig()
+
