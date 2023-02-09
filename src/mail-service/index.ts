@@ -3,21 +3,15 @@ import type { Transporter } from 'nodemailer'
 import SMTPTransport from 'nodemailer/lib/smtp-transport'
 import { renderToStaticMarkup } from 'react-dom/server'
 
-import { GetNotificationsQuery, Instance } from '../gql/graphql'
 import { DBConnection } from './db-connection'
 import { getNotifications } from './get-notifications-query'
 import { NotificationEmailComponent } from './templates'
+import { Event } from './templates/components/event'
 import { getLanguageStrings } from './templates/helper/get-language-strings'
 import { de, en } from './templates/helper/language-strings'
+import { Instance } from '../gql/graphql'
 
 export * from './db-connection'
-
-interface Result {
-  success: boolean
-  reason?: unknown
-  userId: number
-  notificationsIds: number[]
-}
 
 export async function notifyUsers(
   dbConnection: DBConnection,
@@ -26,83 +20,92 @@ export async function notifyUsers(
 ): Promise<Result[]> {
   const unnotifiedUsers = await dbConnection.fetchUnnotifiedUsers()
 
-  if (!unnotifiedUsers.length) return []
-
   return await Promise.all(
     unnotifiedUsers.map(async (user) => {
-      const { notifications, uuid } = await apiClient.request(
-        getNotifications,
-        {
+      try {
+        const { notifications, uuid } = await apiClient.request(
+          getNotifications,
+          { userId: user.id }
+        )
+
+        const baseResult = {
           userId: user.id,
-        }
-      )
-
-      const baseResult = {
-        userId: user.id,
-        notificationsIds: notifications.nodes.map(
-          (notification) => notification.id
-        ),
-      }
-
-      // TODO: this check had to be unnecessary
-      if (uuid?.__typename !== 'User')
-        return {
-          success: false,
-          reason: 'Server error: user.id is not of a user',
-          ...baseResult,
+          notificationsIds: notifications.nodes.map(
+            (notification) => notification.id
+          ),
         }
 
-      const returnCode = await sendMail(
-        {
+        // Since we can only requests UUIDs we need a check whether the requested
+        // uuid is a user (which shall always be the case)
+        if (uuid?.__typename !== 'User') {
+          return {
+            success: false,
+            reason: 'Server error: user.id is not of a user',
+            ...baseResult,
+          }
+        }
+
+        const statusCode = await sendMail({
           username: user.username,
           email: user.email,
           language: uuid.language,
-        },
-        notifications.nodes,
-        transporter
-      )
+          events: notifications.nodes.map((n) => n.event),
+          transporter,
+        })
 
-      // actually there are other success codes, see https://en.wikipedia.org/wiki/List_of_SMTP_server_return_codes
-      if (returnCode === '250 Ok') {
-        // Possible performance improvement: group all successful and update them all in the end
-        await dbConnection.updateNotificationSentStatus(
-          notifications.nodes.map((notification) => notification.id.toString())
-        )
-        return {
-          success: true,
-          ...baseResult,
+        // See https://en.wikipedia.org/wiki/List_of_SMTP_server_return_codes for successful status codes
+        if (statusCode[0] === '2') {
+          // Possible performance improvement: group all successful and update them all in the end
+          await dbConnection.updateNotificationSentStatus(
+            baseResult.notificationsIds
+          )
+
+          return { success: true, ...baseResult }
+        } else {
+          return { success: false, reason: statusCode, ...baseResult }
         }
-      } else {
-        return {
-          success: false,
-          reason: returnCode,
-          ...baseResult,
-        }
+      } catch (error) {
+        return { success: false, reason: error }
       }
     })
   )
 }
 
-async function sendMail(
-  {
-    username,
-    email,
-    language,
-  }: { username: string; email: string; language?: Instance | null },
-  notifications: GetNotificationsQuery['notifications']['nodes'],
+type Result = SucceededResult | FailedResult
+
+interface FailedResult {
+  success: false
+  reason: unknown
+}
+
+interface SucceededResult {
+  success: true
+  userId: number
+  notificationsIds: number[]
+}
+
+async function sendMail({
+  username,
+  email,
+  language,
+  events,
+  transporter,
+}: {
+  username: string
+  email: string
+  language?: Instance | null
+  events: Event[]
   transporter: Transporter<SMTPTransport.SentMessageInfo>
-) {
+}) {
   const { subject, body } = createEmailSubjectAndBody({
     username,
-    events: notifications.map((node) => node.event),
+    events,
     language,
   })
 
-  const bodyPlainText = removeHtmlTags(body)
-
   const { response } = await transporter.sendMail({
     html: `<!DOCTYPE html>${body}`,
-    text: bodyPlainText,
+    text: removeHtmlTags(body),
     subject,
     to: email,
   })
@@ -110,16 +113,16 @@ async function sendMail(
   return response
 }
 
-export function createEmailSubjectAndBody({
+function createEmailSubjectAndBody({
   username,
   events,
   language,
 }: {
   username: string
-  events: GetNotificationsQuery['notifications']['nodes'][number]['event'][]
+  events: Event[]
   language?: Instance | null
 }) {
-  if (!language) {
+  if (language == null) {
     const germanBody = renderToStaticMarkup(
       NotificationEmailComponent({
         username,

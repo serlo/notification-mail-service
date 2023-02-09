@@ -1,14 +1,15 @@
 import { Fragment } from 'react'
 
-import { replaceWithJSX } from './replace-with-jsx'
-
-//expects placeholders to be in this format: %placeholder%
-
+// expects placeholders to be in this format: %placeholder%
 export function replacePlaceholders(
-  string: string,
-  replaceables: { [key: string]: JSX.Element | string }
+  text: string,
+  replaceables: { [key: string]: JSX.Element | string | undefined }
 ) {
-  return replaceWithJSX([string], /%(.+?)%/g, (str, i) => (
+  const replaceFn = (str: string, i: number) => (
     <Fragment key={i}>{replaceables[str] ?? `%${str}%`}</Fragment>
-  ))
+  )
+
+  return text
+    .split(/%(.+?)%/g)
+    .map((str, i) => (i % 2 === 1 ? replaceFn(str, i) : str))
 }

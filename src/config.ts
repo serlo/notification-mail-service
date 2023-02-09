@@ -1,6 +1,8 @@
 import dotenv from 'dotenv'
 
-dotenv.config()
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config()
+}
 
 export const config = {
   serloApi: {
@@ -23,3 +25,5 @@ export const config = {
   },
   fromEmail: process.env.FROM_EMAIL || 'notifications@mail.serlo.org',
 }
+
+export const domain = 'https://serlo.org'

@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-internal-modules
 import { GraphQLClient } from 'graphql-request'
 import jwt from 'jsonwebtoken'
 import mysql from 'mysql2/promise'
@@ -9,10 +8,9 @@ import { MysqlConnection, notifyUsers } from './mail-service'
 
 void run()
 
-let exitCode = 0
-
 async function run() {
   let connection: mysql.Connection | null = null
+  let exitCode = 0
 
   try {
     // TODO: retry to connect
@@ -40,14 +38,13 @@ async function run() {
     exitCode = 0
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error({
-      error: error as Error,
-    })
+    console.error({ error })
     exitCode = 1
   } finally {
     if (connection) await connection.end()
-    process.exit(exitCode)
   }
+
+  process.exit(exitCode)
 }
 
 export function createToken({ secret }: { secret: string }) {
