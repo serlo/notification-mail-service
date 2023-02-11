@@ -20,55 +20,72 @@ export async function notifyUsers(
 ): Promise<Result[]> {
   const unnotifiedUsers = await dbConnection.fetchUnnotifiedUsers()
 
-  return await Promise.all(
-    unnotifiedUsers.map(async (user) => {
-      try {
-        const { notifications, uuid } = await apiClient.request(
-          getNotifications,
-          { userId: user.id }
-        )
+  const results: Result[] = []
 
-        const baseResult = {
-          userId: user.id,
-          notificationsIds: notifications.nodes.map(
-            (notification) => notification.id
-          ),
-        }
+  for (const user of unnotifiedUsers) {
+    try {
+      const { notifications, uuid } = await apiClient.request(
+        getNotifications,
+        { userId: user.id }
+      )
+      const notificationsIds = notifications.nodes.map(
+        (notification) => notification.id
+      )
 
-        // Since we can only requests UUIDs we need a check whether the requested
-        // uuid is a user (which shall always be the case)
-        if (uuid?.__typename !== 'User') {
-          return {
-            success: false,
-            reason: 'Server error: user.id is not of a user',
-            ...baseResult,
-          }
-        }
-
-        const statusCode = await sendMail({
-          username: user.username,
-          email: user.email,
-          language: uuid.language,
-          events: notifications.nodes.map((n) => n.event),
-          transporter,
-        })
-
-        // See https://en.wikipedia.org/wiki/List_of_SMTP_server_return_codes for successful status codes
-        if (statusCode[0] === '2') {
-          // Possible performance improvement: group all successful and update them all in the end
-          await dbConnection.updateNotificationSentStatus(
-            baseResult.notificationsIds
-          )
-
-          return { success: true, ...baseResult }
-        } else {
-          return { success: false, reason: statusCode, ...baseResult }
-        }
-      } catch (error) {
-        return { success: false, reason: error }
+      const baseResult = {
+        userId: user.id,
+        notificationsIds,
       }
-    })
-  )
+
+      if (uuid?.__typename !== 'User') {
+        results.push({
+          success: false,
+          reason: `Server error: ${user.id} is not an id of a user`,
+          ...baseResult,
+        })
+        continue
+      }
+
+      if (notificationsIds.length === 0) {
+        results.push({
+          success: false,
+          reason: `User has unsent notifications that are not supported anymore`,
+          ...baseResult,
+        })
+        continue
+      }
+
+      const statusCode = await sendMail({
+        username: user.username,
+        email: user.email,
+        language: uuid.language,
+        events: notifications.nodes.map((n) => n.event),
+        transporter,
+      })
+
+      // Possible performance improvement: group notificationsIds of all users and update them all in the end
+      await dbConnection.updateNotificationSentStatus(notificationsIds)
+
+      // See https://en.wikipedia.org/wiki/List_of_SMTP_server_return_codes for successful status codes
+      statusCode[0] === '2'
+        ? results.push({ success: true, ...baseResult })
+        : results.push({ success: false, reason: statusCode, ...baseResult })
+    } catch (error) {
+      results.push({ success: false, reason: error })
+    }
+
+    await wait()
+  }
+
+  return results
+}
+
+function wait(): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve()
+    }, 1000)
+  })
 }
 
 type Result = SucceededResult | FailedResult

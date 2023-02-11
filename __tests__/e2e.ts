@@ -7,13 +7,15 @@ import { config } from '../src/config'
 import { notifyUsers, MysqlConnection } from '../src/mail-service'
 
 test('should send all emails and set notifications as sent', async () => {
-  const connection = await createConnection(config.db)
+  const connection = await createConnection(config.dbUri)
 
   await connection.beginTransaction()
 
   const mysqlConnection = new MysqlConnection(connection)
 
-  const transporter = createTransport(config.smtp, { from: config.fromEmail })
+  const transporter = createTransport(config.smtpUri, {
+    from: config.fromEmail,
+  })
 
   const apiGraphqlClient = new GraphQLClient(
     config.serloApi.graphqlUrl || 'https://api.serlo-staging.dev/graphql',

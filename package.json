@@ -6,7 +6,8 @@
   "license": "Apache-2.0",
   "scripts": {
     "_eslint": "eslint \"{{__tests__,scripts,src}/**/*,*}.{js,ts}\"",
-    "_prettier": "prettier . '!src/gql/**/*'",
+    "_prettier": "prettier .",
+    "build": "tsc -p ./tsconfig.prod.json",
     "codegen": "graphql-codegen --config codegen.ts",
     "format": "npm-run-all -c format:eslint format:prettier",
     "format:eslint": "yarn _eslint --fix",

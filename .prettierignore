@@ -1,2 +1,4 @@
 /.yarn/
+src/gql/**/*
+dist/
 graphql.schema.json

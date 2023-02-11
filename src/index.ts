@@ -14,13 +14,10 @@ async function run() {
 
   try {
     // TODO: retry to connect
-    connection = await mysql.createConnection(config.db)
-    const transporter = createTransport(config.smtp, { from: config.fromEmail })
-
-    // TODO: use env.d.ts
-    if (!config.serloApi.graphqlUrl || !config.serloApi.sharedSecret) {
-      throw new Error('serlo api env vars have to be set')
-    }
+    connection = await mysql.createConnection(config.dbUri)
+    const transporter = createTransport(config.smtpUri, {
+      from: config.fromEmail,
+    })
     const results = await notifyUsers(
       new MysqlConnection(connection),
       transporter,
