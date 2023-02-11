@@ -28,20 +28,28 @@ export async function notifyUsers(
         getNotifications,
         { userId: user.id }
       )
+      const notificationsIds = notifications.nodes.map(
+        (notification) => notification.id
+      )
 
       const baseResult = {
         userId: user.id,
-        notificationsIds: notifications.nodes.map(
-          (notification) => notification.id
-        ),
+        notificationsIds,
       }
 
-      // Since we can only requests UUIDs we need a check whether the requested
-      // uuid is a user (which shall always be the case)
       if (uuid?.__typename !== 'User') {
         results.push({
           success: false,
           reason: `Server error: ${user.id} is not an id of a user`,
+          ...baseResult,
+        })
+        continue
+      }
+
+      if (notificationsIds.length === 0) {
+        results.push({
+          success: false,
+          reason: `User has unsent notifications that are not supported anymore`,
           ...baseResult,
         })
         continue
@@ -55,10 +63,8 @@ export async function notifyUsers(
         transporter,
       })
 
-      // Possible performance improvement: group all successful and update them all in the end
-      await dbConnection.updateNotificationSentStatus(
-        baseResult.notificationsIds
-      )
+      // Possible performance improvement: group notificationsIds of all users and update them all in the end
+      await dbConnection.updateNotificationSentStatus(notificationsIds)
 
       // See https://en.wikipedia.org/wiki/List_of_SMTP_server_return_codes for successful status codes
       statusCode[0] === '2'
