@@ -53,7 +53,7 @@ export const strings = {
     entityPlaceholderFallback: 'Content',
   },
   email: {
-    subject: 'Your have unread notifications on Serlo',
+    subject: 'You have unread notifications on Serlo',
     greeting: 'Hello %username%!',
     initiation:
       "Here's a heads up of what has happened with content you edited or created:",
