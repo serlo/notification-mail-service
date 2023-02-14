@@ -155,7 +155,14 @@ function createEmailSubjectAndBody({
     )
 
     return {
-      body: `<p>English message below</p><br>${germanBody}<br>${englishBody}`,
+      body: `<p style="font-style: italic;">English message below</p>
+        <br>
+        ${germanBody}
+        <br>
+        <div--------------------------------------------------------------------------------------------------------------------------------div>
+        <br>
+        <br>
+        ${englishBody}`,
       subject: `${de.strings.email.subject} | ${en.strings.email.subject}`,
     }
   }
