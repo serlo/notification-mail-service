@@ -4,12 +4,7 @@ import mysql from 'mysql2/promise'
 import { createTransport } from 'nodemailer'
 
 import { config } from './config'
-import {
-  FailedResult,
-  MysqlConnection,
-  notifyUsers,
-  SucceededResult,
-} from './mail-service'
+import { MysqlConnection, notifyUsers, SucceededResult } from './mail-service'
 
 void run()
 
