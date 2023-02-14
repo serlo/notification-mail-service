@@ -4,13 +4,15 @@ import mysql from 'mysql2/promise'
 import { createTransport } from 'nodemailer'
 
 import { config } from './config'
-import { MysqlConnection, notifyUsers } from './mail-service'
+import { MysqlConnection, notifyUsers, SucceededResult } from './mail-service'
 
 void run()
 
 async function run() {
   let connection: mysql.Connection | null = null
   let exitCode = 0
+
+  const start = new Date()
 
   try {
     // TODO: retry to connect
@@ -30,8 +32,20 @@ async function run() {
       })
     )
 
+    const finish = new Date()
+
+    const failedResults = results.filter((result) => result.success === false)
     // eslint-disable-next-line no-console
-    console.log(results)
+    console.log({
+      start,
+      finish,
+      total: results.length,
+      'notified users': results
+        .filter((result): result is SucceededResult => result.success === true)
+        .map((result) => result.userId),
+      'number of failures': failedResults.length,
+      ...(failedResults.length > 0 ? { failures: failedResults } : {}),
+    })
     exitCode = 0
   } catch (error) {
     // eslint-disable-next-line no-console
