@@ -49,7 +49,7 @@ export async function notifyUsers(
       if (notificationsIds.length === 0) {
         results.push({
           success: false,
-          reason: `User has unsent notifications that are not supported anymore`,
+          reason: `${user.id} has unsent notifications that are not supported anymore`,
           ...baseResult,
         })
         continue
@@ -66,7 +66,6 @@ export async function notifyUsers(
       // Possible performance improvement: group notificationsIds of all users and update them all in the end
       await dbConnection.updateNotificationSentStatus(notificationsIds)
 
-      // See https://en.wikipedia.org/wiki/List_of_SMTP_server_return_codes for successful status codes
       statusCode[0] === '2'
         ? results.push({ success: true, ...baseResult })
         : results.push({ success: false, reason: statusCode, ...baseResult })
@@ -90,12 +89,12 @@ function wait(): Promise<void> {
 
 type Result = SucceededResult | FailedResult
 
-interface FailedResult {
+export interface FailedResult {
   success: false
   reason: unknown
 }
 
-interface SucceededResult {
+export interface SucceededResult {
   success: true
   userId: number
   notificationsIds: number[]
