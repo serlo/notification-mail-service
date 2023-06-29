@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: 16.x
+          node-version: 18.x
       - run: yarn
       - run: yarn lint:eslint
   prettier:
@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: 16.x
+          node-version: 18.x
       - run: yarn
       - run: yarn lint:prettier
   tsc:
@@ -30,7 +30,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: 16.x
+          node-version: 18.x
       - run: yarn
       - run: yarn lint:tsc
   test:
@@ -40,7 +40,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           cache: yarn
-          node-version: 16.x
+          node-version: 18.x
       - run: yarn --immutable --immutable-cache
       - run: yarn test:unit
       # uncomment when e2e tests are ok
