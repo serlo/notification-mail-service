@@ -6,8 +6,8 @@ Micro-service that notify users by email about last events they subscribed to.
 
 ### Requirements:
 
-- Nodejs
-- Yarn
+- [Node.js](https://nodejs.org) and [yarn cli](https://yarnpkg.com/cli/) from [.tool-versions](.tool-versions)
+  - You may use [asdf](https://asdf-vm.com/) for the installation.
 - Docker and docker-compose (Highly recommended)
 - https://github.com/serlo/local-dev-env cloned
 - https://github.com/serlo/api.serlo.org cloned
