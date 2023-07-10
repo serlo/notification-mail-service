@@ -1,13 +1,13 @@
 # serlo.org - Notification Mail Service
 
-Micro-service that notify users by email about last events they subscribed to.
+Micro-service that notifies users by email about last events they subscribed to.
 
 ## Getting started
 
 ### Requirements:
 
-- Nodejs
-- Yarn
+- [Node.js](https://nodejs.org) and [yarn cli](https://yarnpkg.com/cli/) from [.tool-versions](.tool-versions)
+  - You may use [asdf](https://asdf-vm.com/) for the installation.
 - Docker and docker-compose (Highly recommended)
 - https://github.com/serlo/local-dev-env cloned
 - https://github.com/serlo/api.serlo.org cloned
@@ -22,13 +22,13 @@ Micro-service that notify users by email about last events they subscribed to.
 After cloning this repo and `cd` into it:
 
 1. `yarn` for installing dependencies.
-2. `yarn start` for running local testing database and fake email client.\*
+2. `yarn start` for running local testing database and fake email client. [^1]
 3. `yarn notify`
-4. Navigate to the `http://localhost:4444/` to see your local mail client.\*
+4. Navigate to the `http://localhost:4444/` to see your local mail client. [^1]
 5. Go to `serlo/local-dev-env` and hit `yarn mysql:rollback` to roll back the database changes.
 6. When you are done, `yarn stop`.
 
-\* You don't need this step if you bring your own database, smtp server and/or email client. In that case adapt the `.env` and maybe the `docker-compose.yml`.
+[^1]: You don't need this step if you bring your own database, smtp server and/or email client. In that case adapt the `.env` and maybe the `docker-compose.yml`.
 
 ## Using API
 

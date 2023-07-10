@@ -1,6 +1,5 @@
 *node_modules/*
 .idea/*
-.tool-versions
 
 # Yarn (with Zero-Installs)
 .yarn/*
