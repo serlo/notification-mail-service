@@ -1,7 +1,9 @@
+require('dotenv').config()
+
 // eslint-disable-next-line import/no-commonjs
 module.exports = {
   overwrite: true,
-  schema: 'https://api.serlo-staging.dev/graphql',
+  schema: process.env.SERLO_API_GRAPHQL_URL,
   emitLegacyCommonJSImports: false,
   documents: 'src/**/*.ts',
   generates: {
