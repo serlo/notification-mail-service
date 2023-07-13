@@ -9,7 +9,7 @@
     "_eslint": "eslint \"{{__tests__,scripts,src}/**/*,*}.{js,ts}\"",
     "_prettier": "prettier .",
     "build": "tsc -p ./tsconfig.prod.json",
-    "codegen": "graphql-codegen --config codegen.ts",
+    "codegen": "graphql-codegen --config codegen.cjs",
     "format": "npm-run-all -c format:eslint format:prettier",
     "format:eslint": "yarn _eslint --fix",
     "format:prettier": "yarn _prettier --write",
