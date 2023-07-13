@@ -8,4 +8,5 @@ const jestConfig: Config.InitialOptions = {
   "testPathIgnorePatterns": ["/node_modules/"]
 }
 
+/* eslint-disable import/no-default-export */
 export default jestConfig
