@@ -1,5 +1,4 @@
-import { spawn } from 'child_process'
-import * as process from 'process'
+import { spawn } from 'node:child_process'
 
 import { IgnoreInsecurePasswordWarning } from './transform'
 

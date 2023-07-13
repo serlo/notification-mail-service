@@ -8,11 +8,15 @@ import { spawn } from 'child_process'
 import * as fs from 'fs'
 import * as path from 'path'
 import * as process from 'process'
+import { fileURLToPath } from 'url'
 
 import {
   ConcatenateInsertCommands,
   IgnoreInsecurePasswordWarning,
 } from './transform'
+
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 // Currently we have wrongly encoded characters in the DB and the dump only
 // works when we handle it with a 1 Byte character set (see #166)
