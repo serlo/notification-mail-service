@@ -1,0 +1,7 @@
+{
+  "preset": "ts-jest/presets/default-esm",
+  "setupFiles": ["dotenv/config"],
+  "setupFilesAfterEnv": ["<rootDir>/jest.setup.ts"],
+  "testEnvironment": "node",
+  "testPathIgnorePatterns": ["/node_modules/"]
+}

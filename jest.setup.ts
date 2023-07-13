@@ -21,6 +21,7 @@
  * @copyright Copyright (c) 2022 Serlo Education e.V.
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License 2.0
  */
+import { jest } from '@jest/globals'
 import { setupServer } from 'msw/node'
 
 jest.setTimeout(10_000)
