@@ -4,6 +4,7 @@
   "author": "Serlo Education e.V.",
   "repository": "git@github.com:serlo/notification-mail-service.git",
   "license": "Apache-2.0",
+  "type": "module",
   "scripts": {
     "_eslint": "eslint \"{{__tests__,scripts,src}/**/*,*}.{js,ts}\"",
     "_prettier": "prettier .",
