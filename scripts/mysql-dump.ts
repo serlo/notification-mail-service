@@ -15,7 +15,6 @@ import {
   IgnoreInsecurePasswordWarning,
 } from './transform'
 
-
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 // Currently we have wrongly encoded characters in the DB and the dump only
