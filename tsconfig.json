@@ -11,7 +11,7 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "es2019"
+    "target": "ESNext"
   },
   "ts-node": {
     "esm": true

@@ -4,10 +4,10 @@
   "compilerOptions": {
     "declaration": true,
     "declarationMap": true,
-    "module": "commonjs",
+    "module": "ESNext",
     "moduleResolution": "node",
     "outDir": "dist",
-    "target": "es5",
+    "target": "ESNext",
     "sourceMap": true,
     "rootDir": "./src"
   }
