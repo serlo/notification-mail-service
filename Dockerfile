@@ -9,4 +9,5 @@ COPY tsconfig.json .
 COPY tsconfig.prod.json .
 RUN yarn build
 
+ENV NODE_OPTIONS='--experimental-specifier-resolution=node'
 ENTRYPOINT ["node", "dist"]
