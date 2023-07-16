@@ -20,15 +20,12 @@ async function run() {
     const transporter = createTransport(config.smtpUri, {
       from: config.fromEmail,
     })
+    const token = createToken({ secret: config.serloApi.sharedSecret })
     const results = await notifyUsers(
       new MysqlConnection(connection),
       transporter,
       new GraphQLClient(config.serloApi.graphqlUrl, {
-        headers: {
-          Authorization: `Serlo Service=${createToken({
-            secret: config.serloApi.sharedSecret,
-          })}`,
-        },
+        headers: { Authorization: `Serlo Service=${token}` },
       })
     )
 
