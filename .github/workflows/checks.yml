@@ -1,10 +1,6 @@
-name: JavaScript
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-  merge_group:
+name: CI Checks
+on: [push, merge_group]
+
 jobs:
   eslint:
     runs-on: ubuntu-latest
