@@ -17,18 +17,13 @@ test('should send all emails and set notifications as sent', async () => {
     from: config.fromEmail,
   })
 
-  const apiGraphqlClient = new GraphQLClient(
-    config.serloApi.graphqlUrl || 'https://api.serlo-staging.dev/graphql',
-    {
-      headers: {
-        Authorization: `Serlo Service=${createToken({
-          secret:
-            config.serloApi.sharedSecret ||
-            'api.serlo.org-notification-email-service-secret',
-        })}`,
-      },
-    }
-  )
+  const apiGraphqlClient = new GraphQLClient(config.serloApi.graphqlUrl, {
+    headers: {
+      Authorization: `Serlo Service=${createToken({
+        secret: config.serloApi.sharedSecret,
+      })}`,
+    },
+  })
 
   const firstResults = await notifyUsers(
     mysqlConnection,
