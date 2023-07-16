@@ -2,9 +2,9 @@ import { GraphQLClient } from 'graphql-request'
 import { createConnection } from 'mysql2/promise'
 import { createTransport } from 'nodemailer'
 
-import { createToken } from '../src'
 import { config } from '../src/config'
 import { notifyUsers, MysqlConnection } from '../src/mail-service'
+import { createToken } from '../src/utils'
 
 test('should send all emails and set notifications as sent', async () => {
   const connection = await createConnection(config.dbUri)
