@@ -22,7 +22,7 @@ function createConfig() {
     },
     dbUri: process.env.DB_URI,
     smtpUri: process.env.SMTP_URI,
-    fromEmail: process.env.FROM_EMAIL || 'notifications@mail.serlo.org',
+    fromEmail: process.env.FROM_EMAIL ?? 'notifications@mail.serlo.org',
   }
 }
 
