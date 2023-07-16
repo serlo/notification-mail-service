@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
 /**
  * This file is part of Serlo.org API
  *
@@ -22,31 +19,5 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License 2.0
  */
 import { jest } from '@jest/globals'
-import { setupServer } from 'msw/node'
 
 jest.setTimeout(10_000)
-
-declare global {
-  /* eslint-disable no-var */
-  var server: ReturnType<typeof import('msw/node').setupServer>
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-global.server = setupServer()
-
-beforeAll(() => global.server.listen({ onUnhandledRequest: 'bypass' }))
-
-afterEach(() => {
-  global.server.resetHandlers()
-})
-
-afterAll(() => global.server.close())
-
-/* eslint-disable @typescript-eslint/no-namespace */
-declare global {
-  namespace NodeJS {
-    interface Global {
-      server: ReturnType<typeof import('msw/node').setupServer>
-    }
-  }
-}
