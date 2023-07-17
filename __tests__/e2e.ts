@@ -27,13 +27,13 @@ test('should send all emails and set notifications as sent', async () => {
             'api.serlo.org-notification-email-service-secret',
         })}`,
       },
-    }
+    },
   )
 
   const firstResults = await notifyUsers(
     mysqlConnection,
     transporter,
-    apiGraphqlClient
+    apiGraphqlClient,
   )
 
   expect(firstResults).toHaveLength(3)
@@ -46,7 +46,7 @@ test('should send all emails and set notifications as sent', async () => {
   const secondResults = await notifyUsers(
     mysqlConnection,
     transporter,
-    apiGraphqlClient
+    apiGraphqlClient,
   )
   expect(secondResults).toHaveLength(0)
 
