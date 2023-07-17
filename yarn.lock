@@ -2048,7 +2048,7 @@ __metadata:
     "@types/jest": ^29.5.3
     "@types/jsonwebtoken": ^9.0.2
     "@types/mysql": ^2.15.21
-    "@types/node": ^18.11.17
+    "@types/node": ^18.16.19
     "@types/node-cron": ^3.0.8
     "@types/nodemailer": ^6.4.6
     "@types/react": ^18.0.26
@@ -2401,10 +2401,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^18.11.17":
+"@types/node@npm:*":
   version: 18.11.18
   resolution: "@types/node@npm:18.11.18"
   checksum: 03f17f9480f8d775c8a72da5ea7e9383db5f6d85aa5fefde90dd953a1449bd5e4ffde376f139da4f3744b4c83942166d2a7603969a6f8ea826edfb16e6e3b49d
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^18.16.19":
+  version: 18.16.19
+  resolution: "@types/node@npm:18.16.19"
+  checksum: 63c31f09616508aa7135380a4c79470a897b75f9ff3a70eb069e534dfabdec3f32fb0f9df5939127f1086614d980ddea0fa5e8cc29a49103c4f74cd687618aaf
   languageName: node
   linkType: hard
 
