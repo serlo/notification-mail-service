@@ -29,7 +29,7 @@ async function run() {
             secret: config.serloApi.sharedSecret,
           })}`,
         },
-      })
+      }),
     )
 
     const finish = new Date()

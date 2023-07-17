@@ -9,7 +9,7 @@ const unnotifiedUser = {
   email: 'fakeemail@serlo.dev',
 }
 const notificationsIds = getNotificationsQueryResponse.notifications.nodes.map(
-  (notification) => notification.id
+  (notification) => notification.id,
 )
 
 const fakeConnection: DBConnection & { emailsSent: boolean } = {
