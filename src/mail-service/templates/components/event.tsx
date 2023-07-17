@@ -46,7 +46,7 @@ export function EventComponent({
             : strings.events.setThreadStateUnarchived,
           {
             thread: renderThread(event.thread),
-          }
+          },
         )
 
       case 'CreateCommentNotificationEvent':
@@ -153,7 +153,7 @@ export function EventComponent({
             : strings.events.setUuidStateRestored,
           {
             object: renderObject(event.object),
-          }
+          },
         )
     }
   }
@@ -177,7 +177,7 @@ export function EventComponent({
 
   function parseString(
     string: string,
-    replaceables: { [key: string]: JSX.Element | string }
+    replaceables: { [key: string]: JSX.Element | string },
   ) {
     replaceables.actor = <UserLink username={event.actor.username} />
     return replacePlaceholders(string, replaceables)

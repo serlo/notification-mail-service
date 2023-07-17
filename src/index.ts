@@ -26,7 +26,7 @@ async function run() {
       transporter,
       new GraphQLClient(config.serloApi.graphqlUrl, {
         headers: { Authorization: `Serlo Service=${token}` },
-      })
+      }),
     )
 
     const finish = new Date()

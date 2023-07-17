@@ -3,7 +3,7 @@ import { UuidWithRevType } from './uuid-type'
 
 export function getEntityStringByTypename(
   typename: UuidWithRevType | undefined,
-  strings: LanguageStrings
+  strings: LanguageStrings,
 ) {
   const typenameNoRevs = typename?.replace('Revision', '')
   const lookup = {

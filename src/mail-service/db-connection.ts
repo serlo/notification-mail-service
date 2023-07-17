@@ -24,7 +24,7 @@ export class MysqlConnection implements DBConnection {
         FROM notification
         JOIN user ON user.id = notification.user_id
         WHERE notification.email = 1 AND notification.email_sent = 0 AND notification.seen = 0
-        GROUP BY notification.user_id;`
+        GROUP BY notification.user_id;`,
     )
     return users
   }
@@ -33,7 +33,7 @@ export class MysqlConnection implements DBConnection {
     await this.connection.query(
       `UPDATE notification
         SET email_sent = true
-        WHERE id in (${notificationsIds.join(',')});`
+        WHERE id in (${notificationsIds.join(',')});`,
     )
   }
 }

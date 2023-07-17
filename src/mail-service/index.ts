@@ -16,7 +16,7 @@ export * from './db-connection'
 export async function notifyUsers(
   dbConnection: DBConnection,
   transporter: Transporter<SMTPTransport.SentMessageInfo>,
-  apiClient: Pick<GraphQLClient, 'request'>
+  apiClient: Pick<GraphQLClient, 'request'>,
 ): Promise<Result[]> {
   const unnotifiedUsers = await dbConnection.fetchUnnotifiedUsers()
 
@@ -26,10 +26,10 @@ export async function notifyUsers(
     try {
       const { notifications, uuid } = await apiClient.request(
         getNotifications,
-        { userId: user.id }
+        { userId: user.id },
       )
       const notificationsIds = notifications.nodes.map(
-        (notification) => notification.id
+        (notification) => notification.id,
       )
 
       const baseResult = {
@@ -144,14 +144,14 @@ function createEmailSubjectAndBody({
         username,
         events,
         strings: de.strings,
-      })
+      }),
     )
     const englishBody = renderToStaticMarkup(
       NotificationEmailComponent({
         username,
         events,
         strings: en.strings,
-      })
+      }),
     )
 
     return {
@@ -175,7 +175,7 @@ function createEmailSubjectAndBody({
         username,
         events,
         strings,
-      })
+      }),
     ),
   }
 }
