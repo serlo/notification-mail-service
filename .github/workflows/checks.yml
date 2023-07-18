@@ -6,34 +6,34 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/actions/setup-node
+      - uses: serlo/configure-repositories/actions/setup-node@main
 
   eslint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/actions/setup-node
+      - uses: serlo/configure-repositories/actions/setup-node@main
       - run: yarn lint:eslint
 
   prettier:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/actions/setup-node
+      - uses: serlo/configure-repositories/actions/setup-node@main
       - run: yarn lint:prettier
 
   tsc:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/actions/setup-node
+      - uses: serlo/configure-repositories/actions/setup-node@main
       - run: yarn lint:tsc
 
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/actions/setup-node
+      - uses: serlo/configure-repositories/actions/setup-node@main
       - run: yarn test:unit
       # uncomment when e2e tests are ok
       # - run: yarn start
