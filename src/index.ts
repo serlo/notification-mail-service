@@ -1,10 +1,10 @@
 import { GraphQLClient } from 'graphql-request'
-import jwt from 'jsonwebtoken'
 import mysql from 'mysql2/promise'
 import { createTransport } from 'nodemailer'
 
 import { config } from './config'
 import { MysqlConnection, notifyUsers, SucceededResult } from './mail-service'
+import { createToken } from './utils'
 
 void run()
 
@@ -20,15 +20,12 @@ async function run() {
     const transporter = createTransport(config.smtpUri, {
       from: config.fromEmail,
     })
+    const token = createToken({ secret: config.serloApi.sharedSecret })
     const results = await notifyUsers(
       new MysqlConnection(connection),
       transporter,
       new GraphQLClient(config.serloApi.graphqlUrl, {
-        headers: {
-          Authorization: `Serlo Service=${createToken({
-            secret: config.serloApi.sharedSecret,
-          })}`,
-        },
+        headers: { Authorization: `Serlo Service=${token}` },
       }),
     )
 
@@ -56,12 +53,4 @@ async function run() {
   }
 
   process.exit(exitCode)
-}
-
-export function createToken({ secret }: { secret: string }) {
-  return jwt.sign({}, secret, {
-    expiresIn: '2h',
-    audience: 'api.serlo.org',
-    issuer: 'notification-email-service',
-  })
 }
