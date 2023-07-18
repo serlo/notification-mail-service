@@ -7,13 +7,8 @@ services:
       - '2500:2500'
       - '4444:8080'
       - '8085:8085'
-
-  # START: MySQL service
   mysql:
-    build:
-      context: mysql/docker-container
-      dockerfile: Dockerfile
+    image: eu.gcr.io/serlo-shared/serlo-mysql-database:latest
     platform: linux/x86_64
     ports:
       - '3306:3306'
-  # END: MySQL service
