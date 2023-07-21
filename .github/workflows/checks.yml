@@ -29,14 +29,20 @@ jobs:
       - uses: serlo/configure-repositories/actions/setup-node@main
       - run: yarn lint:tsc
 
-  test:
+  test_unit:
+    name: unit tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: serlo/configure-repositories/actions/setup-node@main
       - run: yarn test:unit
-      # uncomment when e2e tests are ok
-      # - run: yarn start
-      # - name: Waiting 1 min for the database to be ready
-      #   run: sleep 60
-      # - run: yarn test:e2e
+
+  test_e2e:
+    name: e2e tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: serlo/configure-repositories/actions/setup-node@main
+      - run: yarn start
+      - run: ./scripts/mysql/wait-for-mysql.sh
+      - run: yarn test:e2e
