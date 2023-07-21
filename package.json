@@ -20,14 +20,14 @@
     "mysql": "docker compose exec mysql serlo-mysql",
     "mysql:import-anonymous-data": "ts-node --experimental-specifier-resolution=node scripts/mysql/mysql-import-anonymous-data",
     "mysql:rollback": "docker compose exec mysql sh -c \"pv /docker-entrypoint-initdb.d/001-init.sql | serlo-mysql\"",
-    "notify": "NODE_OPTIONS='--experimental-specifier-resolution=node' ts-node src",
+    "notify": "ts-node --experimental-specifier-resolution=node src",
     "start": "yarn start:docker",
     "start:docker": "docker compose up --detach",
     "stop": "yarn stop:docker",
     "stop:docker": "docker compose down",
     "template": "webpack-cli serve --mode=development --env development --open --hot",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand --forceExit",
-    "test:e2e": "yarn mysql:rollback && yarn test e2e",
+    "test:e2e": "./scripts/e2e_test.sh",
     "test:unit": "yarn test notify-users"
   },
   "dependencies": {

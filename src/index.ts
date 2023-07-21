@@ -41,7 +41,9 @@ async function run() {
         .filter((result): result is SucceededResult => result.success === true)
         .map((result) => result.userId),
       'number of failures': failedResults.length,
-      ...(failedResults.length > 0 ? { failures: failedResults } : {}),
+      ...(failedResults.length > 0
+        ? { failures: failedResults.map((e) => (!e.success ? e.reason : e)) }
+        : {}),
     })
     exitCode = 0
   } catch (error) {

@@ -43,6 +43,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: serlo/configure-repositories/actions/setup-node@main
-      - run: yarn start
-      - run: ./scripts/mysql/wait-for-mysql.sh
-      - run: yarn test:e2e
+      - run: ./scripts/e2e_test.sh
