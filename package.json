@@ -27,8 +27,7 @@
     "stop:docker": "docker compose down",
     "template": "webpack-cli serve --mode=development --env development --open --hot",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand --forceExit",
-    "test:e2e": "./scripts/e2e_test.sh",
-    "test:unit": "yarn test notify-users"
+    "test:e2e": "./scripts/e2e_test.sh"
   },
   "dependencies": {
     "@graphql-typed-document-node/core": "^3.2.0",
