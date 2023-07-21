@@ -4,6 +4,8 @@ source scripts/test_utils.sh
 
 init
 
-yarn notify
+yarn docker:build
+yarn docker:run
+yarn docker:stop
 
 expect_three_send_mails
