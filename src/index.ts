@@ -2,13 +2,14 @@ import { GraphQLClient } from 'graphql-request'
 import mysql from 'mysql2/promise'
 import { createTransport } from 'nodemailer'
 
-import { config } from './config'
+import { readConfig } from './config'
 import { MysqlConnection, notifyUsers, SucceededResult } from './mail-service'
 import { createToken } from './utils'
 
 void run()
 
 async function run() {
+  const config = readConfig()
   let connection: mysql.Connection | null = null
   let exitCode = 0
 
