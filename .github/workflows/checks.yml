@@ -44,3 +44,11 @@ jobs:
       - uses: actions/checkout@v3
       - uses: serlo/configure-repositories/actions/setup-node@main
       - run: ./scripts/e2e_test.sh
+
+  test_docker:
+    name: e2e tests with docker build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: serlo/configure-repositories/actions/setup-node@main
+      - run: ./scripts/docker_e2e_test.sh
