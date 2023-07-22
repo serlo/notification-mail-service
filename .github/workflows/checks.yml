@@ -29,13 +29,13 @@ jobs:
       - uses: serlo/configure-repositories/actions/setup-node@main
       - run: yarn lint:tsc
 
-  test_unit:
+  testt:
     name: unit tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: serlo/configure-repositories/actions/setup-node@main
-      - run: yarn test:unit
+      - run: yarn test
 
   test_e2e:
     name: e2e tests
@@ -43,6 +43,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: serlo/configure-repositories/actions/setup-node@main
-      - run: yarn start
-      - run: ./scripts/mysql/wait-for-mysql.sh
-      - run: yarn test:e2e
+      - run: ./scripts/e2e_test.sh
+
+  test_docker:
+    name: e2e tests with docker build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: serlo/configure-repositories/actions/setup-node@main
+      - run: ./scripts/docker_e2e_test.sh
