@@ -1,16 +1,4 @@
-export enum UuidRevType {
-  Applet = 'AppletRevision',
-  Article = 'ArticleRevision',
-  Course = 'CourseRevision',
-  CoursePage = 'CoursePageRevision',
-  Event = 'EventRevision',
-  Exercise = 'ExerciseRevision',
-  ExerciseGroup = 'ExerciseGroupRevision',
-  GroupedExercise = 'GroupedExerciseRevision',
-  Page = 'PageRevision',
-  Solution = 'SolutionRevision',
-  Video = 'VideoRevision',
-}
+export type UuidWithRevType = UuidRevType | UuidType
 
 export enum UuidType {
   Comment = 'Comment',
@@ -30,4 +18,16 @@ export enum UuidType {
   Video = 'Video',
 }
 
-export type UuidWithRevType = UuidRevType | UuidType
+enum UuidRevType {
+  Applet = 'AppletRevision',
+  Article = 'ArticleRevision',
+  Course = 'CourseRevision',
+  CoursePage = 'CoursePageRevision',
+  Event = 'EventRevision',
+  Exercise = 'ExerciseRevision',
+  ExerciseGroup = 'ExerciseGroupRevision',
+  GroupedExercise = 'GroupedExerciseRevision',
+  Page = 'PageRevision',
+  Solution = 'SolutionRevision',
+  Video = 'VideoRevision',
+}
