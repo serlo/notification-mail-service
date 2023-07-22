@@ -32,7 +32,7 @@ delete_all_mails() {
     --data '{ "pruneCode": "all" }' --silent http://localhost:8085/mail
 }
 
-expect_three_send_mails() {
+expect_three_sent_mails() {
   curl http://localhost:8085/mailcount | grep '{"mailCount":3}'
 }
 

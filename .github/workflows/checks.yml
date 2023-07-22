@@ -29,7 +29,7 @@ jobs:
       - uses: serlo/configure-repositories/actions/setup-node@main
       - run: yarn lint:tsc
 
-  testt:
+  test_unit:
     name: unit tests
     runs-on: ubuntu-latest
     steps:
