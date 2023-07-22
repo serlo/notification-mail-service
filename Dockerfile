@@ -2,7 +2,7 @@ FROM node:18-alpine3.18 as base_image
 WORKDIR /app
 
 FROM base_image as build
-COPY tsconfig.json tsconfig.prod.json package.json yarn.lock .
+COPY tsconfig.json tsconfig.prod.json package.json yarn.lock ./
 COPY .yarn .yarn
 COPY src src
 RUN yarn --immutable --immutable-cache --silent
