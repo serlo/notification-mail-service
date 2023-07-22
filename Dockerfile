@@ -1,13 +1,14 @@
-FROM node:18-alpine3.18
-WORKDIR /usr/src/app
-COPY package.json .
-COPY yarn.lock .
-RUN yarn --immutable --immutable-cache --silent
+FROM node:18-alpine3.18 as base_image
+WORKDIR /app
 
+FROM base_image as build
+COPY tsconfig.json tsconfig.prod.json package.json yarn.lock .
+COPY .yarn .yarn
 COPY src src
-COPY tsconfig.json .
-COPY tsconfig.prod.json .
+RUN yarn --immutable --immutable-cache --silent
 RUN yarn build
 
+FROM base_image as runner
 ENV NODE_OPTIONS='--experimental-specifier-resolution=node'
+COPY --from=build /app/dist dist
 ENTRYPOINT ["node", "dist"]
