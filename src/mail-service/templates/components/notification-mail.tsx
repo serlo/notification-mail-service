@@ -1,8 +1,8 @@
+import { Event, EventComponent } from './event'
 import { domain } from '../../../config'
 import { Instance } from '../../../gql/graphql'
 import { replacePlaceholders } from '../helper/replace-placeholders'
 import { LanguageStrings } from '../helper/type-language-strings'
-import { Event, EventComponent } from './event'
 
 interface Props {
   username: string
