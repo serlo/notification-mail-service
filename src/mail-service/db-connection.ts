@@ -1,16 +1,5 @@
 import type { Connection, RowDataPacket } from 'mysql2/promise'
 
-export interface DBConnection {
-  fetchUnnotifiedUsers(): Promise<User[]>
-  updateNotificationSentStatus(notificationsIds: number[]): Promise<void>
-}
-
-export interface User extends RowDataPacket {
-  id: number
-  username: string
-  email: string
-}
-
 export class MysqlConnection implements DBConnection {
   connection: Connection
 
@@ -36,4 +25,15 @@ export class MysqlConnection implements DBConnection {
         WHERE id in (${notificationsIds.join(',')});`,
     )
   }
+}
+
+export interface DBConnection {
+  fetchUnnotifiedUsers(): Promise<User[]>
+  updateNotificationSentStatus(notificationsIds: number[]): Promise<void>
+}
+
+interface User extends RowDataPacket {
+  id: number
+  username: string
+  email: string
 }

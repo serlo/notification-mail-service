@@ -11,7 +11,7 @@ import { getLanguageStrings } from './templates/helper/get-language-strings'
 import { de, en } from './templates/helper/language-strings'
 import { Instance } from '../gql/graphql'
 
-export * from './db-connection'
+export { MysqlConnection } from './db-connection'
 
 export async function notifyUsers(
   dbConnection: DBConnection,
@@ -89,7 +89,7 @@ function wait(): Promise<void> {
 
 type Result = SucceededResult | FailedResult
 
-export interface FailedResult {
+interface FailedResult {
   success: false
   reason: unknown
 }
