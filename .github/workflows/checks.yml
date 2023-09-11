@@ -5,27 +5,27 @@ jobs:
   yarn:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: serlo/configure-repositories/actions/setup-node@main
 
   eslint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: serlo/configure-repositories/actions/setup-node@main
       - run: yarn lint:eslint
 
   prettier:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: serlo/configure-repositories/actions/setup-node@main
       - run: yarn lint:prettier
 
   tsc:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: serlo/configure-repositories/actions/setup-node@main
       - run: yarn lint:tsc
 
@@ -33,7 +33,7 @@ jobs:
     name: unit tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: serlo/configure-repositories/actions/setup-node@main
       - run: yarn test
 
@@ -41,7 +41,7 @@ jobs:
     name: e2e tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: serlo/configure-repositories/actions/setup-node@main
       - run: ./scripts/e2e_test.sh
 
@@ -49,6 +49,6 @@ jobs:
     name: e2e tests with docker build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: serlo/configure-repositories/actions/setup-node@main
       - run: ./scripts/docker_e2e_test.sh
