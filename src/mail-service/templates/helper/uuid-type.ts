@@ -1,4 +1,4 @@
-export enum UuidRevType {
+enum UuidRevType {
   Applet = 'AppletRevision',
   Article = 'ArticleRevision',
   Course = 'CourseRevision',
