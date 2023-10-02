@@ -89,7 +89,7 @@ function wait(): Promise<void> {
 
 type Result = SucceededResult | FailedResult
 
-export interface FailedResult {
+interface FailedResult {
   success: false
   reason: unknown
 }
