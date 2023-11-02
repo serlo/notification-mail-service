@@ -7,6 +7,7 @@ main()
 function main() {
   const latestDump = getLatestDump()
   if (!latestDump) {
+    // eslint-disable-next-line no-console
     console.error('❌ Could not fetch latest dump, check your gsutil setup')
     return
   }
@@ -15,6 +16,7 @@ function main() {
 
   const container = getMySQLContainer()
   if (!container) {
+    // eslint-disable-next-line no-console
     console.error(
       '❌ MySQL container not found. Please start the database first with "yarn start"!',
     )
@@ -80,8 +82,10 @@ function unzipAndCopyToContainer(fileName: string, container: string) {
 }
 
 function populateDumpInMySql() {
+  // eslint-disable-next-line no-console
   console.log('🟢 Start importing MySQL data')
   execCommand(`pv ${TMP_DIR}/mysql.sql | serlo-mysql`)
+  // eslint-disable-next-line no-console
   console.log('🟢 Start importing anonymized user data')
   execSql(
     "LOAD DATA LOCAL INFILE '/tmp/user.csv' INTO TABLE user FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n' IGNORE 1 ROWS;",
