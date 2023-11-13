@@ -219,8 +219,8 @@ export function EventComponent({
     ].includes(typename)
       ? strings.events.entityInParentPreposition
       : [UuidType.Thread, UuidType.Comment].includes(typename)
-      ? strings.events.commentInParentPreposition
-      : ''
+        ? strings.events.commentInParentPreposition
+        : ''
 
     return ` (${preposition} ${title})`
   }
