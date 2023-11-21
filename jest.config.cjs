@@ -1,6 +1,9 @@
 // eslint-disable-next-line import/no-commonjs
 module.exports = {
-  preset: 'ts-jest/presets/default-esm',
+  transform: {
+    '^.+\\.tsx?$': ['ts-jest', { useESM: true, isolatedModules: true }],
+  },
+  extensionsToTreatAsEsm: ['.ts', '.tsx', '.mts'],
   setupFiles: ['dotenv/config'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   testEnvironment: 'node',
