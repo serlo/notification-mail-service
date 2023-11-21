@@ -1,5 +1,4 @@
 {
-  "exclude": ["dev"],
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
