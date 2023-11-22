@@ -1,5 +1,4 @@
-// eslint-disable-next-line import/no-commonjs
-module.exports = {
+const config = {
   transform: {
     '^.+\\.tsx?$': ['ts-jest', { useESM: true, isolatedModules: true }],
   },
@@ -9,3 +8,6 @@ module.exports = {
   testEnvironment: 'node',
   testPathIgnorePatterns: ['/node_modules/'],
 }
+
+// eslint-disable-next-line import/no-default-export
+export default config
