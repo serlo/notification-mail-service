@@ -24,7 +24,7 @@
     "lint:prettier": "yarn _prettier --check",
     "lint:tsc": "tsc --noEmit",
     "mysql": "docker compose exec mysql serlo-mysql",
-    "mysql:import-anonymous-data": "ts-node --experimental-specifier-resolution=node scripts/mysql/mysql-import-anonymous-data",
+    "mysql:import-anonymous-data": "./scripts/mysql/import-anonymous-data.sh",
     "mysql:rollback": "docker compose exec mysql sh -c \"pv /docker-entrypoint-initdb.d/001-init.sql | serlo-mysql\"",
     "notify": "ts-node --experimental-specifier-resolution=node src",
     "start": "yarn start:docker",
