@@ -2106,7 +2106,7 @@ __metadata:
     jest: ^29.7.0
     jsonwebtoken: ^9.0.2
     mysql2: ^3.9.1
-    nodemailer: ^6.9.9
+    nodemailer: ^6.9.10
     nodemon: ^3.0.3
     npm-run-all: ^4.1.5
     prettier: ^3.2.5
@@ -7439,10 +7439,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nodemailer@npm:^6.9.9":
-  version: 6.9.9
-  resolution: "nodemailer@npm:6.9.9"
-  checksum: 9af862b497273796ad6ba7ca9eac23a7d69737554f6dd51cfd3557f60902c56344158192672f1208daf00340a47a9e1805bd809965edc191011b35dd98a74be1
+"nodemailer@npm:^6.9.10":
+  version: 6.9.10
+  resolution: "nodemailer@npm:6.9.10"
+  checksum: 6e447ae0b88f5c9563f9303ed708f9bd1509cf68c5019d076f65d8d0f346f40bc31b743502158b6ad9fd6b8b2792adca5714b00e6bf7aa391e074f0076c519b6
   languageName: node
   linkType: hard
 
