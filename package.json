@@ -1,6 +1,6 @@
 {
   "name": "@serlo/notification-mail-service",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "author": "Serlo Education e.V.",
   "repository": "git@github.com:serlo/notification-mail-service.git",
   "license": "Apache-2.0",
