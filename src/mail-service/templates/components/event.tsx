@@ -220,10 +220,9 @@ export function EventComponent({
   }
 
   function renderParent(title: string, typename: UuidType) {
-    const preposition = [
-      UuidType.Exercise,
-      UuidType.GroupedExercise,
-    ].includes(typename)
+    const preposition = [UuidType.Exercise, UuidType.GroupedExercise].includes(
+      typename,
+    )
       ? strings.events.entityInParentPreposition
       : [UuidType.Thread, UuidType.Comment].includes(typename)
         ? strings.events.commentInParentPreposition
