@@ -2,7 +2,7 @@
 module.exports = {
   overwrite: true,
   schema: 'https://api.serlo-staging.dev/graphql',
-  emitLegacyCommonJSImports: false,
+  emitLegacyCommonJSImports: true,
   documents: 'src/**/*.ts',
   generates: {
     'src/gql/': {
