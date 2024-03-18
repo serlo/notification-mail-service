@@ -44,7 +44,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: serlo/configure-repositories/actions/setup-node@main
-      - run: .yarn test:e2e
+      - run: yarn test:e2e
   test_docker:
     name: e2e tests with docker build
     runs-on: ubuntu-latest
