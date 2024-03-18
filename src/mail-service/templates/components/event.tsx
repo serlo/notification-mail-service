@@ -167,6 +167,15 @@ export function EventComponent({
     ) {
       return <div className="text-truegray-500">{event.reason}</div>
     }
+    if (event.__typename === 'CreateEntityRevisionNotificationEvent') {
+      if ('changes' in event.entityRevision) {
+        return (
+          <div className="text-gray-500">
+            {event.entityRevision.changes as string}
+          </div>
+        )
+      }
+    }
     if (event.__typename === 'CreateThreadNotificationEvent') {
       return renderCommentContent(event.thread.thread.nodes[0].content)
     }

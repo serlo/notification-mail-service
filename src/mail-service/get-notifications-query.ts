@@ -286,6 +286,33 @@ export const getNotifications = graphql(`
             ... on CreateEntityRevisionNotificationEvent {
               entityRevision {
                 id
+                ... on AppletRevision {
+                  changes
+                }
+                ... on ArticleRevision {
+                  changes
+                }
+                ... on CourseRevision {
+                  changes
+                }
+                ... on CoursePageRevision {
+                  changes
+                }
+                ... on EventRevision {
+                  changes
+                }
+                ... on ExerciseRevision {
+                  changes
+                }
+                ... on ExerciseGroupRevision {
+                  changes
+                }
+                ... on GroupedExerciseRevision {
+                  changes
+                }
+                ... on VideoRevision {
+                  changes
+                }
               }
               entity {
                 ... on AbstractUuid {
