@@ -45,6 +45,13 @@ Run `yarn template`.
 
 Run `yarn test:unit`.
 
+## Releasing a new version
+We release new versions by hand. Run the following commands:
+```
+docker build . -t eu.gcr.io/serlo-shared/notification-mail:${new version}
+docker push eu.gcr.io/serlo-shared/notification-mail:${new version}
+```
+
 ## Helpful Info
 
 Use `yarn mysql` to prompt to the cli of your local database.  
