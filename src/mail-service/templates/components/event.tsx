@@ -214,7 +214,6 @@ export function EventComponent({
     return [
       UuidType.Exercise,
       UuidType.GroupedExercise,
-      UuidType.Solution,
       UuidType.Thread,
       UuidType.Comment,
     ].includes(typename)
@@ -224,7 +223,6 @@ export function EventComponent({
     const preposition = [
       UuidType.Exercise,
       UuidType.GroupedExercise,
-      UuidType.Solution,
     ].includes(typename)
       ? strings.events.entityInParentPreposition
       : [UuidType.Thread, UuidType.Comment].includes(typename)
@@ -239,7 +237,6 @@ export function EventComponent({
       [
         UuidType.Exercise,
         UuidType.GroupedExercise,
-        UuidType.Solution,
         UuidType.Thread,
         UuidType.Comment,
       ].includes(typename)
