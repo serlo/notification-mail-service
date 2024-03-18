@@ -37,12 +37,14 @@ export function NotificationEmailComponent({
 
   function renderEvents(predicate: (x: Event) => boolean) {
     return events.filter(predicate).map((event) => {
+      if (!event) return <></>
       return <EventComponent event={event} key={event.id} strings={strings} />
     })
   }
 }
 
 function isThreadEvent(event: Event): boolean {
+  if (!event) return false
   return (
     event.__typename === 'CreateThreadNotificationEvent' ||
     event.__typename === 'CreateCommentNotificationEvent' ||

@@ -1,10 +1,10 @@
+import { UserLink } from './user-link'
 import { domain } from '../../../config'
 import { GetNotificationsQuery } from '../../../gql/graphql'
 import { getEntityStringByTypename } from '../helper/get-string-by-typename'
 import { replacePlaceholders } from '../helper/replace-placeholders'
 import { LanguageStrings } from '../helper/type-language-strings'
 import { UuidType } from '../helper/uuid-type'
-import { UserLink } from './user-link'
 
 export type Event =
   GetNotificationsQuery['notifications']['nodes'][number]['event']
@@ -167,6 +167,15 @@ export function EventComponent({
     ) {
       return <div className="text-truegray-500">{event.reason}</div>
     }
+    if (event.__typename === 'CreateEntityRevisionNotificationEvent') {
+      if ('changes' in event.entityRevision) {
+        return (
+          <div className="text-gray-500">
+            {event.entityRevision.changes as string}
+          </div>
+        )
+      }
+    }
     if (event.__typename === 'CreateThreadNotificationEvent') {
       return renderCommentContent(event.thread.thread.nodes[0].content)
     }
@@ -205,18 +214,15 @@ export function EventComponent({
     return [
       UuidType.Exercise,
       UuidType.GroupedExercise,
-      UuidType.Solution,
       UuidType.Thread,
       UuidType.Comment,
     ].includes(typename)
   }
 
   function renderParent(title: string, typename: UuidType) {
-    const preposition = [
-      UuidType.Exercise,
-      UuidType.GroupedExercise,
-      UuidType.Solution,
-    ].includes(typename)
+    const preposition = [UuidType.Exercise, UuidType.GroupedExercise].includes(
+      typename,
+    )
       ? strings.events.entityInParentPreposition
       : [UuidType.Thread, UuidType.Comment].includes(typename)
         ? strings.events.commentInParentPreposition
@@ -230,7 +236,6 @@ export function EventComponent({
       [
         UuidType.Exercise,
         UuidType.GroupedExercise,
-        UuidType.Solution,
         UuidType.Thread,
         UuidType.Comment,
       ].includes(typename)
