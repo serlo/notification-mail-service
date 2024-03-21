@@ -86,15 +86,13 @@ export const apiReponses: Record<number, unknown> = {
             },
             repository: {
               exercise: {
-                __typename: 'GroupedExercise',
-                exerciseGroup: {
-                  taxonomyTerms: {
-                    nodes: [
-                      {
-                        type: 'exerciseFolder',
-                      },
-                    ],
-                  },
+                __typename: 'ExerciseGroup',
+                taxonomyTerms: {
+                  nodes: [
+                    {
+                      type: 'exerciseFolder',
+                    },
+                  ],
                 },
               },
               __typename: 'Solution',
@@ -124,15 +122,13 @@ export const apiReponses: Record<number, unknown> = {
             },
             entity: {
               exercise: {
-                __typename: 'GroupedExercise',
-                exerciseGroup: {
-                  taxonomyTerms: {
-                    nodes: [
-                      {
-                        type: 'exerciseFolder',
-                      },
-                    ],
-                  },
+                __typename: 'ExerciseGroup',
+                taxonomyTerms: {
+                  nodes: [
+                    {
+                      type: 'exerciseFolder',
+                    },
+                  ],
                 },
               },
               __typename: 'Solution',
@@ -169,7 +165,7 @@ export const apiReponses: Record<number, unknown> = {
                   ],
                 },
               },
-              __typename: 'GroupedExercise',
+              __typename: 'ExerciseGroup',
               id: 13827,
               title: 'Aufgaben zur Umkehrfunktion',
               alias: '/mathe/13827/13827',
@@ -204,7 +200,7 @@ export const apiReponses: Record<number, unknown> = {
                   ],
                 },
               },
-              __typename: 'GroupedExercise',
+              __typename: 'ExerciseGroup',
               id: 13827,
               title: 'Aufgaben zur Umkehrfunktion',
               alias: '/mathe/13827/13827',
@@ -230,15 +226,13 @@ export const apiReponses: Record<number, unknown> = {
             },
             repository: {
               exercise: {
-                __typename: 'GroupedExercise',
-                exerciseGroup: {
-                  taxonomyTerms: {
-                    nodes: [
-                      {
-                        type: 'exerciseFolder',
-                      },
-                    ],
-                  },
+                __typename: 'ExerciseGroup',
+                taxonomyTerms: {
+                  nodes: [
+                    {
+                      type: 'exerciseFolder',
+                    },
+                  ],
                 },
               },
               __typename: 'Solution',
@@ -268,15 +262,13 @@ export const apiReponses: Record<number, unknown> = {
             },
             entity: {
               exercise: {
-                __typename: 'GroupedExercise',
-                exerciseGroup: {
-                  taxonomyTerms: {
-                    nodes: [
-                      {
-                        type: 'exerciseFolder',
-                      },
-                    ],
-                  },
+                __typename: 'ExerciseGroup',
+                taxonomyTerms: {
+                  nodes: [
+                    {
+                      type: 'exerciseFolder',
+                    },
+                  ],
                 },
               },
               __typename: 'Solution',
@@ -313,7 +305,7 @@ export const apiReponses: Record<number, unknown> = {
                   ],
                 },
               },
-              __typename: 'GroupedExercise',
+              __typename: 'ExerciseGroup',
               id: 13831,
               title: 'Aufgaben zur Umkehrfunktion',
               alias: '/mathe/13831/13831',
@@ -348,7 +340,7 @@ export const apiReponses: Record<number, unknown> = {
                   ],
                 },
               },
-              __typename: 'GroupedExercise',
+              __typename: 'ExerciseGroup',
               id: 13831,
               title: 'Aufgaben zur Umkehrfunktion',
               alias: '/mathe/13831/13831',
@@ -374,15 +366,13 @@ export const apiReponses: Record<number, unknown> = {
             },
             repository: {
               exercise: {
-                __typename: 'GroupedExercise',
-                exerciseGroup: {
-                  taxonomyTerms: {
-                    nodes: [
-                      {
-                        type: 'exerciseFolder',
-                      },
-                    ],
-                  },
+                __typename: 'ExerciseGroup',
+                taxonomyTerms: {
+                  nodes: [
+                    {
+                      type: 'exerciseFolder',
+                    },
+                  ],
                 },
               },
               __typename: 'Solution',
@@ -412,15 +402,13 @@ export const apiReponses: Record<number, unknown> = {
             },
             entity: {
               exercise: {
-                __typename: 'GroupedExercise',
-                exerciseGroup: {
-                  taxonomyTerms: {
-                    nodes: [
-                      {
-                        type: 'exerciseFolder',
-                      },
-                    ],
-                  },
+                __typename: 'ExerciseGroup',
+                taxonomyTerms: {
+                  nodes: [
+                    {
+                      type: 'exerciseFolder',
+                    },
+                  ],
                 },
               },
               __typename: 'Solution',
@@ -457,7 +445,7 @@ export const apiReponses: Record<number, unknown> = {
                   ],
                 },
               },
-              __typename: 'GroupedExercise',
+              __typename: 'ExerciseGroup',
               id: 13823,
               title: 'Aufgaben zur Umkehrfunktion',
               alias: '/mathe/13823/13823',
@@ -492,7 +480,7 @@ export const apiReponses: Record<number, unknown> = {
                   ],
                 },
               },
-              __typename: 'GroupedExercise',
+              __typename: 'ExerciseGroup',
               id: 13823,
               title: 'Aufgaben zur Umkehrfunktion',
               alias: '/mathe/13823/13823',
@@ -518,15 +506,13 @@ export const apiReponses: Record<number, unknown> = {
             },
             repository: {
               exercise: {
-                __typename: 'GroupedExercise',
-                exerciseGroup: {
-                  taxonomyTerms: {
-                    nodes: [
-                      {
-                        type: 'exerciseFolder',
-                      },
-                    ],
-                  },
+                __typename: 'ExerciseGroup',
+                taxonomyTerms: {
+                  nodes: [
+                    {
+                      type: 'exerciseFolder',
+                    },
+                  ],
                 },
               },
               __typename: 'Solution',
@@ -556,15 +542,13 @@ export const apiReponses: Record<number, unknown> = {
             },
             entity: {
               exercise: {
-                __typename: 'GroupedExercise',
-                exerciseGroup: {
-                  taxonomyTerms: {
-                    nodes: [
-                      {
-                        type: 'exerciseFolder',
-                      },
-                    ],
-                  },
+                __typename: 'ExerciseGroup',
+                taxonomyTerms: {
+                  nodes: [
+                    {
+                      type: 'exerciseFolder',
+                    },
+                  ],
                 },
               },
               __typename: 'Solution',
@@ -601,7 +585,7 @@ export const apiReponses: Record<number, unknown> = {
                   ],
                 },
               },
-              __typename: 'GroupedExercise',
+              __typename: 'ExerciseGroup',
               id: 13819,
               title: 'Aufgaben zur Umkehrfunktion',
               alias: '/mathe/13819/13819',
@@ -636,7 +620,7 @@ export const apiReponses: Record<number, unknown> = {
                   ],
                 },
               },
-              __typename: 'GroupedExercise',
+              __typename: 'ExerciseGroup',
               id: 13819,
               title: 'Aufgaben zur Umkehrfunktion',
               alias: '/mathe/13819/13819',
@@ -662,15 +646,13 @@ export const apiReponses: Record<number, unknown> = {
             },
             repository: {
               exercise: {
-                __typename: 'GroupedExercise',
-                exerciseGroup: {
-                  taxonomyTerms: {
-                    nodes: [
-                      {
-                        type: 'exerciseFolder',
-                      },
-                    ],
-                  },
+                __typename: 'ExerciseGroup',
+                taxonomyTerms: {
+                  nodes: [
+                    {
+                      type: 'exerciseFolder',
+                    },
+                  ],
                 },
               },
               __typename: 'Solution',
@@ -700,15 +682,13 @@ export const apiReponses: Record<number, unknown> = {
             },
             entity: {
               exercise: {
-                __typename: 'GroupedExercise',
-                exerciseGroup: {
-                  taxonomyTerms: {
-                    nodes: [
-                      {
-                        type: 'exerciseFolder',
-                      },
-                    ],
-                  },
+                __typename: 'ExerciseGroup',
+                taxonomyTerms: {
+                  nodes: [
+                    {
+                      type: 'exerciseFolder',
+                    },
+                  ],
                 },
               },
               __typename: 'Solution',

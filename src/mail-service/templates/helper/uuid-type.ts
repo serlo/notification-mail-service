@@ -6,7 +6,6 @@ enum UuidRevType {
   Event = 'EventRevision',
   Exercise = 'ExerciseRevision',
   ExerciseGroup = 'ExerciseGroupRevision',
-  GroupedExercise = 'GroupedExerciseRevision',
   Page = 'PageRevision',
   Video = 'VideoRevision',
 }
@@ -21,7 +20,6 @@ export enum UuidType {
   Event = 'Event',
   Exercise = 'Exercise',
   ExerciseGroup = 'ExerciseGroup',
-  GroupedExercise = 'GroupedExercise',
   Page = 'Page',
   TaxonomyTerm = 'TaxonomyTerm',
   User = 'User',

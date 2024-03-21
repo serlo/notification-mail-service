@@ -53,15 +53,6 @@ export const getNotifications = graphql(`
                       }
                     }
                   }
-                  ... on GroupedExercise {
-                    exerciseGroup {
-                      taxonomyTerms {
-                        nodes {
-                          type
-                        }
-                      }
-                    }
-                  }
                 }
                 ... on AbstractUuid {
                   __typename
@@ -109,15 +100,6 @@ export const getNotifications = graphql(`
                       }
                     }
                   }
-                  ... on GroupedExercise {
-                    exerciseGroup {
-                      taxonomyTerms {
-                        nodes {
-                          type
-                        }
-                      }
-                    }
-                  }
                 }
                 ... on AbstractUuid {
                   __typename
@@ -144,15 +126,6 @@ export const getNotifications = graphql(`
                       }
                     }
                   }
-                  ... on GroupedExercise {
-                    exerciseGroup {
-                      taxonomyTerms {
-                        nodes {
-                          type
-                        }
-                      }
-                    }
-                  }
                 }
                 ... on AbstractUuid {
                   __typename
@@ -174,15 +147,6 @@ export const getNotifications = graphql(`
                     taxonomyTerms {
                       nodes {
                         type
-                      }
-                    }
-                  }
-                  ... on GroupedExercise {
-                    exerciseGroup {
-                      taxonomyTerms {
-                        nodes {
-                          type
-                        }
                       }
                     }
                   }
@@ -219,9 +183,6 @@ export const getNotifications = graphql(`
                 ... on ExerciseGroupRevision {
                   changes
                 }
-                ... on GroupedExerciseRevision {
-                  changes
-                }
                 ... on VideoRevision {
                   changes
                 }
@@ -239,15 +200,6 @@ export const getNotifications = graphql(`
                     taxonomyTerms {
                       nodes {
                         type
-                      }
-                    }
-                  }
-                  ... on GroupedExercise {
-                    exerciseGroup {
-                      taxonomyTerms {
-                        nodes {
-                          type
-                        }
                       }
                     }
                   }
@@ -284,15 +236,6 @@ export const getNotifications = graphql(`
                     taxonomyTerms {
                       nodes {
                         type
-                      }
-                    }
-                  }
-                  ... on GroupedExercise {
-                    exerciseGroup {
-                      taxonomyTerms {
-                        nodes {
-                          type
-                        }
                       }
                     }
                   }
@@ -349,15 +292,6 @@ export const getNotifications = graphql(`
                       }
                     }
                   }
-                  ... on GroupedExercise {
-                    exerciseGroup {
-                      taxonomyTerms {
-                        nodes {
-                          type
-                        }
-                      }
-                    }
-                  }
                 }
                 ... on AbstractUuid {
                   __typename
@@ -389,15 +323,6 @@ export const getNotifications = graphql(`
                       }
                     }
                   }
-                  ... on GroupedExercise {
-                    exerciseGroup {
-                      taxonomyTerms {
-                        nodes {
-                          type
-                        }
-                      }
-                    }
-                  }
                 }
                 ... on AbstractUuid {
                   __typename
@@ -419,15 +344,6 @@ export const getNotifications = graphql(`
                     taxonomyTerms {
                       nodes {
                         type
-                      }
-                    }
-                  }
-                  ... on GroupedExercise {
-                    exerciseGroup {
-                      taxonomyTerms {
-                        nodes {
-                          type
-                        }
                       }
                     }
                   }
@@ -454,15 +370,6 @@ export const getNotifications = graphql(`
                     taxonomyTerms {
                       nodes {
                         type
-                      }
-                    }
-                  }
-                  ... on GroupedExercise {
-                    exerciseGroup {
-                      taxonomyTerms {
-                        nodes {
-                          type
-                        }
                       }
                     }
                   }
@@ -497,15 +404,6 @@ export const getNotifications = graphql(`
                     taxonomyTerms {
                       nodes {
                         type
-                      }
-                    }
-                  }
-                  ... on GroupedExercise {
-                    exerciseGroup {
-                      taxonomyTerms {
-                        nodes {
-                          type
-                        }
                       }
                     }
                   }
@@ -585,15 +483,6 @@ export const getNotifications = graphql(`
                     taxonomyTerms {
                       nodes {
                         type
-                      }
-                    }
-                  }
-                  ... on GroupedExercise {
-                    exerciseGroup {
-                      taxonomyTerms {
-                        nodes {
-                          type
-                        }
                       }
                     }
                   }

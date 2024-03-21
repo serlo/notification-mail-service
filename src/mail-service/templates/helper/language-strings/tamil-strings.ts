@@ -8,7 +8,6 @@ export const strings = {
     exercise: 'Exercise',
     exerciseGroup: 'பயிற்சிப் பதிவுகள்',
     topic: 'Folder',
-    groupedExercise: 'Grouped Exercise',
     page: 'பக்கம்',
     solution: 'தீர்வு',
     taxonomyTerm: 'Taxonomy Term',
