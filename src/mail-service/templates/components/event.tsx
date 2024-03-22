@@ -170,9 +170,7 @@ export function EventComponent({
     if (event.__typename === 'CreateEntityRevisionNotificationEvent') {
       if ('changes' in event.entityRevision) {
         return (
-          <div className="text-gray-500">
-            {event.entityRevision.changes as string}
-          </div>
+          <div className="text-gray-500">{event.entityRevision.changes}</div>
         )
       }
     }
@@ -211,34 +209,25 @@ export function EventComponent({
   }
 
   function shouldRenderParent(typename: UuidType) {
-    return [
-      UuidType.Exercise,
-      UuidType.GroupedExercise,
-      UuidType.Thread,
-      UuidType.Comment,
-    ].includes(typename)
+    return [UuidType.Exercise, UuidType.Thread, UuidType.Comment].includes(
+      typename,
+    )
   }
 
   function renderParent(title: string, typename: UuidType) {
-    const preposition = [UuidType.Exercise, UuidType.GroupedExercise].includes(
-      typename,
-    )
-      ? strings.events.entityInParentPreposition
-      : [UuidType.Thread, UuidType.Comment].includes(typename)
-        ? strings.events.commentInParentPreposition
-        : ''
+    const preposition =
+      UuidType.Exercise === typename
+        ? strings.events.entityInParentPreposition
+        : [UuidType.Thread, UuidType.Comment].includes(typename)
+          ? strings.events.commentInParentPreposition
+          : ''
 
     return ` (${preposition} ${title})`
   }
 
   function renderTitle(title: string, typename: UuidType, id: number) {
     if (
-      [
-        UuidType.Exercise,
-        UuidType.GroupedExercise,
-        UuidType.Thread,
-        UuidType.Comment,
-      ].includes(typename)
+      [UuidType.Exercise, UuidType.Thread, UuidType.Comment].includes(typename)
     ) {
       return (
         <>

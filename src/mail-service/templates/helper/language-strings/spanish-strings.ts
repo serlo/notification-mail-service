@@ -8,7 +8,6 @@ export const strings = {
     exercise: 'Ejercicio',
     exerciseGroup: 'Grupo de ejercicios',
     topic: 'Carpeta',
-    groupedExercise: 'Ejercicio agrupado',
     page: 'Página',
     solution: 'Solución',
     taxonomyTerm: 'Término de taxonomía',

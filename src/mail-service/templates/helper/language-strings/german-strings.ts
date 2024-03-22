@@ -8,7 +8,6 @@ export const strings = {
     exercise: 'Aufgabe',
     exerciseGroup: 'Aufgabe mit Teilaufgaben',
     topic: 'Themenbereich',
-    groupedExercise: 'Teilaufgabe',
     page: 'Seite',
     solution: 'Lösung',
     taxonomyTerm: 'Taxonomie-Begriff',

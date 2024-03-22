@@ -43,7 +43,7 @@ Run `yarn template`.
 
 <!-- For e2e testing you need to have `yarn start`ed, with the database in the original state (use `yarn mysql:rollback`). -->
 
-Run `yarn test:unit`.
+Run `yarn test`.
 
 ## Releasing a new version
 
