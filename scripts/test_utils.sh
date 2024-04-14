@@ -18,7 +18,7 @@ init_mysql() {
 }
 
 init_api_mock() {
-  yarn ts-node --experimental-specifier-resolution=node scripts/api-mock &
+  yarn tsx scripts/api-mock.ts &
   API_MOCK_PID="$!"
 }
 

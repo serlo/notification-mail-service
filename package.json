@@ -26,12 +26,12 @@
     "mysql": "docker compose exec mysql serlo-mysql",
     "mysql:import-anonymous-data": "./scripts/mysql/import-anonymous-data.sh",
     "mysql:rollback": "docker compose exec mysql sh -c \"pv /docker-entrypoint-initdb.d/001-init.sql | serlo-mysql\"",
-    "notify": "ts-node --experimental-specifier-resolution=node src",
+    "notify": "tsx src/index.ts",
     "start": "yarn start:docker",
     "start:docker": "docker compose up --detach",
     "stop": "yarn stop:docker",
     "stop:docker": "docker compose down",
-    "template": "TS_NODE_PROJECT='tsconfig.prod.json' NODE_OPTIONS='--experimental-specifier-resolution=node' nodemon --exec ts-node --watch src scripts/template-server.tsx",
+    "template": "tsx --watch scripts/template-server.tsx",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand --forceExit",
     "test:e2e": "./scripts/e2e_test.sh"
   },
@@ -71,16 +71,12 @@
     "fp-ts": "^2.16.5",
     "io-ts": "^2.2.21",
     "jest": "^29.7.0",
-    "nodemon": "^3.1.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.2.5",
     "ts-jest": "^29.1.2",
-    "ts-node": "^10.9.2",
     "ts-unused-exports": "^10.0.1",
+    "tsx": "^4.7.2",
     "typescript": "^5.4.3"
   },
-  "packageManager": "yarn@3.6.1",
-  "engines": {
-    "node": "^18.0.0"
-  }
+  "packageManager": "yarn@3.6.1"
 }
