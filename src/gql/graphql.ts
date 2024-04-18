@@ -22,12 +22,13 @@ export type Scalars = {
 
 export type AbstractEntity = {
   alias: Scalars['String']['output'];
+  currentRevision?: Maybe<AbstractEntityRevision>;
   date: Scalars['DateTime']['output'];
   events: AbstractNotificationEventConnection;
   id: Scalars['Int']['output'];
   instance: Instance;
   licenseId: Scalars['Int']['output'];
-  subject?: Maybe<Subject>;
+  revisions: AbstractEntityRevisionConnection;
   title: Scalars['String']['output'];
   trashed: Scalars['Boolean']['output'];
 };
@@ -35,11 +36,21 @@ export type AbstractEntity = {
 
 export type AbstractEntityEventsArgs = {
   actorId?: InputMaybe<Scalars['Int']['input']>;
+  actorUsername?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   instance?: InputMaybe<Instance>;
   last?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type AbstractEntityRevisionsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  unrevised?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type AbstractEntityConnection = {
@@ -63,13 +74,18 @@ export type AbstractEntityRevision = {
   date: Scalars['DateTime']['output'];
   events: AbstractNotificationEventConnection;
   id: Scalars['Int']['output'];
+  metaDescription?: Maybe<Scalars['String']['output']>;
+  metaTitle?: Maybe<Scalars['String']['output']>;
+  repository: AbstractEntity;
   title: Scalars['String']['output'];
   trashed: Scalars['Boolean']['output'];
+  url?: Maybe<Scalars['String']['output']>;
 };
 
 
 export type AbstractEntityRevisionEventsArgs = {
   actorId?: InputMaybe<Scalars['Int']['input']>;
+  actorUsername?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -77,48 +93,10 @@ export type AbstractEntityRevisionEventsArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
 };
 
-export type AbstractExercise = {
-  alias: Scalars['String']['output'];
-  currentRevision?: Maybe<AbstractExerciseRevision>;
-  date: Scalars['DateTime']['output'];
-  events: AbstractNotificationEventConnection;
-  id: Scalars['Int']['output'];
-  instance: Instance;
-  licenseId: Scalars['Int']['output'];
-  title: Scalars['String']['output'];
-  trashed: Scalars['Boolean']['output'];
-};
-
-
-export type AbstractExerciseEventsArgs = {
-  actorId?: InputMaybe<Scalars['Int']['input']>;
-  after?: InputMaybe<Scalars['String']['input']>;
-  before?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  instance?: InputMaybe<Instance>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type AbstractExerciseRevision = {
-  alias: Scalars['String']['output'];
-  author: User;
-  changes: Scalars['String']['output'];
-  content: Scalars['String']['output'];
-  date: Scalars['DateTime']['output'];
-  events: AbstractNotificationEventConnection;
-  id: Scalars['Int']['output'];
-  title: Scalars['String']['output'];
-  trashed: Scalars['Boolean']['output'];
-};
-
-
-export type AbstractExerciseRevisionEventsArgs = {
-  actorId?: InputMaybe<Scalars['Int']['input']>;
-  after?: InputMaybe<Scalars['String']['input']>;
-  before?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  instance?: InputMaybe<Instance>;
-  last?: InputMaybe<Scalars['Int']['input']>;
+export type AbstractEntityRevisionConnection = {
+  nodes: Array<AbstractEntityRevision>;
+  pageInfo: PageInfo;
+  totalCount: Scalars['Int']['output'];
 };
 
 export type AbstractNotificationEvent = {
@@ -149,7 +127,7 @@ export type AbstractRepository = {
   id: Scalars['Int']['output'];
   instance: Instance;
   licenseId: Scalars['Int']['output'];
-  threads: ThreadsConnection;
+  threads: ThreadConnection;
   title: Scalars['String']['output'];
   trashed: Scalars['Boolean']['output'];
 };
@@ -157,6 +135,7 @@ export type AbstractRepository = {
 
 export type AbstractRepositoryEventsArgs = {
   actorId?: InputMaybe<Scalars['Int']['input']>;
+  actorUsername?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -181,7 +160,7 @@ export type AbstractRevision = {
   date: Scalars['DateTime']['output'];
   events: AbstractNotificationEventConnection;
   id: Scalars['Int']['output'];
-  threads: ThreadsConnection;
+  threads: ThreadConnection;
   title: Scalars['String']['output'];
   trashed: Scalars['Boolean']['output'];
 };
@@ -189,6 +168,7 @@ export type AbstractRevision = {
 
 export type AbstractRevisionEventsArgs = {
   actorId?: InputMaybe<Scalars['Int']['input']>;
+  actorUsername?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -221,6 +201,7 @@ export type AbstractTaxonomyTermChild = {
 
 export type AbstractTaxonomyTermChildEventsArgs = {
   actorId?: InputMaybe<Scalars['Int']['input']>;
+  actorUsername?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -247,6 +228,7 @@ export type AbstractUuid = {
 
 export type AbstractUuidEventsArgs = {
   actorId?: InputMaybe<Scalars['Int']['input']>;
+  actorUsername?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -259,13 +241,6 @@ export type AbstractUuidConnection = {
   nodes: Array<AbstractUuid>;
   pageInfo: PageInfo;
   totalCount: Scalars['Int']['output'];
-};
-
-export type AddRevisionResponse = {
-  __typename?: 'AddRevisionResponse';
-  query: Query;
-  revisionId?: Maybe<Scalars['Int']['output']>;
-  success: Scalars['Boolean']['output'];
 };
 
 export type AiQuery = {
@@ -283,14 +258,6 @@ export type AliasInput = {
   path: Scalars['String']['input'];
 };
 
-export type AllThreadsConnection = {
-  __typename?: 'AllThreadsConnection';
-  edges: Array<ThreadsCursor>;
-  nodes: Array<Thread>;
-  pageInfo: HasNextPageInfo;
-  totalCount: Scalars['Int']['output'];
-};
-
 export type Applet = AbstractEntity & AbstractRepository & AbstractTaxonomyTermChild & AbstractUuid & InstanceAware & ThreadAware & {
   __typename?: 'Applet';
   alias: Scalars['String']['output'];
@@ -301,9 +268,8 @@ export type Applet = AbstractEntity & AbstractRepository & AbstractTaxonomyTermC
   instance: Instance;
   licenseId: Scalars['Int']['output'];
   revisions: AppletRevisionConnection;
-  subject?: Maybe<Subject>;
   taxonomyTerms: TaxonomyTermConnection;
-  threads: ThreadsConnection;
+  threads: ThreadConnection;
   title: Scalars['String']['output'];
   trashed: Scalars['Boolean']['output'];
 };
@@ -311,6 +277,7 @@ export type Applet = AbstractEntity & AbstractRepository & AbstractTaxonomyTermC
 
 export type AppletEventsArgs = {
   actorId?: InputMaybe<Scalars['Int']['input']>;
+  actorUsername?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -357,7 +324,7 @@ export type AppletRevision = AbstractEntityRevision & AbstractRevision & Abstrac
   metaDescription: Scalars['String']['output'];
   metaTitle: Scalars['String']['output'];
   repository: Applet;
-  threads: ThreadsConnection;
+  threads: ThreadConnection;
   title: Scalars['String']['output'];
   trashed: Scalars['Boolean']['output'];
   url: Scalars['String']['output'];
@@ -366,6 +333,7 @@ export type AppletRevision = AbstractEntityRevision & AbstractRevision & Abstrac
 
 export type AppletRevisionEventsArgs = {
   actorId?: InputMaybe<Scalars['Int']['input']>;
+  actorUsername?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -383,7 +351,7 @@ export type AppletRevisionThreadsArgs = {
   trashed?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
-export type AppletRevisionConnection = {
+export type AppletRevisionConnection = AbstractEntityRevisionConnection & {
   __typename?: 'AppletRevisionConnection';
   nodes: Array<AppletRevision>;
   pageInfo: PageInfo;
@@ -400,9 +368,8 @@ export type Article = AbstractEntity & AbstractRepository & AbstractTaxonomyTerm
   instance: Instance;
   licenseId: Scalars['Int']['output'];
   revisions: ArticleRevisionConnection;
-  subject?: Maybe<Subject>;
   taxonomyTerms: TaxonomyTermConnection;
-  threads: ThreadsConnection;
+  threads: ThreadConnection;
   title: Scalars['String']['output'];
   trashed: Scalars['Boolean']['output'];
 };
@@ -410,6 +377,7 @@ export type Article = AbstractEntity & AbstractRepository & AbstractTaxonomyTerm
 
 export type ArticleEventsArgs = {
   actorId?: InputMaybe<Scalars['Int']['input']>;
+  actorUsername?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -456,14 +424,16 @@ export type ArticleRevision = AbstractEntityRevision & AbstractRevision & Abstra
   metaDescription: Scalars['String']['output'];
   metaTitle: Scalars['String']['output'];
   repository: Article;
-  threads: ThreadsConnection;
+  threads: ThreadConnection;
   title: Scalars['String']['output'];
   trashed: Scalars['Boolean']['output'];
+  url?: Maybe<Scalars['String']['output']>;
 };
 
 
 export type ArticleRevisionEventsArgs = {
   actorId?: InputMaybe<Scalars['Int']['input']>;
+  actorUsername?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -481,7 +451,7 @@ export type ArticleRevisionThreadsArgs = {
   trashed?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
-export type ArticleRevisionConnection = {
+export type ArticleRevisionConnection = AbstractEntityRevisionConnection & {
   __typename?: 'ArticleRevisionConnection';
   nodes: Array<ArticleRevision>;
   pageInfo: PageInfo;
@@ -514,12 +484,6 @@ export type CheckoutRevisionNotificationEvent = AbstractNotificationEvent & Inst
   revision: AbstractRevision;
 };
 
-export type CheckoutRevisionResponse = {
-  __typename?: 'CheckoutRevisionResponse';
-  query: Query;
-  success: Scalars['Boolean']['output'];
-};
-
 export type Comment = AbstractUuid & {
   __typename?: 'Comment';
   alias: Scalars['String']['output'];
@@ -537,6 +501,7 @@ export type Comment = AbstractUuid & {
 
 export type CommentEventsArgs = {
   actorId?: InputMaybe<Scalars['Int']['input']>;
+  actorUsername?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -568,9 +533,8 @@ export type Course = AbstractEntity & AbstractRepository & AbstractTaxonomyTermC
   licenseId: Scalars['Int']['output'];
   pages: Array<CoursePage>;
   revisions: CourseRevisionConnection;
-  subject?: Maybe<Subject>;
   taxonomyTerms: TaxonomyTermConnection;
-  threads: ThreadsConnection;
+  threads: ThreadConnection;
   title: Scalars['String']['output'];
   trashed: Scalars['Boolean']['output'];
 };
@@ -578,6 +542,7 @@ export type Course = AbstractEntity & AbstractRepository & AbstractTaxonomyTermC
 
 export type CourseEventsArgs = {
   actorId?: InputMaybe<Scalars['Int']['input']>;
+  actorUsername?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -629,8 +594,7 @@ export type CoursePage = AbstractEntity & AbstractRepository & AbstractUuid & In
   instance: Instance;
   licenseId: Scalars['Int']['output'];
   revisions: CoursePageRevisionConnection;
-  subject?: Maybe<Subject>;
-  threads: ThreadsConnection;
+  threads: ThreadConnection;
   title: Scalars['String']['output'];
   trashed: Scalars['Boolean']['output'];
 };
@@ -638,6 +602,7 @@ export type CoursePage = AbstractEntity & AbstractRepository & AbstractUuid & In
 
 export type CoursePageEventsArgs = {
   actorId?: InputMaybe<Scalars['Int']['input']>;
+  actorUsername?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -673,15 +638,19 @@ export type CoursePageRevision = AbstractEntityRevision & AbstractRevision & Abs
   date: Scalars['DateTime']['output'];
   events: AbstractNotificationEventConnection;
   id: Scalars['Int']['output'];
+  metaDescription?: Maybe<Scalars['String']['output']>;
+  metaTitle?: Maybe<Scalars['String']['output']>;
   repository: CoursePage;
-  threads: ThreadsConnection;
+  threads: ThreadConnection;
   title: Scalars['String']['output'];
   trashed: Scalars['Boolean']['output'];
+  url?: Maybe<Scalars['String']['output']>;
 };
 
 
 export type CoursePageRevisionEventsArgs = {
   actorId?: InputMaybe<Scalars['Int']['input']>;
+  actorUsername?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -699,7 +668,7 @@ export type CoursePageRevisionThreadsArgs = {
   trashed?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
-export type CoursePageRevisionConnection = {
+export type CoursePageRevisionConnection = AbstractEntityRevisionConnection & {
   __typename?: 'CoursePageRevisionConnection';
   nodes: Array<CoursePageRevision>;
   pageInfo: PageInfo;
@@ -716,15 +685,18 @@ export type CourseRevision = AbstractEntityRevision & AbstractRevision & Abstrac
   events: AbstractNotificationEventConnection;
   id: Scalars['Int']['output'];
   metaDescription: Scalars['String']['output'];
+  metaTitle?: Maybe<Scalars['String']['output']>;
   repository: Course;
-  threads: ThreadsConnection;
+  threads: ThreadConnection;
   title: Scalars['String']['output'];
   trashed: Scalars['Boolean']['output'];
+  url?: Maybe<Scalars['String']['output']>;
 };
 
 
 export type CourseRevisionEventsArgs = {
   actorId?: InputMaybe<Scalars['Int']['input']>;
+  actorUsername?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -742,7 +714,7 @@ export type CourseRevisionThreadsArgs = {
   trashed?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
-export type CourseRevisionConnection = {
+export type CourseRevisionConnection = AbstractEntityRevisionConnection & {
   __typename?: 'CourseRevisionConnection';
   nodes: Array<CourseRevision>;
   pageInfo: PageInfo;
@@ -839,18 +811,18 @@ export type DefaultResponse = {
   success: Scalars['Boolean']['output'];
 };
 
-export type DeletedEntitiesConnection = {
-  __typename?: 'DeletedEntitiesConnection';
-  edges: Array<DeletedEntityCursor>;
-  nodes: Array<DeletedEntity>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
-
 export type DeletedEntity = {
   __typename?: 'DeletedEntity';
   dateOfDeletion?: Maybe<Scalars['String']['output']>;
   entity?: Maybe<AbstractEntity>;
+};
+
+export type DeletedEntityConnection = {
+  __typename?: 'DeletedEntityConnection';
+  edges: Array<DeletedEntityCursor>;
+  nodes: Array<DeletedEntity>;
+  pageInfo: PageInfo;
+  totalCount: Scalars['Int']['output'];
 };
 
 export type DeletedEntityCursor = {
@@ -859,34 +831,13 @@ export type DeletedEntityCursor = {
   node: DeletedEntity;
 };
 
-export type EntityMetadataConnection = {
-  __typename?: 'EntityMetadataConnection';
-  edges: Array<EntityMetadataCursor>;
-  nodes: Array<Scalars['JSONObject']['output']>;
-  pageInfo: HasNextPageInfo;
-};
-
-export type EntityMetadataCursor = {
-  __typename?: 'EntityMetadataCursor';
-  cursor: Scalars['String']['output'];
-  node: Scalars['JSONObject']['output'];
-};
-
 export type EntityMutation = {
   __typename?: 'EntityMutation';
-  checkoutRevision: CheckoutRevisionResponse;
-  rejectRevision: RejectRevisionResponse;
-  setApplet: SetEntityResponse;
-  setArticle: SetEntityResponse;
-  setCourse: SetEntityResponse;
-  setCoursePage: SetEntityResponse;
-  setEvent: SetEntityResponse;
-  setExercise: SetEntityResponse;
-  setExerciseGroup: SetEntityResponse;
-  setGroupedExercise: SetEntityResponse;
-  setVideo: SetEntityResponse;
-  sort: EntitySortResponse;
-  updateLicense: EntityUpdateLicenseResponse;
+  checkoutRevision: DefaultResponse;
+  rejectRevision: DefaultResponse;
+  setAbstractEntity: SetEntityResponse;
+  sort: DefaultResponse;
+  updateLicense: DefaultResponse;
 };
 
 
@@ -900,48 +851,8 @@ export type EntityMutationRejectRevisionArgs = {
 };
 
 
-export type EntityMutationSetAppletArgs = {
-  input: SetAppletInput;
-};
-
-
-export type EntityMutationSetArticleArgs = {
-  input: SetArticleInput;
-};
-
-
-export type EntityMutationSetCourseArgs = {
-  input: SetCourseInput;
-};
-
-
-export type EntityMutationSetCoursePageArgs = {
-  input: SetCoursePageInput;
-};
-
-
-export type EntityMutationSetEventArgs = {
-  input: SetEventInput;
-};
-
-
-export type EntityMutationSetExerciseArgs = {
-  input: SetGenericEntityInput;
-};
-
-
-export type EntityMutationSetExerciseGroupArgs = {
-  input: SetExerciseGroupInput;
-};
-
-
-export type EntityMutationSetGroupedExerciseArgs = {
-  input: SetGenericEntityInput;
-};
-
-
-export type EntityMutationSetVideoArgs = {
-  input: SetVideoInput;
+export type EntityMutationSetAbstractEntityArgs = {
+  input: SetAbstractEntityInput;
 };
 
 
@@ -956,7 +867,7 @@ export type EntityMutationUpdateLicenseArgs = {
 
 export type EntityQuery = {
   __typename?: 'EntityQuery';
-  deletedEntities: DeletedEntitiesConnection;
+  deletedEntities: DeletedEntityConnection;
 };
 
 
@@ -971,21 +882,9 @@ export type EntitySortInput = {
   entityId: Scalars['Int']['input'];
 };
 
-export type EntitySortResponse = {
-  __typename?: 'EntitySortResponse';
-  query: Query;
-  success: Scalars['Boolean']['output'];
-};
-
 export type EntityUpdateLicenseInput = {
   entityId: Scalars['Int']['input'];
   licenseId: Scalars['Int']['input'];
-};
-
-export type EntityUpdateLicenseResponse = {
-  __typename?: 'EntityUpdateLicenseResponse';
-  query: Query;
-  success: Scalars['Boolean']['output'];
 };
 
 export type Event = AbstractEntity & AbstractRepository & AbstractTaxonomyTermChild & AbstractUuid & InstanceAware & ThreadAware & {
@@ -998,9 +897,8 @@ export type Event = AbstractEntity & AbstractRepository & AbstractTaxonomyTermCh
   instance: Instance;
   licenseId: Scalars['Int']['output'];
   revisions: EventRevisionConnection;
-  subject?: Maybe<Subject>;
   taxonomyTerms: TaxonomyTermConnection;
-  threads: ThreadsConnection;
+  threads: ThreadConnection;
   title: Scalars['String']['output'];
   trashed: Scalars['Boolean']['output'];
 };
@@ -1008,6 +906,7 @@ export type Event = AbstractEntity & AbstractRepository & AbstractTaxonomyTermCh
 
 export type EventEventsArgs = {
   actorId?: InputMaybe<Scalars['Int']['input']>;
+  actorUsername?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -1054,14 +953,16 @@ export type EventRevision = AbstractEntityRevision & AbstractRevision & Abstract
   metaDescription: Scalars['String']['output'];
   metaTitle: Scalars['String']['output'];
   repository: Event;
-  threads: ThreadsConnection;
+  threads: ThreadConnection;
   title: Scalars['String']['output'];
   trashed: Scalars['Boolean']['output'];
+  url?: Maybe<Scalars['String']['output']>;
 };
 
 
 export type EventRevisionEventsArgs = {
   actorId?: InputMaybe<Scalars['Int']['input']>;
+  actorUsername?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -1079,7 +980,7 @@ export type EventRevisionThreadsArgs = {
   trashed?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
-export type EventRevisionConnection = {
+export type EventRevisionConnection = AbstractEntityRevisionConnection & {
   __typename?: 'EventRevisionConnection';
   edges: Array<EventRevisionCursor>;
   nodes: Array<EventRevision>;
@@ -1099,7 +1000,7 @@ export type ExecutePromptResponse = {
   success: Scalars['Boolean']['output'];
 };
 
-export type Exercise = AbstractEntity & AbstractExercise & AbstractRepository & AbstractTaxonomyTermChild & AbstractUuid & InstanceAware & ThreadAware & {
+export type Exercise = AbstractEntity & AbstractRepository & AbstractTaxonomyTermChild & AbstractUuid & InstanceAware & ThreadAware & {
   __typename?: 'Exercise';
   alias: Scalars['String']['output'];
   currentRevision?: Maybe<ExerciseRevision>;
@@ -1109,9 +1010,8 @@ export type Exercise = AbstractEntity & AbstractExercise & AbstractRepository & 
   instance: Instance;
   licenseId: Scalars['Int']['output'];
   revisions: ExerciseRevisionConnection;
-  subject?: Maybe<Subject>;
   taxonomyTerms: TaxonomyTermConnection;
-  threads: ThreadsConnection;
+  threads: ThreadConnection;
   title: Scalars['String']['output'];
   trashed: Scalars['Boolean']['output'];
 };
@@ -1119,6 +1019,7 @@ export type Exercise = AbstractEntity & AbstractExercise & AbstractRepository & 
 
 export type ExerciseEventsArgs = {
   actorId?: InputMaybe<Scalars['Int']['input']>;
+  actorUsername?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -1159,14 +1060,12 @@ export type ExerciseGroup = AbstractEntity & AbstractRepository & AbstractTaxono
   currentRevision?: Maybe<ExerciseGroupRevision>;
   date: Scalars['DateTime']['output'];
   events: AbstractNotificationEventConnection;
-  exercises: Array<GroupedExercise>;
   id: Scalars['Int']['output'];
   instance: Instance;
   licenseId: Scalars['Int']['output'];
   revisions: ExerciseGroupRevisionConnection;
-  subject?: Maybe<Subject>;
   taxonomyTerms: TaxonomyTermConnection;
-  threads: ThreadsConnection;
+  threads: ThreadConnection;
   title: Scalars['String']['output'];
   trashed: Scalars['Boolean']['output'];
 };
@@ -1174,6 +1073,7 @@ export type ExerciseGroup = AbstractEntity & AbstractRepository & AbstractTaxono
 
 export type ExerciseGroupEventsArgs = {
   actorId?: InputMaybe<Scalars['Int']['input']>;
+  actorUsername?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -1213,20 +1113,23 @@ export type ExerciseGroupRevision = AbstractEntityRevision & AbstractRevision & 
   alias: Scalars['String']['output'];
   author: User;
   changes: Scalars['String']['output'];
-  cohesive: Scalars['Boolean']['output'];
   content: Scalars['String']['output'];
   date: Scalars['DateTime']['output'];
   events: AbstractNotificationEventConnection;
   id: Scalars['Int']['output'];
+  metaDescription?: Maybe<Scalars['String']['output']>;
+  metaTitle?: Maybe<Scalars['String']['output']>;
   repository: ExerciseGroup;
-  threads: ThreadsConnection;
+  threads: ThreadConnection;
   title: Scalars['String']['output'];
   trashed: Scalars['Boolean']['output'];
+  url?: Maybe<Scalars['String']['output']>;
 };
 
 
 export type ExerciseGroupRevisionEventsArgs = {
   actorId?: InputMaybe<Scalars['Int']['input']>;
+  actorUsername?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -1244,7 +1147,7 @@ export type ExerciseGroupRevisionThreadsArgs = {
   trashed?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
-export type ExerciseGroupRevisionConnection = {
+export type ExerciseGroupRevisionConnection = AbstractEntityRevisionConnection & {
   __typename?: 'ExerciseGroupRevisionConnection';
   edges: Array<ExerciseGroupRevisionCursor>;
   nodes: Array<ExerciseGroupRevision>;
@@ -1258,7 +1161,7 @@ export type ExerciseGroupRevisionCursor = {
   node: ExerciseGroupRevision;
 };
 
-export type ExerciseRevision = AbstractEntityRevision & AbstractExerciseRevision & AbstractRevision & AbstractUuid & ThreadAware & {
+export type ExerciseRevision = AbstractEntityRevision & AbstractRevision & AbstractUuid & ThreadAware & {
   __typename?: 'ExerciseRevision';
   alias: Scalars['String']['output'];
   author: User;
@@ -1267,15 +1170,19 @@ export type ExerciseRevision = AbstractEntityRevision & AbstractExerciseRevision
   date: Scalars['DateTime']['output'];
   events: AbstractNotificationEventConnection;
   id: Scalars['Int']['output'];
+  metaDescription?: Maybe<Scalars['String']['output']>;
+  metaTitle?: Maybe<Scalars['String']['output']>;
   repository: Exercise;
-  threads: ThreadsConnection;
+  threads: ThreadConnection;
   title: Scalars['String']['output'];
   trashed: Scalars['Boolean']['output'];
+  url?: Maybe<Scalars['String']['output']>;
 };
 
 
 export type ExerciseRevisionEventsArgs = {
   actorId?: InputMaybe<Scalars['Int']['input']>;
+  actorUsername?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -1293,7 +1200,7 @@ export type ExerciseRevisionThreadsArgs = {
   trashed?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
-export type ExerciseRevisionConnection = {
+export type ExerciseRevisionConnection = AbstractEntityRevisionConnection & {
   __typename?: 'ExerciseRevisionConnection';
   edges: Array<ExerciseRevisionCursor>;
   nodes: Array<ExerciseRevision>;
@@ -1307,99 +1214,23 @@ export type ExerciseRevisionCursor = {
   node: ExerciseRevision;
 };
 
-export type GroupedExercise = AbstractEntity & AbstractExercise & AbstractRepository & AbstractUuid & InstanceAware & ThreadAware & {
-  __typename?: 'GroupedExercise';
-  alias: Scalars['String']['output'];
-  currentRevision?: Maybe<GroupedExerciseRevision>;
-  date: Scalars['DateTime']['output'];
-  events: AbstractNotificationEventConnection;
-  exerciseGroup: ExerciseGroup;
-  id: Scalars['Int']['output'];
-  instance: Instance;
-  licenseId: Scalars['Int']['output'];
-  revisions: GroupedExerciseRevisionConnection;
-  subject?: Maybe<Subject>;
-  threads: ThreadsConnection;
-  title: Scalars['String']['output'];
-  trashed: Scalars['Boolean']['output'];
+export type ExerciseSubmissionInput = {
+  entityId: Scalars['Int']['input'];
+  path: Scalars['String']['input'];
+  result: Scalars['String']['input'];
+  revisionId: Scalars['Int']['input'];
+  sessionId: Scalars['String']['input'];
+  type: Scalars['String']['input'];
+};
+
+export type ExperimentMutation = {
+  __typename?: 'ExperimentMutation';
+  createExerciseSubmission: DefaultResponse;
 };
 
 
-export type GroupedExerciseEventsArgs = {
-  actorId?: InputMaybe<Scalars['Int']['input']>;
-  after?: InputMaybe<Scalars['String']['input']>;
-  before?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  instance?: InputMaybe<Instance>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type GroupedExerciseRevisionsArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  before?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-  unrevised?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-
-export type GroupedExerciseThreadsArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  archived?: InputMaybe<Scalars['Boolean']['input']>;
-  before?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-  trashed?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type GroupedExerciseRevision = AbstractEntityRevision & AbstractExerciseRevision & AbstractRevision & AbstractUuid & ThreadAware & {
-  __typename?: 'GroupedExerciseRevision';
-  alias: Scalars['String']['output'];
-  author: User;
-  changes: Scalars['String']['output'];
-  content: Scalars['String']['output'];
-  date: Scalars['DateTime']['output'];
-  events: AbstractNotificationEventConnection;
-  id: Scalars['Int']['output'];
-  repository: GroupedExercise;
-  threads: ThreadsConnection;
-  title: Scalars['String']['output'];
-  trashed: Scalars['Boolean']['output'];
-};
-
-
-export type GroupedExerciseRevisionEventsArgs = {
-  actorId?: InputMaybe<Scalars['Int']['input']>;
-  after?: InputMaybe<Scalars['String']['input']>;
-  before?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  instance?: InputMaybe<Instance>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type GroupedExerciseRevisionThreadsArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  archived?: InputMaybe<Scalars['Boolean']['input']>;
-  before?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-  trashed?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type GroupedExerciseRevisionConnection = {
-  __typename?: 'GroupedExerciseRevisionConnection';
-  edges: Array<GroupedExerciseRevisionCursor>;
-  nodes: Array<GroupedExerciseRevision>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
-
-export type GroupedExerciseRevisionCursor = {
-  __typename?: 'GroupedExerciseRevisionCursor';
-  cursor: Scalars['String']['output'];
-  node: GroupedExerciseRevision;
+export type ExperimentMutationCreateExerciseSubmissionArgs = {
+  input: ExerciseSubmissionInput;
 };
 
 export type HasNextPageInfo = {
@@ -1448,9 +1279,9 @@ export type MediaUpload = {
 export type MetadataQuery = {
   __typename?: 'MetadataQuery';
   /** @deprecated Please use the `resources` field instead. This property will be deleted. */
-  entities: EntityMetadataConnection;
+  entities: ResourceMetadataConnection;
   publisher: Scalars['JSONObject']['output'];
-  resources: EntityMetadataConnection;
+  resources: ResourceMetadataConnection;
   version: Scalars['String']['output'];
 };
 
@@ -1474,6 +1305,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   _cache: _CacheMutation;
   entity: EntityMutation;
+  experiment: ExperimentMutation;
   notification: NotificationMutation;
   oauth: OauthMutation;
   page: PageMutation;
@@ -1509,7 +1341,7 @@ export type NotificationEdge = {
 
 export type NotificationMutation = {
   __typename?: 'NotificationMutation';
-  setState?: Maybe<NotificationSetStateResponse>;
+  setState?: Maybe<DefaultResponse>;
 };
 
 
@@ -1520,12 +1352,6 @@ export type NotificationMutationSetStateArgs = {
 export type NotificationSetStateInput = {
   id: Array<Scalars['Int']['input']>;
   unread: Scalars['Boolean']['input'];
-};
-
-export type NotificationSetStateResponse = {
-  __typename?: 'NotificationSetStateResponse';
-  query: Query;
-  success: Scalars['Boolean']['output'];
 };
 
 export type OauthAcceptInput = {
@@ -1571,7 +1397,7 @@ export type Page = AbstractRepository & AbstractUuid & InstanceAware & ThreadAwa
   instance: Instance;
   licenseId: Scalars['Int']['output'];
   revisions: PageRevisionConnection;
-  threads: ThreadsConnection;
+  threads: ThreadConnection;
   title: Scalars['String']['output'];
   trashed: Scalars['Boolean']['output'];
 };
@@ -1579,6 +1405,7 @@ export type Page = AbstractRepository & AbstractUuid & InstanceAware & ThreadAwa
 
 export type PageEventsArgs = {
   actorId?: InputMaybe<Scalars['Int']['input']>;
+  actorUsername?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -1611,13 +1438,6 @@ export type PageAddRevisionInput = {
   title: Scalars['String']['input'];
 };
 
-export type PageCreateResponse = {
-  __typename?: 'PageCreateResponse';
-  query: Query;
-  record?: Maybe<Page>;
-  success: Scalars['Boolean']['output'];
-};
-
 export type PageInfo = {
   __typename?: 'PageInfo';
   endCursor?: Maybe<Scalars['String']['output']>;
@@ -1628,10 +1448,9 @@ export type PageInfo = {
 
 export type PageMutation = {
   __typename?: 'PageMutation';
-  addRevision: AddRevisionResponse;
-  checkoutRevision: CheckoutRevisionResponse;
-  create: PageCreateResponse;
-  rejectRevision: RejectRevisionResponse;
+  addRevision: DefaultResponse;
+  checkoutRevision: DefaultResponse;
+  create: DefaultResponse;
 };
 
 
@@ -1647,11 +1466,6 @@ export type PageMutationCheckoutRevisionArgs = {
 
 export type PageMutationCreateArgs = {
   input: CreatePageInput;
-};
-
-
-export type PageMutationRejectRevisionArgs = {
-  input: RejectRevisionInput;
 };
 
 export type PageQuery = {
@@ -1673,7 +1487,7 @@ export type PageRevision = AbstractRevision & AbstractUuid & ThreadAware & {
   events: AbstractNotificationEventConnection;
   id: Scalars['Int']['output'];
   repository: Page;
-  threads: ThreadsConnection;
+  threads: ThreadConnection;
   title: Scalars['String']['output'];
   trashed: Scalars['Boolean']['output'];
 };
@@ -1681,6 +1495,7 @@ export type PageRevision = AbstractRevision & AbstractUuid & ThreadAware & {
 
 export type PageRevisionEventsArgs = {
   actorId?: InputMaybe<Scalars['Int']['input']>;
+  actorUsername?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -1734,6 +1549,7 @@ export type Query = {
 
 export type QueryEventsArgs = {
   actorId?: InputMaybe<Scalars['Int']['input']>;
+  actorUsername?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -1782,12 +1598,6 @@ export type RejectRevisionNotificationEvent = AbstractNotificationEvent & Instan
   revision: AbstractRevision;
 };
 
-export type RejectRevisionResponse = {
-  __typename?: 'RejectRevisionResponse';
-  query: Query;
-  success: Scalars['Boolean']['output'];
-};
-
 export type RemoveEntityLinkNotificationEvent = AbstractNotificationEvent & InstanceAware & {
   __typename?: 'RemoveEntityLinkNotificationEvent';
   actor: User;
@@ -1808,6 +1618,12 @@ export type RemoveTaxonomyLinkNotificationEvent = AbstractNotificationEvent & In
   instance: Instance;
   objectId: Scalars['Int']['output'];
   parent: TaxonomyTerm;
+};
+
+export type ResourceMetadataConnection = {
+  __typename?: 'ResourceMetadataConnection';
+  nodes: Array<Scalars['JSONObject']['output']>;
+  pageInfo: HasNextPageInfo;
 };
 
 export enum Role {
@@ -1851,54 +1667,19 @@ export type ScopedRoleCursor = {
   node: ScopedRole;
 };
 
-export type SetAppletInput = {
-  changes: Scalars['String']['input'];
-  content: Scalars['String']['input'];
-  entityId?: InputMaybe<Scalars['Int']['input']>;
-  metaDescription?: InputMaybe<Scalars['String']['input']>;
-  metaTitle?: InputMaybe<Scalars['String']['input']>;
-  needsReview: Scalars['Boolean']['input'];
-  parentId?: InputMaybe<Scalars['Int']['input']>;
-  subscribeThis: Scalars['Boolean']['input'];
-  subscribeThisByEmail: Scalars['Boolean']['input'];
-  title: Scalars['String']['input'];
-  url: Scalars['String']['input'];
-};
-
-export type SetArticleInput = {
-  changes: Scalars['String']['input'];
-  content: Scalars['String']['input'];
-  entityId?: InputMaybe<Scalars['Int']['input']>;
-  metaDescription?: InputMaybe<Scalars['String']['input']>;
-  metaTitle?: InputMaybe<Scalars['String']['input']>;
-  needsReview: Scalars['Boolean']['input'];
-  parentId?: InputMaybe<Scalars['Int']['input']>;
-  subscribeThis: Scalars['Boolean']['input'];
-  subscribeThisByEmail: Scalars['Boolean']['input'];
-  title: Scalars['String']['input'];
-};
-
-export type SetCourseInput = {
+export type SetAbstractEntityInput = {
   changes: Scalars['String']['input'];
   content?: InputMaybe<Scalars['String']['input']>;
   entityId?: InputMaybe<Scalars['Int']['input']>;
+  entityType: Scalars['String']['input'];
   metaDescription?: InputMaybe<Scalars['String']['input']>;
+  metaTitle?: InputMaybe<Scalars['String']['input']>;
   needsReview: Scalars['Boolean']['input'];
   parentId?: InputMaybe<Scalars['Int']['input']>;
   subscribeThis: Scalars['Boolean']['input'];
   subscribeThisByEmail: Scalars['Boolean']['input'];
-  title: Scalars['String']['input'];
-};
-
-export type SetCoursePageInput = {
-  changes: Scalars['String']['input'];
-  content: Scalars['String']['input'];
-  entityId?: InputMaybe<Scalars['Int']['input']>;
-  needsReview: Scalars['Boolean']['input'];
-  parentId?: InputMaybe<Scalars['Int']['input']>;
-  subscribeThis: Scalars['Boolean']['input'];
-  subscribeThisByEmail: Scalars['Boolean']['input'];
-  title: Scalars['String']['input'];
+  title?: InputMaybe<Scalars['String']['input']>;
+  url?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type SetEntityResponse = {
@@ -1906,40 +1687,6 @@ export type SetEntityResponse = {
   query: Query;
   record?: Maybe<AbstractEntity>;
   success: Scalars['Boolean']['output'];
-};
-
-export type SetEventInput = {
-  changes: Scalars['String']['input'];
-  content: Scalars['String']['input'];
-  entityId?: InputMaybe<Scalars['Int']['input']>;
-  metaDescription?: InputMaybe<Scalars['String']['input']>;
-  metaTitle?: InputMaybe<Scalars['String']['input']>;
-  needsReview: Scalars['Boolean']['input'];
-  parentId?: InputMaybe<Scalars['Int']['input']>;
-  subscribeThis: Scalars['Boolean']['input'];
-  subscribeThisByEmail: Scalars['Boolean']['input'];
-  title: Scalars['String']['input'];
-};
-
-export type SetExerciseGroupInput = {
-  changes: Scalars['String']['input'];
-  cohesive: Scalars['Boolean']['input'];
-  content: Scalars['String']['input'];
-  entityId?: InputMaybe<Scalars['Int']['input']>;
-  needsReview: Scalars['Boolean']['input'];
-  parentId?: InputMaybe<Scalars['Int']['input']>;
-  subscribeThis: Scalars['Boolean']['input'];
-  subscribeThisByEmail: Scalars['Boolean']['input'];
-};
-
-export type SetGenericEntityInput = {
-  changes: Scalars['String']['input'];
-  content: Scalars['String']['input'];
-  entityId?: InputMaybe<Scalars['Int']['input']>;
-  needsReview: Scalars['Boolean']['input'];
-  parentId?: InputMaybe<Scalars['Int']['input']>;
-  subscribeThis: Scalars['Boolean']['input'];
-  subscribeThisByEmail: Scalars['Boolean']['input'];
 };
 
 export type SetLicenseNotificationEvent = AbstractNotificationEvent & InstanceAware & {
@@ -1996,18 +1743,6 @@ export type SetUuidStateNotificationEvent = AbstractNotificationEvent & Instance
   trashed: Scalars['Boolean']['output'];
 };
 
-export type SetVideoInput = {
-  changes: Scalars['String']['input'];
-  content: Scalars['String']['input'];
-  entityId?: InputMaybe<Scalars['Int']['input']>;
-  needsReview: Scalars['Boolean']['input'];
-  parentId?: InputMaybe<Scalars['Int']['input']>;
-  subscribeThis: Scalars['Boolean']['input'];
-  subscribeThisByEmail: Scalars['Boolean']['input'];
-  title: Scalars['String']['input'];
-  url: Scalars['String']['input'];
-};
-
 export type Subject = {
   __typename?: 'Subject';
   id: Scalars['String']['output'];
@@ -2025,26 +1760,12 @@ export type SubjectUnrevisedEntitiesArgs = {
 
 export type SubjectQuery = {
   __typename?: 'SubjectQuery';
-  subject?: Maybe<Subject>;
   subjects: Array<Subject>;
-};
-
-
-export type SubjectQuerySubjectArgs = {
-  id: Scalars['String']['input'];
 };
 
 
 export type SubjectQuerySubjectsArgs = {
   instance: Instance;
-};
-
-export type SubscriptionConnection = {
-  __typename?: 'SubscriptionConnection';
-  edges: Array<SubscriptionCursor>;
-  nodes: Array<SubscriptionInfo>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
 };
 
 export type SubscriptionCursor = {
@@ -2059,9 +1780,17 @@ export type SubscriptionInfo = {
   sendEmail: Scalars['Boolean']['output'];
 };
 
+export type SubscriptionInfoConnection = {
+  __typename?: 'SubscriptionInfoConnection';
+  edges: Array<SubscriptionCursor>;
+  nodes: Array<SubscriptionInfo>;
+  pageInfo: PageInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
 export type SubscriptionMutation = {
   __typename?: 'SubscriptionMutation';
-  set?: Maybe<SubscriptionSetResponse>;
+  set: DefaultResponse;
 };
 
 
@@ -2072,7 +1801,7 @@ export type SubscriptionMutationSetArgs = {
 export type SubscriptionQuery = {
   __typename?: 'SubscriptionQuery';
   currentUserHasSubscribed: Scalars['Boolean']['output'];
-  getSubscriptions: SubscriptionConnection;
+  getSubscriptions: SubscriptionInfoConnection;
 };
 
 
@@ -2094,21 +1823,9 @@ export type SubscriptionSetInput = {
   subscribe: Scalars['Boolean']['input'];
 };
 
-export type SubscriptionSetResponse = {
-  __typename?: 'SubscriptionSetResponse';
-  query: Query;
-  success: Scalars['Boolean']['output'];
-};
-
 export type TaxonomyEntityLinksInput = {
   entityIds: Array<Scalars['Int']['input']>;
   taxonomyTermId: Scalars['Int']['input'];
-};
-
-export type TaxonomyEntityLinksResponse = {
-  __typename?: 'TaxonomyEntityLinksResponse';
-  query: Query;
-  success: Scalars['Boolean']['output'];
 };
 
 export type TaxonomyTerm = AbstractUuid & InstanceAware & ThreadAware & {
@@ -2121,8 +1838,9 @@ export type TaxonomyTerm = AbstractUuid & InstanceAware & ThreadAware & {
   instance: Instance;
   name: Scalars['String']['output'];
   parent?: Maybe<TaxonomyTerm>;
+  path: Array<Maybe<TaxonomyTerm>>;
   taxonomyId: Scalars['Int']['output'];
-  threads: ThreadsConnection;
+  threads: ThreadConnection;
   title: Scalars['String']['output'];
   trashed: Scalars['Boolean']['output'];
   type: TaxonomyTermType;
@@ -2140,6 +1858,7 @@ export type TaxonomyTermChildrenArgs = {
 
 export type TaxonomyTermEventsArgs = {
   actorId?: InputMaybe<Scalars['Int']['input']>;
+  actorUsername?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -2172,13 +1891,6 @@ export type TaxonomyTermCreateInput = {
   taxonomyType: TaxonomyTypeCreateOptions;
 };
 
-export type TaxonomyTermCreateResponse = {
-  __typename?: 'TaxonomyTermCreateResponse';
-  query: Query;
-  record?: Maybe<TaxonomyTerm>;
-  success: Scalars['Boolean']['output'];
-};
-
 export type TaxonomyTermEdge = {
   __typename?: 'TaxonomyTermEdge';
   cursor: Scalars['String']['output'];
@@ -2187,11 +1899,11 @@ export type TaxonomyTermEdge = {
 
 export type TaxonomyTermMutation = {
   __typename?: 'TaxonomyTermMutation';
-  create: TaxonomyTermCreateResponse;
-  createEntityLinks: TaxonomyEntityLinksResponse;
-  deleteEntityLinks: TaxonomyEntityLinksResponse;
-  setNameAndDescription: TaxonomyTermSetNameAndDescriptionResponse;
-  sort: TaxonomyTermSortResponse;
+  create: DefaultResponse;
+  createEntityLinks: DefaultResponse;
+  deleteEntityLinks: DefaultResponse;
+  setNameAndDescription: DefaultResponse;
+  sort: DefaultResponse;
 };
 
 
@@ -2225,21 +1937,9 @@ export type TaxonomyTermSetNameAndDescriptionInput = {
   name: Scalars['String']['input'];
 };
 
-export type TaxonomyTermSetNameAndDescriptionResponse = {
-  __typename?: 'TaxonomyTermSetNameAndDescriptionResponse';
-  query: Query;
-  success: Scalars['Boolean']['output'];
-};
-
 export type TaxonomyTermSortInput = {
   childrenIds: Array<Scalars['Int']['input']>;
   taxonomyTermId: Scalars['Int']['input'];
-};
-
-export type TaxonomyTermSortResponse = {
-  __typename?: 'TaxonomyTermSortResponse';
-  query: Query;
-  success: Scalars['Boolean']['output'];
 };
 
 export enum TaxonomyTermType {
@@ -2275,7 +1975,7 @@ export type ThreadCommentsArgs = {
 };
 
 export type ThreadAware = {
-  threads: ThreadsConnection;
+  threads: ThreadConnection;
 };
 
 
@@ -2288,18 +1988,19 @@ export type ThreadAwareThreadsArgs = {
   trashed?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+export type ThreadConnection = {
+  __typename?: 'ThreadConnection';
+  edges: Array<ThreadCursor>;
+  nodes: Array<Thread>;
+  pageInfo: PageInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
 export type ThreadCreateCommentInput = {
   content: Scalars['String']['input'];
   sendEmail: Scalars['Boolean']['input'];
   subscribe: Scalars['Boolean']['input'];
   threadId: Scalars['String']['input'];
-};
-
-export type ThreadCreateCommentResponse = {
-  __typename?: 'ThreadCreateCommentResponse';
-  query: Query;
-  record?: Maybe<Comment>;
-  success: Scalars['Boolean']['output'];
 };
 
 export type ThreadCreateThreadInput = {
@@ -2310,11 +2011,10 @@ export type ThreadCreateThreadInput = {
   title: Scalars['String']['input'];
 };
 
-export type ThreadCreateThreadResponse = {
-  __typename?: 'ThreadCreateThreadResponse';
-  query: Query;
-  record?: Maybe<Thread>;
-  success: Scalars['Boolean']['output'];
+export type ThreadCursor = {
+  __typename?: 'ThreadCursor';
+  cursor: Scalars['String']['output'];
+  node: Thread;
 };
 
 export type ThreadEditCommentInput = {
@@ -2324,8 +2024,8 @@ export type ThreadEditCommentInput = {
 
 export type ThreadMutation = {
   __typename?: 'ThreadMutation';
-  createComment: ThreadCreateCommentResponse;
-  createThread: ThreadCreateThreadResponse;
+  createComment: DefaultResponse;
+  createThread: DefaultResponse;
   editComment: DefaultResponse;
   setCommentState: DefaultResponse;
   setThreadArchived: DefaultResponse;
@@ -2370,7 +2070,7 @@ export type ThreadMutationSetThreadStatusArgs = {
 
 export type ThreadQuery = {
   __typename?: 'ThreadQuery';
-  allThreads: AllThreadsConnection;
+  allThreads: ThreadConnection;
 };
 
 
@@ -2402,20 +2102,6 @@ export type ThreadSetThreadStatusInput = {
   status: CommentStatus;
 };
 
-export type ThreadsConnection = {
-  __typename?: 'ThreadsConnection';
-  edges: Array<ThreadsCursor>;
-  nodes: Array<Thread>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
-
-export type ThreadsCursor = {
-  __typename?: 'ThreadsCursor';
-  cursor: Scalars['String']['output'];
-  node: Thread;
-};
-
 export type User = AbstractUuid & ThreadAware & {
   __typename?: 'User';
   activityByType: UserActivityByType;
@@ -2435,7 +2121,7 @@ export type User = AbstractUuid & ThreadAware & {
   lastLogin?: Maybe<Scalars['DateTime']['output']>;
   motivation?: Maybe<Scalars['String']['output']>;
   roles: ScopedRoleConnection;
-  threads: ThreadsConnection;
+  threads: ThreadConnection;
   title: Scalars['String']['output'];
   trashed: Scalars['Boolean']['output'];
   unrevisedEntities: AbstractEntityConnection;
@@ -2445,6 +2131,7 @@ export type User = AbstractUuid & ThreadAware & {
 
 export type UserEventsArgs = {
   actorId?: InputMaybe<Scalars['Int']['input']>;
+  actorUsername?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -2508,13 +2195,9 @@ export type UserDeleteBotsInput = {
   botIds: Array<Scalars['Int']['input']>;
 };
 
-export type UserDeleteBotsResponse = {
-  __typename?: 'UserDeleteBotsResponse';
-  success: Scalars['Boolean']['output'];
-};
-
 export type UserDeleteRegularUsersInput = {
-  users: Array<UserDescriptionInput>;
+  id: Scalars['Int']['input'];
+  username: Scalars['String']['input'];
 };
 
 export type UserDeleteRegularUsersResponse = {
@@ -2522,11 +2205,6 @@ export type UserDeleteRegularUsersResponse = {
   reason?: Maybe<Scalars['String']['output']>;
   success: Scalars['Boolean']['output'];
   username?: Maybe<Scalars['String']['output']>;
-};
-
-export type UserDescriptionInput = {
-  id: Scalars['Int']['input'];
-  username: Scalars['String']['input'];
 };
 
 export type UserEdge = {
@@ -2537,12 +2215,12 @@ export type UserEdge = {
 
 export type UserMutation = {
   __typename?: 'UserMutation';
-  addRole: UserRoleResponse;
-  deleteBots: UserDeleteBotsResponse;
-  deleteRegularUsers: Array<UserDeleteRegularUsersResponse>;
-  removeRole: UserRoleResponse;
-  setDescription: UserSetDescriptionResponse;
-  setEmail: UserSetEmailResponse;
+  addRole: DefaultResponse;
+  deleteBots: DefaultResponse;
+  deleteRegularUser: DefaultResponse;
+  removeRole: DefaultResponse;
+  setDescription: DefaultResponse;
+  setEmail: DefaultResponse;
 };
 
 
@@ -2556,7 +2234,7 @@ export type UserMutationDeleteBotsArgs = {
 };
 
 
-export type UserMutationDeleteRegularUsersArgs = {
+export type UserMutationDeleteRegularUserArgs = {
   input: UserDeleteRegularUsersInput;
 };
 
@@ -2578,13 +2256,19 @@ export type UserMutationSetEmailArgs = {
 export type UserQuery = {
   __typename?: 'UserQuery';
   potentialSpamUsers: UserConnection;
-  usersByRole: UserWithPermissionsConnection;
+  userByUsername?: Maybe<User>;
+  usersByRole: UserConnection;
 };
 
 
 export type UserQueryPotentialSpamUsersArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type UserQueryUserByUsernameArgs = {
+  username: Scalars['String']['input'];
 };
 
 
@@ -2601,18 +2285,8 @@ export type UserRoleInput = {
   username: Scalars['String']['input'];
 };
 
-export type UserRoleResponse = {
-  __typename?: 'UserRoleResponse';
-  success: Scalars['Boolean']['output'];
-};
-
 export type UserSetDescriptionInput = {
   description: Scalars['String']['input'];
-};
-
-export type UserSetDescriptionResponse = {
-  __typename?: 'UserSetDescriptionResponse';
-  success: Scalars['Boolean']['output'];
 };
 
 export type UserSetEmailInput = {
@@ -2620,26 +2294,9 @@ export type UserSetEmailInput = {
   userId: Scalars['Int']['input'];
 };
 
-export type UserSetEmailResponse = {
-  __typename?: 'UserSetEmailResponse';
-  email: Scalars['String']['output'];
-  success: Scalars['Boolean']['output'];
-  username: Scalars['String']['output'];
-};
-
-export type UserWithPermissionsConnection = {
-  __typename?: 'UserWithPermissionsConnection';
-  edges: Array<UserEdge>;
-  inheritance?: Maybe<Array<Role>>;
-  nodes: Array<User>;
-  pageInfo: PageInfo;
-  permissions: Array<Scalars['String']['output']>;
-  totalCount: Scalars['Int']['output'];
-};
-
 export type UuidMutation = {
   __typename?: 'UuidMutation';
-  setState?: Maybe<UuidSetStateResponse>;
+  setState: DefaultResponse;
 };
 
 
@@ -2652,12 +2309,6 @@ export type UuidSetStateInput = {
   trashed: Scalars['Boolean']['input'];
 };
 
-export type UuidSetStateResponse = {
-  __typename?: 'UuidSetStateResponse';
-  query: Query;
-  success: Scalars['Boolean']['output'];
-};
-
 export type Video = AbstractEntity & AbstractRepository & AbstractTaxonomyTermChild & AbstractUuid & InstanceAware & ThreadAware & {
   __typename?: 'Video';
   alias: Scalars['String']['output'];
@@ -2668,9 +2319,8 @@ export type Video = AbstractEntity & AbstractRepository & AbstractTaxonomyTermCh
   instance: Instance;
   licenseId: Scalars['Int']['output'];
   revisions: VideoRevisionConnection;
-  subject?: Maybe<Subject>;
   taxonomyTerms: TaxonomyTermConnection;
-  threads: ThreadsConnection;
+  threads: ThreadConnection;
   title: Scalars['String']['output'];
   trashed: Scalars['Boolean']['output'];
 };
@@ -2678,6 +2328,7 @@ export type Video = AbstractEntity & AbstractRepository & AbstractTaxonomyTermCh
 
 export type VideoEventsArgs = {
   actorId?: InputMaybe<Scalars['Int']['input']>;
+  actorUsername?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -2721,8 +2372,10 @@ export type VideoRevision = AbstractEntityRevision & AbstractRevision & Abstract
   date: Scalars['DateTime']['output'];
   events: AbstractNotificationEventConnection;
   id: Scalars['Int']['output'];
+  metaDescription?: Maybe<Scalars['String']['output']>;
+  metaTitle?: Maybe<Scalars['String']['output']>;
   repository: Video;
-  threads: ThreadsConnection;
+  threads: ThreadConnection;
   title: Scalars['String']['output'];
   trashed: Scalars['Boolean']['output'];
   url: Scalars['String']['output'];
@@ -2731,6 +2384,7 @@ export type VideoRevision = AbstractEntityRevision & AbstractRevision & Abstract
 
 export type VideoRevisionEventsArgs = {
   actorId?: InputMaybe<Scalars['Int']['input']>;
+  actorUsername?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -2748,7 +2402,7 @@ export type VideoRevisionThreadsArgs = {
   trashed?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
-export type VideoRevisionConnection = {
+export type VideoRevisionConnection = AbstractEntityRevisionConnection & {
   __typename?: 'VideoRevisionConnection';
   edges: Array<VideoRevisionCursor>;
   nodes: Array<VideoRevision>;
@@ -2777,7 +2431,7 @@ export type GetNotificationsQueryVariables = Exact<{
 }>;
 
 
-export type GetNotificationsQuery = { __typename?: 'Query', uuid?: { __typename: 'Applet' } | { __typename: 'AppletRevision' } | { __typename: 'Article' } | { __typename: 'ArticleRevision' } | { __typename: 'Comment' } | { __typename: 'Course' } | { __typename: 'CoursePage' } | { __typename: 'CoursePageRevision' } | { __typename: 'CourseRevision' } | { __typename: 'Event' } | { __typename: 'EventRevision' } | { __typename: 'Exercise' } | { __typename: 'ExerciseGroup' } | { __typename: 'ExerciseGroupRevision' } | { __typename: 'ExerciseRevision' } | { __typename: 'GroupedExercise' } | { __typename: 'GroupedExerciseRevision' } | { __typename: 'Page' } | { __typename: 'PageRevision' } | { __typename: 'TaxonomyTerm' } | { __typename: 'User', language?: Instance | null } | { __typename: 'Video' } | { __typename: 'VideoRevision' } | null, notifications: { __typename?: 'NotificationConnection', nodes: Array<{ __typename?: 'Notification', id: number, event?: { __typename: 'CheckoutRevisionNotificationEvent', date: any, id: number, objectId: number, reason: string, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean }, revision: { __typename?: 'AppletRevision', id: number } | { __typename?: 'ArticleRevision', id: number } | { __typename?: 'CoursePageRevision', id: number } | { __typename?: 'CourseRevision', id: number } | { __typename?: 'EventRevision', id: number } | { __typename?: 'ExerciseGroupRevision', id: number } | { __typename?: 'ExerciseRevision', id: number } | { __typename?: 'GroupedExerciseRevision', id: number } | { __typename?: 'PageRevision', id: number } | { __typename?: 'VideoRevision', id: number }, repository: { __typename: 'Applet', id: number, title: string, alias: string } | { __typename: 'Article', id: number, title: string, alias: string } | { __typename: 'Course', id: number, title: string, alias: string } | { __typename: 'CoursePage', id: number, title: string, alias: string } | { __typename: 'Event', id: number, title: string, alias: string } | { __typename: 'Exercise', id: number, title: string, alias: string } | { __typename: 'ExerciseGroup', id: number, title: string, alias: string } | { __typename: 'GroupedExercise', id: number, title: string, alias: string } | { __typename: 'Page', id: number, title: string, alias: string } | { __typename: 'Video', id: number, title: string, alias: string } } | { __typename: 'CreateCommentNotificationEvent', date: any, id: number, objectId: number, comment: { __typename?: 'Comment', id: number }, thread: { __typename?: 'Thread', id: string, title?: string | null, thread: { __typename?: 'CommentConnection', nodes: Array<{ __typename?: 'Comment', id: number }> }, comment: { __typename?: 'CommentConnection', nodes: Array<{ __typename?: 'Comment', id: number, content: string }> } }, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean } } | { __typename: 'CreateEntityLinkNotificationEvent', date: any, id: number, objectId: number, parent: { __typename: 'Applet', id: number, title: string, alias: string } | { __typename: 'Article', id: number, title: string, alias: string } | { __typename: 'Course', id: number, title: string, alias: string } | { __typename: 'CoursePage', id: number, title: string, alias: string } | { __typename: 'Event', id: number, title: string, alias: string } | { __typename: 'Exercise', id: number, title: string, alias: string } | { __typename: 'ExerciseGroup', id: number, title: string, alias: string } | { __typename: 'GroupedExercise', id: number, title: string, alias: string } | { __typename: 'Video', id: number, title: string, alias: string }, child: { __typename: 'Applet', id: number, title: string, alias: string } | { __typename: 'Article', id: number, title: string, alias: string } | { __typename: 'Course', id: number, title: string, alias: string } | { __typename: 'CoursePage', id: number, title: string, alias: string } | { __typename: 'Event', id: number, title: string, alias: string } | { __typename: 'Exercise', id: number, title: string, alias: string } | { __typename: 'ExerciseGroup', id: number, title: string, alias: string } | { __typename: 'GroupedExercise', id: number, title: string, alias: string } | { __typename: 'Video', id: number, title: string, alias: string }, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean } } | { __typename: 'CreateEntityNotificationEvent', date: any, id: number, objectId: number, entity: { __typename: 'Applet', id: number, title: string, alias: string } | { __typename: 'Article', id: number, title: string, alias: string } | { __typename: 'Course', id: number, title: string, alias: string } | { __typename: 'CoursePage', id: number, title: string, alias: string } | { __typename: 'Event', id: number, title: string, alias: string } | { __typename: 'Exercise', id: number, title: string, alias: string } | { __typename: 'ExerciseGroup', id: number, title: string, alias: string } | { __typename: 'GroupedExercise', id: number, title: string, alias: string } | { __typename: 'Video', id: number, title: string, alias: string }, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean } } | { __typename: 'CreateEntityRevisionNotificationEvent', date: any, id: number, objectId: number, entityRevision: { __typename?: 'AppletRevision', changes: string, id: number } | { __typename?: 'ArticleRevision', changes: string, id: number } | { __typename?: 'CoursePageRevision', changes: string, id: number } | { __typename?: 'CourseRevision', changes: string, id: number } | { __typename?: 'EventRevision', changes: string, id: number } | { __typename?: 'ExerciseGroupRevision', changes: string, id: number } | { __typename?: 'ExerciseRevision', changes: string, id: number } | { __typename?: 'GroupedExerciseRevision', id: number } | { __typename?: 'PageRevision', id: number } | { __typename?: 'VideoRevision', changes: string, id: number }, entity: { __typename: 'Applet', id: number, title: string, alias: string } | { __typename: 'Article', id: number, title: string, alias: string } | { __typename: 'Course', id: number, title: string, alias: string } | { __typename: 'CoursePage', id: number, title: string, alias: string } | { __typename: 'Event', id: number, title: string, alias: string } | { __typename: 'Exercise', id: number, title: string, alias: string } | { __typename: 'ExerciseGroup', id: number, title: string, alias: string } | { __typename: 'GroupedExercise', id: number, title: string, alias: string } | { __typename: 'Page', id: number, title: string, alias: string } | { __typename: 'Video', id: number, title: string, alias: string }, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean } } | { __typename: 'CreateTaxonomyLinkNotificationEvent', date: any, id: number, objectId: number, child: { __typename: 'Applet', id: number, title: string, alias: string } | { __typename: 'AppletRevision', id: number, title: string, alias: string } | { __typename: 'Article', id: number, title: string, alias: string } | { __typename: 'ArticleRevision', id: number, title: string, alias: string } | { __typename: 'Comment', id: number, title: string, alias: string } | { __typename: 'Course', id: number, title: string, alias: string } | { __typename: 'CoursePage', id: number, title: string, alias: string } | { __typename: 'CoursePageRevision', id: number, title: string, alias: string } | { __typename: 'CourseRevision', id: number, title: string, alias: string } | { __typename: 'Event', id: number, title: string, alias: string } | { __typename: 'EventRevision', id: number, title: string, alias: string } | { __typename: 'Exercise', id: number, title: string, alias: string, taxonomyTerms: { __typename?: 'TaxonomyTermConnection', nodes: Array<{ __typename?: 'TaxonomyTerm', type: TaxonomyTermType }> } } | { __typename: 'ExerciseGroup', id: number, title: string, alias: string, taxonomyTerms: { __typename?: 'TaxonomyTermConnection', nodes: Array<{ __typename?: 'TaxonomyTerm', type: TaxonomyTermType }> } } | { __typename: 'ExerciseGroupRevision', id: number, title: string, alias: string } | { __typename: 'ExerciseRevision', id: number, title: string, alias: string } | { __typename: 'GroupedExercise', id: number, title: string, alias: string } | { __typename: 'GroupedExerciseRevision', id: number, title: string, alias: string } | { __typename: 'Page', id: number, title: string, alias: string } | { __typename: 'PageRevision', id: number, title: string, alias: string } | { __typename: 'TaxonomyTerm', id: number, title: string, alias: string } | { __typename: 'User', id: number, title: string, alias: string } | { __typename: 'Video', id: number, title: string, alias: string } | { __typename: 'VideoRevision', id: number, title: string, alias: string }, parent: { __typename: 'TaxonomyTerm', id: number, title: string, alias: string }, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean } } | { __typename: 'CreateTaxonomyTermNotificationEvent', date: any, id: number, objectId: number, taxonomyTerm: { __typename: 'TaxonomyTerm', id: number, title: string, alias: string }, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean } } | { __typename: 'CreateThreadNotificationEvent', date: any, id: number, objectId: number, thread: { __typename?: 'Thread', id: string, thread: { __typename?: 'CommentConnection', nodes: Array<{ __typename?: 'Comment', id: number, content: string }> } }, object: { __typename: 'Applet', id: number, title: string, alias: string } | { __typename: 'AppletRevision', id: number, title: string, alias: string } | { __typename: 'Article', id: number, title: string, alias: string } | { __typename: 'ArticleRevision', id: number, title: string, alias: string } | { __typename: 'Comment', id: number, title: string, alias: string } | { __typename: 'Course', id: number, title: string, alias: string } | { __typename: 'CoursePage', id: number, title: string, alias: string } | { __typename: 'CoursePageRevision', id: number, title: string, alias: string } | { __typename: 'CourseRevision', id: number, title: string, alias: string } | { __typename: 'Event', id: number, title: string, alias: string } | { __typename: 'EventRevision', id: number, title: string, alias: string } | { __typename: 'Exercise', id: number, title: string, alias: string } | { __typename: 'ExerciseGroup', id: number, title: string, alias: string } | { __typename: 'ExerciseGroupRevision', id: number, title: string, alias: string } | { __typename: 'ExerciseRevision', id: number, title: string, alias: string } | { __typename: 'GroupedExercise', id: number, title: string, alias: string } | { __typename: 'GroupedExerciseRevision', id: number, title: string, alias: string } | { __typename: 'Page', id: number, title: string, alias: string } | { __typename: 'PageRevision', id: number, title: string, alias: string } | { __typename: 'TaxonomyTerm', id: number, title: string, alias: string } | { __typename: 'User', id: number, title: string, alias: string } | { __typename: 'Video', id: number, title: string, alias: string } | { __typename: 'VideoRevision', id: number, title: string, alias: string }, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean } } | { __typename: 'RejectRevisionNotificationEvent', reason: string, date: any, id: number, objectId: number, repository: { __typename: 'Applet', id: number, title: string, alias: string } | { __typename: 'Article', id: number, title: string, alias: string } | { __typename: 'Course', id: number, title: string, alias: string } | { __typename: 'CoursePage', id: number, title: string, alias: string } | { __typename: 'Event', id: number, title: string, alias: string } | { __typename: 'Exercise', id: number, title: string, alias: string } | { __typename: 'ExerciseGroup', id: number, title: string, alias: string } | { __typename: 'GroupedExercise', id: number, title: string, alias: string } | { __typename: 'Page', id: number, title: string, alias: string } | { __typename: 'Video', id: number, title: string, alias: string }, revision: { __typename?: 'AppletRevision', id: number, alias: string } | { __typename?: 'ArticleRevision', id: number, alias: string } | { __typename?: 'CoursePageRevision', id: number, alias: string } | { __typename?: 'CourseRevision', id: number, alias: string } | { __typename?: 'EventRevision', id: number, alias: string } | { __typename?: 'ExerciseGroupRevision', id: number, alias: string } | { __typename?: 'ExerciseRevision', id: number, alias: string } | { __typename?: 'GroupedExerciseRevision', id: number, alias: string } | { __typename?: 'PageRevision', id: number, alias: string } | { __typename?: 'VideoRevision', id: number, alias: string }, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean } } | { __typename: 'RemoveEntityLinkNotificationEvent', date: any, id: number, objectId: number, parent: { __typename: 'Applet', id: number, title: string, alias: string } | { __typename: 'Article', id: number, title: string, alias: string } | { __typename: 'Course', id: number, title: string, alias: string } | { __typename: 'CoursePage', id: number, title: string, alias: string } | { __typename: 'Event', id: number, title: string, alias: string } | { __typename: 'Exercise', id: number, title: string, alias: string } | { __typename: 'ExerciseGroup', id: number, title: string, alias: string } | { __typename: 'GroupedExercise', id: number, title: string, alias: string } | { __typename: 'Video', id: number, title: string, alias: string }, child: { __typename: 'Applet', id: number, title: string, alias: string } | { __typename: 'Article', id: number, title: string, alias: string } | { __typename: 'Course', id: number, title: string, alias: string } | { __typename: 'CoursePage', id: number, title: string, alias: string } | { __typename: 'Event', id: number, title: string, alias: string } | { __typename: 'Exercise', id: number, title: string, alias: string } | { __typename: 'ExerciseGroup', id: number, title: string, alias: string } | { __typename: 'GroupedExercise', id: number, title: string, alias: string } | { __typename: 'Video', id: number, title: string, alias: string }, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean } } | { __typename: 'RemoveTaxonomyLinkNotificationEvent', date: any, id: number, objectId: number, child: { __typename: 'Applet', id: number, title: string, alias: string } | { __typename: 'AppletRevision', id: number, title: string, alias: string } | { __typename: 'Article', id: number, title: string, alias: string } | { __typename: 'ArticleRevision', id: number, title: string, alias: string } | { __typename: 'Comment', id: number, title: string, alias: string } | { __typename: 'Course', id: number, title: string, alias: string } | { __typename: 'CoursePage', id: number, title: string, alias: string } | { __typename: 'CoursePageRevision', id: number, title: string, alias: string } | { __typename: 'CourseRevision', id: number, title: string, alias: string } | { __typename: 'Event', id: number, title: string, alias: string } | { __typename: 'EventRevision', id: number, title: string, alias: string } | { __typename: 'Exercise', id: number, title: string, alias: string, taxonomyTerms: { __typename?: 'TaxonomyTermConnection', nodes: Array<{ __typename?: 'TaxonomyTerm', type: TaxonomyTermType }> } } | { __typename: 'ExerciseGroup', id: number, title: string, alias: string, taxonomyTerms: { __typename?: 'TaxonomyTermConnection', nodes: Array<{ __typename?: 'TaxonomyTerm', type: TaxonomyTermType }> } } | { __typename: 'ExerciseGroupRevision', id: number, title: string, alias: string } | { __typename: 'ExerciseRevision', id: number, title: string, alias: string } | { __typename: 'GroupedExercise', id: number, title: string, alias: string } | { __typename: 'GroupedExerciseRevision', id: number, title: string, alias: string } | { __typename: 'Page', id: number, title: string, alias: string } | { __typename: 'PageRevision', id: number, title: string, alias: string } | { __typename: 'TaxonomyTerm', id: number, title: string, alias: string } | { __typename: 'User', id: number, title: string, alias: string } | { __typename: 'Video', id: number, title: string, alias: string } | { __typename: 'VideoRevision', id: number, title: string, alias: string }, parent: { __typename: 'TaxonomyTerm', id: number, title: string, alias: string }, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean } } | { __typename: 'SetLicenseNotificationEvent', date: any, id: number, objectId: number, repository: { __typename: 'Applet', id: number, title: string, alias: string } | { __typename: 'Article', id: number, title: string, alias: string } | { __typename: 'Course', id: number, title: string, alias: string } | { __typename: 'CoursePage', id: number, title: string, alias: string } | { __typename: 'Event', id: number, title: string, alias: string } | { __typename: 'Exercise', id: number, title: string, alias: string } | { __typename: 'ExerciseGroup', id: number, title: string, alias: string } | { __typename: 'GroupedExercise', id: number, title: string, alias: string } | { __typename: 'Page', id: number, title: string, alias: string } | { __typename: 'Video', id: number, title: string, alias: string }, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean } } | { __typename: 'SetTaxonomyParentNotificationEvent', date: any, id: number, objectId: number, child: { __typename: 'TaxonomyTerm', id: number, title: string, alias: string }, previousParent?: { __typename: 'TaxonomyTerm', id: number, title: string, alias: string } | null, optionalParent?: { __typename: 'TaxonomyTerm', id: number, title: string, alias: string } | null, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean } } | { __typename: 'SetTaxonomyTermNotificationEvent', date: any, id: number, objectId: number, taxonomyTerm: { __typename: 'TaxonomyTerm', id: number, title: string, alias: string }, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean } } | { __typename: 'SetThreadStateNotificationEvent', archived: boolean, date: any, id: number, objectId: number, thread: { __typename?: 'Thread', id: string, thread: { __typename?: 'CommentConnection', nodes: Array<{ __typename?: 'Comment', id: number }> } }, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean } } | { __typename: 'SetUuidStateNotificationEvent', trashed: boolean, date: any, id: number, objectId: number, object: { __typename: 'Applet', id: number, title: string, alias: string } | { __typename: 'AppletRevision', id: number, title: string, alias: string } | { __typename: 'Article', id: number, title: string, alias: string } | { __typename: 'ArticleRevision', id: number, title: string, alias: string } | { __typename: 'Comment', id: number, title: string, alias: string } | { __typename: 'Course', id: number, title: string, alias: string } | { __typename: 'CoursePage', id: number, title: string, alias: string } | { __typename: 'CoursePageRevision', id: number, title: string, alias: string } | { __typename: 'CourseRevision', id: number, title: string, alias: string } | { __typename: 'Event', id: number, title: string, alias: string } | { __typename: 'EventRevision', id: number, title: string, alias: string } | { __typename: 'Exercise', id: number, title: string, alias: string, taxonomyTerms: { __typename?: 'TaxonomyTermConnection', nodes: Array<{ __typename?: 'TaxonomyTerm', type: TaxonomyTermType }> } } | { __typename: 'ExerciseGroup', id: number, title: string, alias: string, taxonomyTerms: { __typename?: 'TaxonomyTermConnection', nodes: Array<{ __typename?: 'TaxonomyTerm', type: TaxonomyTermType }> } } | { __typename: 'ExerciseGroupRevision', id: number, title: string, alias: string } | { __typename: 'ExerciseRevision', id: number, title: string, alias: string } | { __typename: 'GroupedExercise', id: number, title: string, alias: string } | { __typename: 'GroupedExerciseRevision', id: number, title: string, alias: string } | { __typename: 'Page', id: number, title: string, alias: string } | { __typename: 'PageRevision', id: number, title: string, alias: string } | { __typename: 'TaxonomyTerm', id: number, title: string, alias: string } | { __typename: 'User', id: number, title: string, alias: string } | { __typename: 'Video', id: number, title: string, alias: string } | { __typename: 'VideoRevision', id: number, title: string, alias: string }, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean } } | null }> } };
+export type GetNotificationsQuery = { __typename?: 'Query', uuid?: { __typename: 'Applet' } | { __typename: 'AppletRevision' } | { __typename: 'Article' } | { __typename: 'ArticleRevision' } | { __typename: 'Comment' } | { __typename: 'Course' } | { __typename: 'CoursePage' } | { __typename: 'CoursePageRevision' } | { __typename: 'CourseRevision' } | { __typename: 'Event' } | { __typename: 'EventRevision' } | { __typename: 'Exercise' } | { __typename: 'ExerciseGroup' } | { __typename: 'ExerciseGroupRevision' } | { __typename: 'ExerciseRevision' } | { __typename: 'Page' } | { __typename: 'PageRevision' } | { __typename: 'TaxonomyTerm' } | { __typename: 'User', language?: Instance | null } | { __typename: 'Video' } | { __typename: 'VideoRevision' } | null, notifications: { __typename?: 'NotificationConnection', nodes: Array<{ __typename?: 'Notification', id: number, event?: { __typename: 'CheckoutRevisionNotificationEvent', date: any, id: number, objectId: number, reason: string, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean }, revision: { __typename?: 'AppletRevision', id: number } | { __typename?: 'ArticleRevision', id: number } | { __typename?: 'CoursePageRevision', id: number } | { __typename?: 'CourseRevision', id: number } | { __typename?: 'EventRevision', id: number } | { __typename?: 'ExerciseGroupRevision', id: number } | { __typename?: 'ExerciseRevision', id: number } | { __typename?: 'PageRevision', id: number } | { __typename?: 'VideoRevision', id: number }, repository: { __typename: 'Applet', id: number, title: string, alias: string } | { __typename: 'Article', id: number, title: string, alias: string } | { __typename: 'Course', id: number, title: string, alias: string } | { __typename: 'CoursePage', id: number, title: string, alias: string } | { __typename: 'Event', id: number, title: string, alias: string } | { __typename: 'Exercise', id: number, title: string, alias: string } | { __typename: 'ExerciseGroup', id: number, title: string, alias: string } | { __typename: 'Page', id: number, title: string, alias: string } | { __typename: 'Video', id: number, title: string, alias: string } } | { __typename: 'CreateCommentNotificationEvent', date: any, id: number, objectId: number, comment: { __typename?: 'Comment', id: number }, thread: { __typename?: 'Thread', id: string, title?: string | null, comments: { __typename?: 'CommentConnection', nodes: Array<{ __typename?: 'Comment', id: number, content: string }> } }, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean } } | { __typename: 'CreateEntityLinkNotificationEvent', date: any, id: number, objectId: number, parent: { __typename: 'Applet', id: number, title: string, alias: string } | { __typename: 'Article', id: number, title: string, alias: string } | { __typename: 'Course', id: number, title: string, alias: string } | { __typename: 'CoursePage', id: number, title: string, alias: string } | { __typename: 'Event', id: number, title: string, alias: string } | { __typename: 'Exercise', id: number, title: string, alias: string } | { __typename: 'ExerciseGroup', id: number, title: string, alias: string } | { __typename: 'Video', id: number, title: string, alias: string }, child: { __typename: 'Applet', id: number, title: string, alias: string } | { __typename: 'Article', id: number, title: string, alias: string } | { __typename: 'Course', id: number, title: string, alias: string } | { __typename: 'CoursePage', id: number, title: string, alias: string } | { __typename: 'Event', id: number, title: string, alias: string } | { __typename: 'Exercise', id: number, title: string, alias: string } | { __typename: 'ExerciseGroup', id: number, title: string, alias: string } | { __typename: 'Video', id: number, title: string, alias: string }, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean } } | { __typename: 'CreateEntityNotificationEvent', date: any, id: number, objectId: number, entity: { __typename: 'Applet', id: number, title: string, alias: string } | { __typename: 'Article', id: number, title: string, alias: string } | { __typename: 'Course', id: number, title: string, alias: string } | { __typename: 'CoursePage', id: number, title: string, alias: string } | { __typename: 'Event', id: number, title: string, alias: string } | { __typename: 'Exercise', id: number, title: string, alias: string } | { __typename: 'ExerciseGroup', id: number, title: string, alias: string } | { __typename: 'Video', id: number, title: string, alias: string }, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean } } | { __typename: 'CreateEntityRevisionNotificationEvent', date: any, id: number, objectId: number, entityRevision: { __typename?: 'AppletRevision', changes: string, id: number } | { __typename?: 'ArticleRevision', changes: string, id: number } | { __typename?: 'CoursePageRevision', changes: string, id: number } | { __typename?: 'CourseRevision', changes: string, id: number } | { __typename?: 'EventRevision', changes: string, id: number } | { __typename?: 'ExerciseGroupRevision', changes: string, id: number } | { __typename?: 'ExerciseRevision', changes: string, id: number } | { __typename?: 'PageRevision', id: number } | { __typename?: 'VideoRevision', changes: string, id: number }, entity: { __typename: 'Applet', id: number, title: string, alias: string } | { __typename: 'Article', id: number, title: string, alias: string } | { __typename: 'Course', id: number, title: string, alias: string } | { __typename: 'CoursePage', id: number, title: string, alias: string } | { __typename: 'Event', id: number, title: string, alias: string } | { __typename: 'Exercise', id: number, title: string, alias: string } | { __typename: 'ExerciseGroup', id: number, title: string, alias: string } | { __typename: 'Page', id: number, title: string, alias: string } | { __typename: 'Video', id: number, title: string, alias: string }, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean } } | { __typename: 'CreateTaxonomyLinkNotificationEvent', date: any, id: number, objectId: number, child: { __typename: 'Applet', id: number, title: string, alias: string } | { __typename: 'AppletRevision', id: number, title: string, alias: string } | { __typename: 'Article', id: number, title: string, alias: string } | { __typename: 'ArticleRevision', id: number, title: string, alias: string } | { __typename: 'Comment', id: number, title: string, alias: string } | { __typename: 'Course', id: number, title: string, alias: string } | { __typename: 'CoursePage', id: number, title: string, alias: string } | { __typename: 'CoursePageRevision', id: number, title: string, alias: string } | { __typename: 'CourseRevision', id: number, title: string, alias: string } | { __typename: 'Event', id: number, title: string, alias: string } | { __typename: 'EventRevision', id: number, title: string, alias: string } | { __typename: 'Exercise', id: number, title: string, alias: string, taxonomyTerms: { __typename?: 'TaxonomyTermConnection', nodes: Array<{ __typename?: 'TaxonomyTerm', type: TaxonomyTermType }> } } | { __typename: 'ExerciseGroup', id: number, title: string, alias: string, taxonomyTerms: { __typename?: 'TaxonomyTermConnection', nodes: Array<{ __typename?: 'TaxonomyTerm', type: TaxonomyTermType }> } } | { __typename: 'ExerciseGroupRevision', id: number, title: string, alias: string } | { __typename: 'ExerciseRevision', id: number, title: string, alias: string } | { __typename: 'Page', id: number, title: string, alias: string } | { __typename: 'PageRevision', id: number, title: string, alias: string } | { __typename: 'TaxonomyTerm', id: number, title: string, alias: string } | { __typename: 'User', id: number, title: string, alias: string } | { __typename: 'Video', id: number, title: string, alias: string } | { __typename: 'VideoRevision', id: number, title: string, alias: string }, parent: { __typename: 'TaxonomyTerm', id: number, title: string, alias: string }, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean } } | { __typename: 'CreateTaxonomyTermNotificationEvent', date: any, id: number, objectId: number, taxonomyTerm: { __typename: 'TaxonomyTerm', id: number, title: string, alias: string }, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean } } | { __typename: 'CreateThreadNotificationEvent', date: any, id: number, objectId: number, thread: { __typename?: 'Thread', id: string, comments: { __typename?: 'CommentConnection', nodes: Array<{ __typename?: 'Comment', id: number, content: string }> } }, object: { __typename: 'Applet', id: number, title: string, alias: string } | { __typename: 'AppletRevision', id: number, title: string, alias: string } | { __typename: 'Article', id: number, title: string, alias: string } | { __typename: 'ArticleRevision', id: number, title: string, alias: string } | { __typename: 'Comment', id: number, title: string, alias: string } | { __typename: 'Course', id: number, title: string, alias: string } | { __typename: 'CoursePage', id: number, title: string, alias: string } | { __typename: 'CoursePageRevision', id: number, title: string, alias: string } | { __typename: 'CourseRevision', id: number, title: string, alias: string } | { __typename: 'Event', id: number, title: string, alias: string } | { __typename: 'EventRevision', id: number, title: string, alias: string } | { __typename: 'Exercise', id: number, title: string, alias: string } | { __typename: 'ExerciseGroup', id: number, title: string, alias: string } | { __typename: 'ExerciseGroupRevision', id: number, title: string, alias: string } | { __typename: 'ExerciseRevision', id: number, title: string, alias: string } | { __typename: 'Page', id: number, title: string, alias: string } | { __typename: 'PageRevision', id: number, title: string, alias: string } | { __typename: 'TaxonomyTerm', id: number, title: string, alias: string } | { __typename: 'User', id: number, title: string, alias: string } | { __typename: 'Video', id: number, title: string, alias: string } | { __typename: 'VideoRevision', id: number, title: string, alias: string }, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean } } | { __typename: 'RejectRevisionNotificationEvent', reason: string, date: any, id: number, objectId: number, repository: { __typename: 'Applet', id: number, title: string, alias: string } | { __typename: 'Article', id: number, title: string, alias: string } | { __typename: 'Course', id: number, title: string, alias: string } | { __typename: 'CoursePage', id: number, title: string, alias: string } | { __typename: 'Event', id: number, title: string, alias: string } | { __typename: 'Exercise', id: number, title: string, alias: string } | { __typename: 'ExerciseGroup', id: number, title: string, alias: string } | { __typename: 'Page', id: number, title: string, alias: string } | { __typename: 'Video', id: number, title: string, alias: string }, revision: { __typename?: 'AppletRevision', id: number, alias: string } | { __typename?: 'ArticleRevision', id: number, alias: string } | { __typename?: 'CoursePageRevision', id: number, alias: string } | { __typename?: 'CourseRevision', id: number, alias: string } | { __typename?: 'EventRevision', id: number, alias: string } | { __typename?: 'ExerciseGroupRevision', id: number, alias: string } | { __typename?: 'ExerciseRevision', id: number, alias: string } | { __typename?: 'PageRevision', id: number, alias: string } | { __typename?: 'VideoRevision', id: number, alias: string }, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean } } | { __typename: 'RemoveEntityLinkNotificationEvent', date: any, id: number, objectId: number, parent: { __typename: 'Applet', id: number, title: string, alias: string } | { __typename: 'Article', id: number, title: string, alias: string } | { __typename: 'Course', id: number, title: string, alias: string } | { __typename: 'CoursePage', id: number, title: string, alias: string } | { __typename: 'Event', id: number, title: string, alias: string } | { __typename: 'Exercise', id: number, title: string, alias: string } | { __typename: 'ExerciseGroup', id: number, title: string, alias: string } | { __typename: 'Video', id: number, title: string, alias: string }, child: { __typename: 'Applet', id: number, title: string, alias: string } | { __typename: 'Article', id: number, title: string, alias: string } | { __typename: 'Course', id: number, title: string, alias: string } | { __typename: 'CoursePage', id: number, title: string, alias: string } | { __typename: 'Event', id: number, title: string, alias: string } | { __typename: 'Exercise', id: number, title: string, alias: string } | { __typename: 'ExerciseGroup', id: number, title: string, alias: string } | { __typename: 'Video', id: number, title: string, alias: string }, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean } } | { __typename: 'RemoveTaxonomyLinkNotificationEvent', date: any, id: number, objectId: number, child: { __typename: 'Applet', id: number, title: string, alias: string } | { __typename: 'AppletRevision', id: number, title: string, alias: string } | { __typename: 'Article', id: number, title: string, alias: string } | { __typename: 'ArticleRevision', id: number, title: string, alias: string } | { __typename: 'Comment', id: number, title: string, alias: string } | { __typename: 'Course', id: number, title: string, alias: string } | { __typename: 'CoursePage', id: number, title: string, alias: string } | { __typename: 'CoursePageRevision', id: number, title: string, alias: string } | { __typename: 'CourseRevision', id: number, title: string, alias: string } | { __typename: 'Event', id: number, title: string, alias: string } | { __typename: 'EventRevision', id: number, title: string, alias: string } | { __typename: 'Exercise', id: number, title: string, alias: string, taxonomyTerms: { __typename?: 'TaxonomyTermConnection', nodes: Array<{ __typename?: 'TaxonomyTerm', type: TaxonomyTermType }> } } | { __typename: 'ExerciseGroup', id: number, title: string, alias: string, taxonomyTerms: { __typename?: 'TaxonomyTermConnection', nodes: Array<{ __typename?: 'TaxonomyTerm', type: TaxonomyTermType }> } } | { __typename: 'ExerciseGroupRevision', id: number, title: string, alias: string } | { __typename: 'ExerciseRevision', id: number, title: string, alias: string } | { __typename: 'Page', id: number, title: string, alias: string } | { __typename: 'PageRevision', id: number, title: string, alias: string } | { __typename: 'TaxonomyTerm', id: number, title: string, alias: string } | { __typename: 'User', id: number, title: string, alias: string } | { __typename: 'Video', id: number, title: string, alias: string } | { __typename: 'VideoRevision', id: number, title: string, alias: string }, parent: { __typename: 'TaxonomyTerm', id: number, title: string, alias: string }, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean } } | { __typename: 'SetLicenseNotificationEvent', date: any, id: number, objectId: number, repository: { __typename: 'Applet', id: number, title: string, alias: string } | { __typename: 'Article', id: number, title: string, alias: string } | { __typename: 'Course', id: number, title: string, alias: string } | { __typename: 'CoursePage', id: number, title: string, alias: string } | { __typename: 'Event', id: number, title: string, alias: string } | { __typename: 'Exercise', id: number, title: string, alias: string } | { __typename: 'ExerciseGroup', id: number, title: string, alias: string } | { __typename: 'Page', id: number, title: string, alias: string } | { __typename: 'Video', id: number, title: string, alias: string }, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean } } | { __typename: 'SetTaxonomyParentNotificationEvent', date: any, id: number, objectId: number, child: { __typename: 'TaxonomyTerm', id: number, title: string, alias: string }, previousParent?: { __typename: 'TaxonomyTerm', id: number, title: string, alias: string } | null, optionalParent?: { __typename: 'TaxonomyTerm', id: number, title: string, alias: string } | null, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean } } | { __typename: 'SetTaxonomyTermNotificationEvent', date: any, id: number, objectId: number, taxonomyTerm: { __typename: 'TaxonomyTerm', id: number, title: string, alias: string }, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean } } | { __typename: 'SetThreadStateNotificationEvent', archived: boolean, date: any, id: number, objectId: number, thread: { __typename?: 'Thread', id: string, comments: { __typename?: 'CommentConnection', nodes: Array<{ __typename?: 'Comment', id: number }> } }, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean } } | { __typename: 'SetUuidStateNotificationEvent', trashed: boolean, date: any, id: number, objectId: number, object: { __typename: 'Applet', id: number, title: string, alias: string } | { __typename: 'AppletRevision', id: number, title: string, alias: string } | { __typename: 'Article', id: number, title: string, alias: string } | { __typename: 'ArticleRevision', id: number, title: string, alias: string } | { __typename: 'Comment', id: number, title: string, alias: string } | { __typename: 'Course', id: number, title: string, alias: string } | { __typename: 'CoursePage', id: number, title: string, alias: string } | { __typename: 'CoursePageRevision', id: number, title: string, alias: string } | { __typename: 'CourseRevision', id: number, title: string, alias: string } | { __typename: 'Event', id: number, title: string, alias: string } | { __typename: 'EventRevision', id: number, title: string, alias: string } | { __typename: 'Exercise', id: number, title: string, alias: string, taxonomyTerms: { __typename?: 'TaxonomyTermConnection', nodes: Array<{ __typename?: 'TaxonomyTerm', type: TaxonomyTermType }> } } | { __typename: 'ExerciseGroup', id: number, title: string, alias: string, taxonomyTerms: { __typename?: 'TaxonomyTermConnection', nodes: Array<{ __typename?: 'TaxonomyTerm', type: TaxonomyTermType }> } } | { __typename: 'ExerciseGroupRevision', id: number, title: string, alias: string } | { __typename: 'ExerciseRevision', id: number, title: string, alias: string } | { __typename: 'Page', id: number, title: string, alias: string } | { __typename: 'PageRevision', id: number, title: string, alias: string } | { __typename: 'TaxonomyTerm', id: number, title: string, alias: string } | { __typename: 'User', id: number, title: string, alias: string } | { __typename: 'Video', id: number, title: string, alias: string } | { __typename: 'VideoRevision', id: number, title: string, alias: string }, actor: { __typename?: 'User', id: number, username: string, isActiveAuthor: boolean, isActiveDonor: boolean, isActiveReviewer: boolean } } | null }> } };
 
 
-export const GetNotificationsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getNotifications"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uuid"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"language"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"notifications"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"500"}},{"kind":"Argument","name":{"kind":"Name","value":"unread"},"value":{"kind":"BooleanValue","value":true}},{"kind":"Argument","name":{"kind":"Name","value":"emailSent"},"value":{"kind":"BooleanValue","value":false}},{"kind":"Argument","name":{"kind":"Name","value":"email"},"value":{"kind":"BooleanValue","value":true}},{"kind":"Argument","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"event"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"actor"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"isActiveAuthor"}},{"kind":"Field","name":{"kind":"Name","value":"isActiveDonor"}},{"kind":"Field","name":{"kind":"Name","value":"isActiveReviewer"}}]}},{"kind":"Field","name":{"kind":"Name","value":"objectId"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CheckoutRevisionNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"revision"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"repository"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Exercise"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExerciseGroup"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CreateCommentNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"comment"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"thread"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","alias":{"kind":"Name","value":"thread"},"name":{"kind":"Name","value":"comments"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}},{"kind":"Field","alias":{"kind":"Name","value":"comment"},"name":{"kind":"Name","value":"comments"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"last"},"value":{"kind":"IntValue","value":"1"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"content"}}]}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CreateEntityNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"entity"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Exercise"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExerciseGroup"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CreateEntityLinkNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"parent"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Exercise"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExerciseGroup"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"child"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Exercise"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExerciseGroup"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CreateEntityRevisionNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"entityRevision"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AppletRevision"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"changes"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ArticleRevision"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"changes"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CourseRevision"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"changes"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CoursePageRevision"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"changes"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"EventRevision"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"changes"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExerciseRevision"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"changes"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExerciseGroupRevision"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"changes"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VideoRevision"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"changes"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"entity"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Exercise"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExerciseGroup"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CreateTaxonomyTermNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerm"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CreateTaxonomyLinkNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"child"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Exercise"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExerciseGroup"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"parent"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CreateThreadNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"thread"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","alias":{"kind":"Name","value":"thread"},"name":{"kind":"Name","value":"comments"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"content"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"object"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RejectRevisionNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"repository"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Exercise"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExerciseGroup"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"revision"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}},{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RemoveEntityLinkNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"parent"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Exercise"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExerciseGroup"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"child"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Exercise"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExerciseGroup"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RemoveTaxonomyLinkNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"child"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Exercise"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExerciseGroup"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"parent"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"SetLicenseNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"repository"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Exercise"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExerciseGroup"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"SetTaxonomyParentNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"child"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"previousParent"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}},{"kind":"Field","alias":{"kind":"Name","value":"optionalParent"},"name":{"kind":"Name","value":"parent"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"SetTaxonomyTermNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerm"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"SetThreadStateNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"archived"}},{"kind":"Field","name":{"kind":"Name","value":"thread"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","alias":{"kind":"Name","value":"thread"},"name":{"kind":"Name","value":"comments"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"SetUuidStateNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"object"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Exercise"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExerciseGroup"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"trashed"}}]}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetNotificationsQuery, GetNotificationsQueryVariables>;
+export const GetNotificationsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getNotifications"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uuid"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"language"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"notifications"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"500"}},{"kind":"Argument","name":{"kind":"Name","value":"unread"},"value":{"kind":"BooleanValue","value":true}},{"kind":"Argument","name":{"kind":"Name","value":"emailSent"},"value":{"kind":"BooleanValue","value":false}},{"kind":"Argument","name":{"kind":"Name","value":"email"},"value":{"kind":"BooleanValue","value":true}},{"kind":"Argument","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"event"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"actor"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"isActiveAuthor"}},{"kind":"Field","name":{"kind":"Name","value":"isActiveDonor"}},{"kind":"Field","name":{"kind":"Name","value":"isActiveReviewer"}}]}},{"kind":"Field","name":{"kind":"Name","value":"objectId"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CheckoutRevisionNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"revision"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"repository"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Exercise"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExerciseGroup"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CreateCommentNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"comment"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"thread"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"comments"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"content"}}]}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CreateEntityNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"entity"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Exercise"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExerciseGroup"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CreateEntityLinkNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"parent"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Exercise"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExerciseGroup"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"child"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Exercise"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExerciseGroup"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CreateEntityRevisionNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"entityRevision"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AppletRevision"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"changes"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ArticleRevision"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"changes"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CourseRevision"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"changes"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CoursePageRevision"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"changes"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"EventRevision"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"changes"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExerciseRevision"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"changes"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExerciseGroupRevision"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"changes"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VideoRevision"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"changes"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"entity"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Exercise"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExerciseGroup"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CreateTaxonomyTermNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerm"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CreateTaxonomyLinkNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"child"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Exercise"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExerciseGroup"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"parent"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CreateThreadNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"thread"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"comments"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"content"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"object"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RejectRevisionNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"repository"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Exercise"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExerciseGroup"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"revision"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}},{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RemoveEntityLinkNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"parent"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Exercise"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExerciseGroup"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"child"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Exercise"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExerciseGroup"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RemoveTaxonomyLinkNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"child"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Exercise"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExerciseGroup"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"parent"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"SetLicenseNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"repository"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Exercise"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExerciseGroup"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"SetTaxonomyParentNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"child"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"previousParent"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}},{"kind":"Field","alias":{"kind":"Name","value":"optionalParent"},"name":{"kind":"Name","value":"parent"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"SetTaxonomyTermNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerm"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"SetThreadStateNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"archived"}},{"kind":"Field","name":{"kind":"Name","value":"thread"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"comments"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"SetUuidStateNotificationEvent"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"object"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"AbstractUuid"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Exercise"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ExerciseGroup"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"taxonomyTerms"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"trashed"}}]}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetNotificationsQuery, GetNotificationsQueryVariables>;

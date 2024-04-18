@@ -175,10 +175,10 @@ export function EventComponent({
       }
     }
     if (event.__typename === 'CreateThreadNotificationEvent') {
-      return renderCommentContent(event.thread.thread.nodes[0].content)
+      return renderCommentContent(event.thread.comments.nodes[0].content)
     }
     if (event.__typename === 'CreateCommentNotificationEvent') {
-      return renderCommentContent(event.thread.comment.nodes[0].content)
+      return renderCommentContent(event.thread.comments.nodes.at(-1)?.content)
     }
   }
 
@@ -248,7 +248,7 @@ export function EventComponent({
   }
 
   function renderThread(thread: EventThread) {
-    const id = thread.thread.nodes[0]?.id
+    const id = thread.comments.nodes[0]?.id
     return (
       <a href={`${domain}/${id}`}>
         {strings.entities.thread}&nbsp;<sup>{id}</sup>
