@@ -71,7 +71,7 @@ export const getNotificationsQueryResponse = {
           objectId: 220225,
           thread: {
             id: 'dDI2Mjg1MQ==',
-            thread: {
+            comments: {
               nodes: [
                 {
                   id: 262851,
@@ -105,7 +105,7 @@ export const getNotificationsQueryResponse = {
           objectId: 4597,
           thread: {
             id: 'dDI2MjMyMw==',
-            thread: {
+            comments: {
               nodes: [
                 {
                   id: 262323,
@@ -143,15 +143,12 @@ export const getNotificationsQueryResponse = {
           thread: {
             id: 'dDI1MDQ5Mg==',
             title: '',
-            thread: {
+            comments: {
               nodes: [
                 {
                   id: 250492,
+                  content: 'Bla ',
                 },
-              ],
-            },
-            comment: {
-              nodes: [
                 {
                   id: 261859,
                   content: 'Jetzt sind welche da.',
@@ -204,15 +201,11 @@ export const getNotificationsQueryResponse = {
           thread: {
             id: 'dDI0MjQwMA==',
             title: '',
-            thread: {
+            comments: {
               nodes: [
                 {
                   id: 242400,
                 },
-              ],
-            },
-            comment: {
-              nodes: [
                 {
                   id: 260872,
                   content: 'Schicke Boxen! 😉',
