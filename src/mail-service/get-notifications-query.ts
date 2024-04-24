@@ -70,12 +70,7 @@ export const getNotifications = graphql(`
               thread {
                 id
                 title
-                thread: comments(first: 1) {
-                  nodes {
-                    id
-                  }
-                }
-                comment: comments(last: 1) {
+                comments {
                   nodes {
                     id
                     content
@@ -259,7 +254,7 @@ export const getNotifications = graphql(`
             ... on CreateThreadNotificationEvent {
               thread {
                 id
-                thread: comments(first: 1) {
+                comments(first: 1) {
                   nodes {
                     id
                     content
@@ -456,7 +451,7 @@ export const getNotifications = graphql(`
               archived
               thread {
                 id
-                thread: comments(first: 1) {
+                comments(first: 1) {
                   nodes {
                     id
                   }
