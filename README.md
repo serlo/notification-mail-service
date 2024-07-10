@@ -1,4 +1,6 @@
-# serlo.org - Notification Mail Service
+# Deprecated: users decided not to maintain this feature. 
+
+## serlo.org - Notification Mail Service
 
 Micro-service that notifies users by email about last events they subscribed to.
 
